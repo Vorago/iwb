@@ -16,14 +16,15 @@ namespace iwb {
     class Capture {
     private:
         CvCapture* capture;
+        IplImage* previousFrame;
     public:
-        
+
         /**
          * Constructor for capturing from file
          * 
          * @param filepath path to videofile to capture from
          */
-        Capture(char* filepath);
+        Capture(const char* filepath);
         /**
          * Constructor for capturing from camera
          *
@@ -37,6 +38,11 @@ namespace iwb {
          * File is named frame.jpg and is saved to project root
          */
         void saveFrame();
+
+        /**
+         * Show differencies between previous and current frame (diff)
+         */
+        void showDiff();
     };
 }
 

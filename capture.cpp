@@ -6,15 +6,19 @@
  */
 
 #include "include/capture.hpp"
+#include "include/analysis.hpp"
 
 namespace iwb {
-    CvCapture* capture;
 
-    Capture::Capture(char* filepath) {
+    Capture::Capture(const char* filepath) :
+            previousFrame(0)
+    {
         capture = cvCaptureFromAVI(filepath);
     }
 
-    Capture::Capture(int num) {
+    Capture::Capture(int num) :
+            previousFrame(0)
+    {
         capture = cvCaptureFromCAM(num);
     }
 
@@ -25,5 +29,27 @@ namespace iwb {
     void Capture::saveFrame() {
         cvSaveImage("frame.jpg", cvQueryFrame(capture));
     }
+
+    void Capture::showDiff() {
+        std::string window_name = "Diffs";
+        cv::namedWindow(window_name, CV_WINDOW_KEEPRATIO); //resizable window
+
+        for(;;) {
+            IplImage* currentFrame = cvQueryFrame(capture);
+            if (previousFrame == 0) {
+                previousFrame = currentFrame;
+                continue;
+            }
+            IplImage* diff = analysis::getDiff(previousFrame, currentFrame);
+            previousFrame = currentFrame;
+            cv::Mat displayedDiff = diff;
+            cv::imshow(window_name, displayedDiff);
+
+            cv::waitKey(40);
+        }
+
+    }
+
+
 
 }
