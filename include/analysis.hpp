@@ -10,11 +10,14 @@
 
 #include <opencv/highgui.h>
 #include <opencv/cv.h>
-
-class analysis {
-public:
-    static IplImage* getDiff(IplImage*, IplImage*);
-};
-
+namespace iwb {
+    class analysis {
+    public:
+        /**
+         * Function for frame differentiation
+         */
+        static IplImage* getDiff(IplImage*, IplImage*);
+    };
+}
 #endif	/* ANALYSIS_HPP */
 
