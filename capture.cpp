@@ -35,7 +35,7 @@ namespace iwb {
         cvNamedWindow(winFrame, CV_WINDOW_AUTOSIZE);
         for (;;) {
             IplImage* currentFrame = cvQueryFrame(capture);
-            
+
             if (previousFrame == NULL) {
                 previousFrame = cvCloneImage(currentFrame);
                 continue;
