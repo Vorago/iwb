@@ -46,6 +46,7 @@ namespace iwb {
             cv::imshow(window_name, displayedDiff);
 
             cv::waitKey(40);
+            cvZero(diff);
         }
 
     }
