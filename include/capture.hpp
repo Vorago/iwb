@@ -14,10 +14,28 @@
 namespace iwb {
 
     class Capture {
-    public:
+    private:
         CvCapture* capture;
-        Capture();
+    public:
+        
+        /**
+         * Constructor for capturing from file
+         * 
+         * @param filepath path to videofile to capture from
+         */
+        Capture(char* filepath);
+        /**
+         * Constructor for capturing from camera
+         *
+         * @param num number of camera to use (-1 to default)
+         */
+        Capture(int num);
         virtual ~Capture();
+        /**
+         * Captures a frame and saves it to file
+         *
+         * File is named frame.jpg and is saved to project root
+         */
         void saveFrame();
     };
 }

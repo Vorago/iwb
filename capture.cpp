@@ -10,8 +10,12 @@
 namespace iwb {
     CvCapture* capture;
 
-    Capture::Capture() {
-        capture = cvCaptureFromCAM(0);
+    Capture::Capture(char* filepath) {
+        capture = cvCaptureFromAVI(filepath);
+    }
+
+    Capture::Capture(int num) {
+        capture = cvCaptureFromCAM(num);
     }
 
     Capture::~Capture() {
