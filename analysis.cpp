@@ -7,9 +7,10 @@
 
 #include "include/analysis.hpp"
 
-analysis::analysis() {
+static IplImage* getDiff(IplImage *frame1, IplImage *frame2) {
+    IplImage *diff = new IplImage();
+
+    return diff;
 }
 
-analysis::~analysis() {
-}
 

@@ -19,7 +19,7 @@ namespace iwb {
     }
 
     void Capture::saveFrame() {
-        cvSaveImage("/home/vorago/frame.jpg", cvQueryFrame(capture));
+        cvSaveImage("frame.jpg", cvQueryFrame(capture));
     }
 
 }

@@ -8,13 +8,12 @@
 #ifndef ANALYSIS_HPP
 #define	ANALYSIS_HPP
 
+#include <opencv/highgui.h>
+#include <opencv/cv.h>
+
 class analysis {
 public:
-    analysis();
-
-    virtual ~analysis();
-private:
-
+    static IplImage* getDiff(IplImage*, IplImage*);
 };
 
 #endif	/* ANALYSIS_HPP */
