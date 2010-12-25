@@ -1,11 +1,13 @@
 #include <cstdlib>
 #include "include/capture.hpp"
+#include "include/analysis.hpp"
 using namespace iwb;
 
 int main(int argc, char *argv[]) {
     int cam;
     Capture* cpt = 0;
 
+    // Argument handling block
     if (argc == 2) {
         char *endptr;
         cam = strtol(argv[1], &endptr, 10);

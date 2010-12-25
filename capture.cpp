@@ -11,14 +11,12 @@
 namespace iwb {
 
     Capture::Capture(const char* filepath) :
-            previousFrame(0)
-    {
+    previousFrame(0) {
         capture = cvCaptureFromAVI(filepath);
     }
 
     Capture::Capture(int num) :
-            previousFrame(0)
-    {
+    previousFrame(0) {
         capture = cvCaptureFromCAM(num);
     }
 
@@ -31,25 +29,23 @@ namespace iwb {
     }
 
     void Capture::showDiff() {
-        std::string window_name = "Diffs";
-        cv::namedWindow(window_name, CV_WINDOW_KEEPRATIO); //resizable window
-
-        for(;;) {
+        const char* winDiff = "winDiff";
+        const char* winFrame = "winFrame";
+        cvNamedWindow(winDiff, CV_WINDOW_AUTOSIZE);
+        cvNamedWindow(winFrame, CV_WINDOW_AUTOSIZE);
+        for (;;) {
             IplImage* currentFrame = cvQueryFrame(capture);
-            if (previousFrame == 0) {
-                previousFrame = currentFrame;
+            
+            if (previousFrame == NULL) {
+                previousFrame = cvCloneImage(currentFrame);
                 continue;
             }
             IplImage* diff = analysis::getDiff(previousFrame, currentFrame);
-            previousFrame = currentFrame;
-            cv::Mat displayedDiff = diff;
-            cv::imshow(window_name, displayedDiff);
-
-            cv::waitKey(40);
+            cvShowImage(winFrame, currentFrame);
+            previousFrame = cvCloneImage(currentFrame);
+            cvShowImage(winDiff, diff);
+            cvWaitKey(40);
+            cvReleaseImage(&diff);
         }
-
     }
-
-
-
 }
