@@ -17,6 +17,12 @@ namespace iwb {
          * Function for frame differentiation
          */
         static IplImage* getDiff(IplImage*, IplImage*);
+
+        /**
+         * Function for motion detection
+         */
+        static bool isMoving(const IplImage* diff);
+
     };
 }
 #endif	/* ANALYSIS_HPP */

@@ -23,4 +23,21 @@ namespace iwb {
         cvThreshold(diff,diff,constants::threshold,255,CV_THRESH_BINARY);
         return diff;
     }
+
+    bool analysis::isMoving(const IplImage* diff) {
+        bool isWhite = false;
+        int resolution = diff->height * diff->width;
+        const char* data = diff->imageData;
+
+        if (diff->depth == IPL_DEPTH_8U) {
+            for (int i = 0; i < resolution * diff->nChannels; i++) {
+                if ((uchar) data[i] == 255) {
+                    isWhite = true;
+                    break;
+                }
+            }
+        }
+        
+        return isWhite;
+    }
 }
