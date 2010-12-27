@@ -30,7 +30,7 @@ namespace iwb {
         static CvPoint getLocation(IplImage *source, IplImage *pattern, bool upperLeft);
 
         /**
-	 * Function for motion detection
+         * Function for motion detection
          */
         static bool isMoving(const IplImage* diff);
     };
