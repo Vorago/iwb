@@ -28,6 +28,11 @@ namespace iwb {
          * @return coordinates of pattern in image
          */
         static CvPoint getLocation(IplImage *source, IplImage *pattern, bool upperLeft);
+
+        /**
+	 * Function for motion detection
+         */
+        static bool isMoving(const IplImage* diff);
     };
 }
 #endif	/* ANALYSIS_HPP */

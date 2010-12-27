@@ -25,6 +25,7 @@ namespace iwb {
         return diff;
     }
 
+<<<<<<< HEAD
     CvPoint analysis::getLocation(IplImage *source, IplImage *pattern, bool upperLeft) {
         IplImage* matchRes;
         double minVal, maxVal;
@@ -45,3 +46,22 @@ namespace iwb {
         return minLoc;
     }
 }
+=======
+    bool analysis::isMoving(const IplImage* diff) {
+        bool isWhite = false;
+        int resolution = diff->height * diff->width;
+        const char* data = diff->imageData;
+
+        if (diff->depth == IPL_DEPTH_8U) {
+            for (int i = 0; i < resolution * diff->nChannels; i++) {
+                if ((uchar) data[i] == 255) {
+                    isWhite = true;
+                    break;
+                }
+            }
+        }
+        
+        return isWhite;
+    }
+}
+>>>>>>> a8f81e3489f3e7169cadc681c1fefe220e1a815b
