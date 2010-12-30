@@ -31,6 +31,9 @@ namespace iwb {
          * @param num number of camera to use (-1 to default)
          */
         Capture(int num);
+        /**
+         * Destructor releases capturing
+         */
         virtual ~Capture();
         /**
          * Captures a frame and saves it to file

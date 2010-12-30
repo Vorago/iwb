@@ -40,7 +40,7 @@ namespace iwb {
                 previousFrame = cvCloneImage(currentFrame);
                 continue;
             }
-            IplImage* diff = analysis::getDiff(previousFrame, currentFrame);
+            IplImage* diff = Analysis::getDiff(previousFrame, currentFrame);
             cvShowImage(winFrame, currentFrame);
             previousFrame = cvCloneImage(currentFrame);
             cvShowImage(winDiff, diff);

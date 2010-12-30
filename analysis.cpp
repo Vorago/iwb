@@ -10,7 +10,7 @@
 
 namespace iwb {
 
-    IplImage* analysis::getDiff(IplImage *frame1, IplImage *frame2) {
+    IplImage* Analysis::getDiff(IplImage *frame1, IplImage *frame2) {
         IplImage* diff;
         IplImage* image2;
         IplImage* image1;
@@ -25,7 +25,7 @@ namespace iwb {
         return diff;
     }
 
-    CvPoint analysis::getLocation(IplImage *source, IplImage *pattern, bool upperLeft) {
+    CvPoint Analysis::getLocation(IplImage *source, IplImage *pattern, bool upperLeft) {
         IplImage* matchRes;
         double minVal, maxVal;
         CvPoint minLoc, maxLoc;
@@ -45,7 +45,7 @@ namespace iwb {
         return minLoc;
     }
 
-    bool analysis::isMoving(const IplImage* diff) {
+    bool Analysis::isMoving(const IplImage* diff) {
         bool isWhite = false;
         int resolution = diff->height * diff->width;
         const char* data = diff->imageData;
@@ -61,7 +61,3 @@ namespace iwb {
         return isWhite;
     }
 }
-
-
-
-

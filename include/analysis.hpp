@@ -12,12 +12,16 @@
 #include <opencv/cv.h>
 
 namespace iwb {
-    class analysis {
+    class Analysis {
     public:
         /**
          * Function for frame differentiation
+         *
+         * @param frame1 first frame for differntiation
+         * @param frame2 seconf frame for differentiation
+         * @return monochrome frame with difference
          */
-        static IplImage* getDiff(IplImage*, IplImage*);
+        static IplImage* getDiff(IplImage* frame1, IplImage* frame2);
 
         /**
          * Function for coordinates extraction
@@ -31,6 +35,9 @@ namespace iwb {
 
         /**
          * Function for motion detection
+         *
+         * @param diff monochrome frame with difference
+         * @return true if diff contains white, false otherwise
          */
         static bool isMoving(const IplImage* diff);
     };
