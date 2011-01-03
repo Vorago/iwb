@@ -1,12 +1,14 @@
 #include <cstdlib>
 #include "include/capture.hpp"
 #include "include/analysis.hpp"
+#include "include/presentation.hpp"
 using namespace iwb;
 
 int main(int argc, char *argv[]) {
     int cam;
     Capture* cpt = 0;
-
+   // Presentation* present = new Presentation(500,600);
+    
     // Argument handling block
     if (argc == 2) {
         char *endptr;
@@ -20,7 +22,7 @@ int main(int argc, char *argv[]) {
         cam = 0;
         cpt = new Capture(cam);
     }
-    
+
     //Code below is commented intentionally for testing purposes
     //And also in case of your curiosity you can test it
     /*

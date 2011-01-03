@@ -18,8 +18,10 @@ namespace iwb {
     public:
         /**
          * Constructor for displaying frames in window
+         * @param width width of screen
+         * @param height height of screen
          */
-        Presentation();
+        Presentation(int width, int height);
 
         /**
          * Destructor closes window
@@ -29,19 +31,19 @@ namespace iwb {
         /**
          * Function for clearing rectangular area of buffer set by two points
          *
-         * @param p1 upper left point
-         * @param p2 lower right point
+         * @param upperLeft upper left point
+         * @param lowerRight lower right point
          */
-        void clearArea(CvPoint p1, CvPoint p2);
+        void clearArea(CvPoint upperLeft, CvPoint lowerRight);
 
         /**
          * Function for adding image to buffer
          *
-         * @param p1 upper left point
-         * @param p2 lower right point
+         * @param upperLeft upper left point
+         * @param lowerRight lower right point
          * @param image image to put
          */
-        void putImage(CvPoint p1, CvPoint p2, IplImage* image);
+        void putImage(CvPoint upperLeft, CvPoint lowerRight, IplImage* image);
 
         /**
          * Function for updating displayed image

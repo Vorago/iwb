@@ -8,8 +8,9 @@
 #include "include/presentation.hpp"
 
 namespace iwb {
-    Presentation::Presentation() {
+    Presentation::Presentation(int width, int height) {
 
+        
     }
 
     Presentation::~Presentation() {
