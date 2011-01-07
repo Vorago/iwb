@@ -63,4 +63,13 @@ namespace iwb {
         cvReleaseImage(&resizedImage);
 
     }
+    void Presentation::clearArea(CvPoint upperLeft, CvPoint lowerRight)
+    {
+    CvScalar color = CV_RGB(0,0,0);
+        cvRectangle(buffer, upperLeft, lowerRight,color, CV_FILLED, 0, 0);
+    const char* winPresentFrame = "winPresentation2";
+        cvNamedWindow(winPresentFrame, CV_WINDOW_AUTOSIZE);
+        cvShowImage(winPresentFrame, buffer);
+        cvWaitKey(0);
+    }
 }
