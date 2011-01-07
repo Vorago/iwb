@@ -1,4 +1,4 @@
-#include <cstdlib>
+#include <cstdio>
 #include "include/capture.hpp"
 #include "include/analysis.hpp"
 #include "include/presentation.hpp"
@@ -7,10 +7,8 @@ using namespace iwb;
 int main(int argc, char *argv[]) {
     int cam;
     Capture* cpt = 0;
-   // Presentation* present = new Presentation(500,600);
-    
     // Argument handling block
-    if (argc == 2) {
+    if (argc >= 2) {
         char *endptr;
         cam = strtol(argv[1], &endptr, 10);
         if (*endptr == '\0') {
@@ -22,6 +20,31 @@ int main(int argc, char *argv[]) {
         cam = 0;
         cpt = new Capture(cam);
     }
+
+    /*
+     * Process resolution in second parameter.
+     * If none is given, use 800x600.
+     */
+    int resWidth = 800;
+    int resHeight = 600;
+    if (argc == 3) {
+        char* str = argv[2];
+        char* pch;
+        pch = strchr(str, 'x');
+        if (pch == NULL) {
+            printf("Resolution which was expected in the second argument should "
+                    "be of the form of 1024x768");
+            return -1;
+        }
+        pch[0] = '\0';
+        pch++;
+        resWidth = atoi(str);
+        resHeight = atoi(pch);
+    }
+
+    //Presentation* prs = new Presentation(resWidth, resHeight);
+    //IplImage* img = cvLoadImage("/home/alina/template1.jpg", CV_LOAD_IMAGE_UNCHANGED);
+    //prs->putImage(cvPoint(100, 100), cvPoint(500, 700), img);
 
     //Code below is commented intentionally for testing purposes
     //And also in case of your curiosity you can test it
@@ -45,6 +68,6 @@ int main(int argc, char *argv[]) {
     cvReleaseImage(&img1);
     cvReleaseImage(&tmp1);
     cvReleaseImage(&tmp2);*/
-    cpt->showDiff();
+    //cpt->showDiff();
     return 0;
 }
