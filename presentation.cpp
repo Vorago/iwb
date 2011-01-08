@@ -6,24 +6,32 @@
  */
 
 #include "include/presentation.hpp"
-#include <opencv/cv.h>
+
 
 namespace iwb {
+
     Presentation::Presentation(int width, int height) {
         buffer = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, 3);
         slide = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, 3);
+        winPresentFrame = "winPresentation";
+        cvNamedWindow(winPresentFrame, CV_WINDOW_AUTOSIZE);
+        cvShowImage(winPresentFrame, slide);
+        
+        
     }
 
     Presentation::~Presentation() {
         cvReleaseImage(&buffer);
         cvReleaseImage(&slide);
+        cvDestroyWindow(winPresentFrame);
+
     }
 
     void Presentation::putImage(CvPoint upperLeft, CvPoint lowerRight, IplImage* image) {
         int newWidth, newHeight;
         int width = lowerRight.x - upperLeft.x;
         int height = lowerRight.y - upperLeft.y;
-        
+
         /*
          * We have to find the largest possible size bound by given rectangle
          * (upperLeft and lowerRight) but with respect to original image
@@ -54,22 +62,17 @@ namespace iwb {
         cvCopyImage(resizedImage, buffer);
         cvResetImageROI(buffer);
 
-        //Showing result
-        const char* winPresentFrame = "winPresentation";
-        cvNamedWindow(winPresentFrame, CV_WINDOW_AUTOSIZE);
-        cvShowImage(winPresentFrame, buffer);
-        cvWaitKey(0);
-
         cvReleaseImage(&resizedImage);
+    }
 
+    void Presentation::clearArea(CvPoint upperLeft, CvPoint lowerRight) {
+        CvScalar color = CV_RGB(0, 0, 0);
+        cvRectangle(buffer, upperLeft, lowerRight, color, CV_FILLED, 0, 0);
     }
-    void Presentation::clearArea(CvPoint upperLeft, CvPoint lowerRight)
-    {
-    CvScalar color = CV_RGB(0,0,0);
-        cvRectangle(buffer, upperLeft, lowerRight,color, CV_FILLED, 0, 0);
-    const char* winPresentFrame = "winPresentation2";
-        cvNamedWindow(winPresentFrame, CV_WINDOW_AUTOSIZE);
-        cvShowImage(winPresentFrame, buffer);
-        cvWaitKey(0);
+
+     void Presentation::applyBuffer() {
+        cvCopy(buffer, slide);
+        cvShowImage(winPresentFrame, slide);
     }
+
 }

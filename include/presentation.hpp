@@ -9,12 +9,14 @@
 #define	PRESENTATION_HPP
 
 #include <opencv/highgui.h>
+#include <opencv/cv.h>
 
 namespace iwb {
     class Presentation {
     private:
         IplImage* slide;
         IplImage* buffer;
+        const char* winPresentFrame;
     public:
         /**
          * Constructor for displaying frames in window
@@ -51,7 +53,7 @@ namespace iwb {
          * Updates image being displayed with contents of buffer
          * Changes contents of slide variable accordingly
          */
-        void applyBuffer();
+         void applyBuffer();
     };
 }
 
