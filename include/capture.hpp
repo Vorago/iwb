@@ -40,12 +40,27 @@ namespace iwb {
          *
          * File is named frame.jpg and is saved to project root
          */
-        void saveFrame();
+        void saveFrame(const char* filepath, IplImage* image);
 
         /**
          * Show differencies between previous and current frame (diff)
          */
         void showDiff();
+
+        /**
+         * Set previous frame
+         */
+        void setPreviousFrame(IplImage* image);
+
+        /**
+         * Get previous frame
+         */
+        IplImage* getPreviousFrame();
+
+        /**
+         * Get capture
+         */
+        CvCapture* getCapture();
     };
 }
 

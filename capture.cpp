@@ -8,7 +8,23 @@
 #include "include/capture.hpp"
 #include "include/analysis.hpp"
 
+#include <stdio.h>
+
+#include <time.h>
+
 namespace iwb {
+
+    CvCapture* Capture::getCapture() {
+        return capture;
+    }
+
+    IplImage* Capture::getPreviousFrame() {
+        return previousFrame;
+    }
+
+    void Capture::setPreviousFrame(IplImage* image) {
+        previousFrame = image;
+    }
 
     Capture::Capture(const char* filepath) :
     previousFrame(0) {
@@ -24,8 +40,8 @@ namespace iwb {
         cvReleaseCapture(&capture);
     }
 
-    void Capture::saveFrame() {
-        cvSaveImage("frame.jpg", cvQueryFrame(capture));
+    void Capture::saveFrame(const char* filepath, IplImage* image) {
+        cvSaveImage(filepath, image);
     }
 
     void Capture::showDiff() {
