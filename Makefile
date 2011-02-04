@@ -4,7 +4,12 @@ TARGET  = iwb
 
 CC     = g++
 DEBUG  = -g
-CFLAGS = -Wall -Wextra $(DEBUG) $(shell pkg-config --cflags opencv)
+CFLAGS = -Wall -Wextra -I/usr/include/opencv \
+-I/usr/lib/jvm/java-6-openjdk/include \
+-I/usr/lib/jvm/java-6-openjdk/include/linux \
+-I/usr/lib/jvm/java-6-openjdk/jre/lib/i386/server \
+-L/usr/lib/jvm/java-6-openjdk/jre/lib/i386/server \
+-ljvm
 
 LIBS      =
 LIBCONFIG = $(shell pkg-config --libs opencv)
