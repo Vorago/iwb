@@ -3,9 +3,8 @@
 #include "include/analysis.hpp"
 #include "include/presentation.hpp"
 
-
-
 using namespace iwb;
+using namespace std;
 
 int main(int argc, char *argv[]) {
 
@@ -79,24 +78,38 @@ int main(int argc, char *argv[]) {
      cvReleaseImage(&tmp2);*/
     //cpt->showDiff();
 
+    /*char c[256];
+        int a = 0;
+        while(a != 1){
+                a = scanf("%s",c);
+        }*/
 
     //Creating and loading Templates for making CI
+    FILE *file = fopen("/home/psyholog/cj.txt", "r");
     IplImage *tmp1, *tmp2;
     tmp1 = cvLoadImage("/home/psyholog/NetBeansProjects/leftUpColorTmp2.jpg", 1);
     tmp2 = cvLoadImage("/home/psyholog/NetBeansProjects/rightDownColorTmp2.jpg", 1);
     //making frame for test
     const char* winFrame = "winFrame";
     cvNamedWindow(winFrame, CV_WINDOW_AUTOSIZE);
-
+    int f;
     bool currentKfSaved = false;
     //Controller
+    IplImage* currentFrame = NULL;
+    IplImage* diff = NULL;
+    IplImage* Ci = NULL;
+    IplImage* pr = NULL;
     for (;;) {
-        IplImage* currentFrame = cvQueryFrame(cpt->getCapture());
+        currentFrame = cvQueryFrame(cpt->getCapture());
+
         if (cpt->getPreviousFrame() == NULL) {
             cpt->setPreviousFrame(cvCloneImage(currentFrame));
             continue;
         }
-        IplImage* diff = Analysis::getDiff(cpt->getPreviousFrame(), currentFrame);
+
+        diff = Analysis::getDiff(cpt->getPreviousFrame(), currentFrame);
+        pr = cpt->getPreviousFrame();
+        cvReleaseImage(&pr);
         cpt->setPreviousFrame(cvCloneImage(currentFrame));
         //Just attempt to make timer
         int startTime;
@@ -115,7 +128,7 @@ int main(int argc, char *argv[]) {
                         height = p2.y - p1.y;
                 try {
                     cvSetImageROI(currentFrame, cvRect(p1.x, p1.y, width, height));
-                    IplImage* Ci = cvCreateImage(cvGetSize(currentFrame), currentFrame->depth, currentFrame->nChannels);
+                    Ci = cvCreateImage(cvGetSize(currentFrame), currentFrame->depth, currentFrame->nChannels);
                     cvCopyImage(currentFrame, Ci);
                     cvResetImageROI(currentFrame);
                     //Saving Images
@@ -124,7 +137,7 @@ int main(int argc, char *argv[]) {
                     currentKfSaved = true;
                     cvReleaseImage(&Ci);
                 } catch (cv::Exception& e) {
-                    //If something goes wrong
+
                 }
             }
         } else {
@@ -134,6 +147,15 @@ int main(int argc, char *argv[]) {
         cvShowImage(winFrame, currentFrame);
         cvWaitKey(5);
         cvReleaseImage(&diff);
+
+        if (file != 0) {
+            fscanf(file, "%d", &f);
+            if (f == -15) {
+                printf("stopped");
+                fclose(file);
+                return 0;
+            }
+        }
     }
 
     return 0;
