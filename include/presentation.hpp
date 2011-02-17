@@ -17,7 +17,13 @@ namespace iwb {
         IplImage* slide;
         IplImage* buffer;
         const char* winPresentFrame;
+        int screenWidth;
+        int screenHeight;
     public:
+        float leftOffset;
+        float rightOffset;
+        float topOffset;
+        float bottomOffset;
         /**
          * Constructor for displaying frames in window
          * @param width width of screen
@@ -54,6 +60,20 @@ namespace iwb {
          * Changes contents of slide variable accordingly
          */
          void applyBuffer();
+         
+         /**
+          * Resolution width accessor
+          *
+          * @return int width
+          */
+         getScreenWidth();
+
+         /**
+          * Resolution height accessor
+          *
+          * @return int height
+          */
+         getScreenHeight();
     };
 }
 

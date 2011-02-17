@@ -10,8 +10,11 @@
 
 #include <opencv/highgui.h>
 #include <opencv/cv.h>
+#include <capture.hpp>
+#include <presentation.hpp>
 
 namespace iwb {
+
     class Analysis {
     public:
         /**
@@ -40,6 +43,20 @@ namespace iwb {
          * @return true if diff contains white, false otherwise
          */
         static bool isMoving(const IplImage* diff);
+
+        /**
+         * Function for calibrating projector output by setting offsets
+         *
+         * requires 3 files:
+         * ~/testscreen.jpg
+         * ~/blacksquare.jpg
+         * ~/redsquare.jpg
+         * more info in function internal comments
+         *
+         * @param cpt Capture class instance for getting picture
+         * @param prs Presentation class instance for outputting test picture
+         */
+        static void doCalibrate(Capture* cpt, Presentation* prs);
     };
 }
 #endif	/* ANALYSIS_HPP */

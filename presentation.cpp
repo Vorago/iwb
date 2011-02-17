@@ -16,7 +16,8 @@ namespace iwb {
         winPresentFrame = "winPresentation";
         cvNamedWindow(winPresentFrame, CV_WINDOW_AUTOSIZE);
         cvShowImage(winPresentFrame, slide);
-        
+        screenWidth = width;
+        screenHeight = height;
         
     }
 
@@ -74,5 +75,13 @@ namespace iwb {
         cvCopy(buffer, slide);
         cvShowImage(winPresentFrame, slide);
     }
+
+     int Presentation::getScreenWidth(){
+         return screenWidth;
+     }
+
+     int Presentation::getScreenHeight(){
+         return screenHeight;
+     }
 
 }

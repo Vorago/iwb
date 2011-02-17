@@ -36,9 +36,9 @@ namespace iwb {
 
         cvMatchTemplate(source, pattern, matchRes, CV_TM_SQDIFF);
         cvMinMaxLoc(matchRes, &minVal, &maxVal, &minLoc, &maxLoc, 0);
-        
+
         cvReleaseImage(&matchRes);
-        if(!upperLeft){
+        if (!upperLeft) {
             minLoc.x += pattern->width;
             minLoc.y += pattern->height;
         }
@@ -59,5 +59,27 @@ namespace iwb {
             }
         }
         return isWhite;
+    }
+
+    void Analysis::doCalibrate(Capture* cpt, Presentation* prs) {
+        //testScreen shoul be a big rectangle of blue color with black square in upper-left corner and a red one in bottom-right
+        IplImage* testScreen = cvLoadImage("~/testscreen.jpg", CV_LOAD_IMAGE_UNCHANGED);
+        //blackSquare should match size of square in upper left of testScreen
+        IplImage* blackSquare = cvLoadImage("~/blacksquare.jpg", CV_LOAD_IMAGE_UNCHANGED);
+        //redSquare should match size of square in bottom right of testScreen
+        IplImage* redSquare = cvLoadImage("~/redsquare.jpg", CV_LOAD_IMAGE_UNCHANGED);
+
+        prs->putImage(cvPoint(0, 0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), testScreen);
+        prs->applyBuffer();
+        IplImage* frame = cvQueryFrame(cpt->getCapture());
+        CvPoint ul = Analysis::getLocation(frame, blackSquare, true);
+        CvPoint br = Analysis::getLocation(frame, redSquare, false);
+
+        prs->leftOffset = ul.x / prs->getScreenWidth();
+        prs->rightOffset = (prs->getScreenWidth() - br.x) / prs->getScreenWidth();
+        prs->topOffset = ul.y / prs->getScreenHeight();
+        prs->bottomOffset = (prs->getScreenHeight() - br.y) / prs->getScreenHeight();
+
+        cvReleaseImage(&frame);
     }
 }
