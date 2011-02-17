@@ -10,8 +10,8 @@
 
 #include <opencv/highgui.h>
 #include <opencv/cv.h>
-#include <capture.hpp>
-#include <presentation.hpp>
+#include "capture.hpp"
+#include "presentation.hpp"
 
 namespace iwb {
 
@@ -43,6 +43,13 @@ namespace iwb {
          * @return true if diff contains white, false otherwise
          */
         static bool isMoving(const IplImage* diff);
+
+        /**
+         * Function for motion detection
+         *
+         * @return -1 if no motion, {0,1,2,3,4} otherwise
+         */
+        static int inWhichAreaIsMoving(IplImage* curr, IplImage* prev, CvPoint point[], int width[], int height[]);
 
         /**
          * Function for calibrating projector output by setting offsets

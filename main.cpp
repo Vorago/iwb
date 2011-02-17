@@ -4,7 +4,6 @@
 #include "include/presentation.hpp"
 
 using namespace iwb;
-using namespace std;
 
 int main(int argc, char *argv[]) {
 
@@ -28,8 +27,8 @@ int main(int argc, char *argv[]) {
      * Process resolution in second parameter.
      * If none is given, use 800x600.
      */
-    int resWidth = 800;
-    int resHeight = 600;
+    int resWidth = 1000;
+    int resHeight = 800;
     if (argc == 3) {
         char* str = argv[2];
         char* pch;
@@ -84,44 +83,61 @@ int main(int argc, char *argv[]) {
                 a = scanf("%s",c);
         }*/
 
+
+
+    Presentation* prs = new Presentation(resWidth, resHeight);
+    //Analysis::doCalibrate(cpt,prs);
     //Creating and loading Templates for making CI
     FILE *file = fopen("/home/psyholog/cj.txt", "r");
     IplImage *tmp1, *tmp2;
-    tmp1 = cvLoadImage("/home/psyholog/NetBeansProjects/leftUpColorTmp2.jpg", 1);
-    tmp2 = cvLoadImage("/home/psyholog/NetBeansProjects/rightDownColorTmp2.jpg", 1);
+    tmp1 = cvLoadImage("/home/psyholog/NetBeansProjects/UpLef.jpg", 1);
+    tmp2 = cvLoadImage("/home/psyholog/NetBeansProjects/BotRig.jpg", 1);
     //making frame for test
+    bool isSaved = false;
     const char* winFrame = "winFrame";
     cvNamedWindow(winFrame, CV_WINDOW_AUTOSIZE);
     int f;
-    bool currentKfSaved = false;
+    //bool currentKfSaved = false;
     //Controller
     IplImage* currentFrame = NULL;
     IplImage* diff = NULL;
     IplImage* Ci = NULL;
     IplImage* pr = NULL;
-    for (;;) {
-        currentFrame = cvQueryFrame(cpt->getCapture());
+    CvPoint p1, p2;
 
+    //arrays for scroller point - upeerLeft point of area; width - width of area; height - height of area
+    CvPoint point[] = {cvPoint(0, 0), cvPoint(100, 0), cvPoint(200, 0), cvPoint(300, 0), cvPoint(400, 0)};
+    int width[] = {300, 300, 300, 300, 300};
+    int height[] = {50, 50, 50, 50, 50};
+    //int area =  number of area, ranging from 0 to 4
+    //int area = Analysis::inWhichAreaIsMoving(currentFrame, pr, point, width, height);
+
+    for (;;) {
+
+        currentFrame = cvQueryFrame(cpt->getCapture());
+        
         if (cpt->getPreviousFrame() == NULL) {
             cpt->setPreviousFrame(cvCloneImage(currentFrame));
             continue;
         }
-
-        diff = Analysis::getDiff(cpt->getPreviousFrame(), currentFrame);
         pr = cpt->getPreviousFrame();
+        diff = Analysis::getDiff(pr, currentFrame);
+
+        //int area = Analysis::inWhichAreaIsMoving(currentFrame, pr, point, width, height);
         cvReleaseImage(&pr);
         cpt->setPreviousFrame(cvCloneImage(currentFrame));
+
         //Just attempt to make timer
         int startTime;
-        if (!Analysis::isMoving(diff)) {
+        if (!Analysis::isMoving(diff) && !isSaved) {
             if (startTime == -1) {
                 startTime = clock() / CLOCKS_PER_SEC;
             }
             int timeDifference;
             timeDifference = clock() / CLOCKS_PER_SEC - startTime;
-            if (timeDifference >= 2 && !currentKfSaved) {
-                CvPoint p1 = Analysis::getLocation(currentFrame, tmp1, true),
-                        p2 = Analysis::getLocation(currentFrame, tmp2, false);
+            if (timeDifference >= 2) {
+                p1 = Analysis::getLocation(currentFrame, tmp1, true);
+                p2 = Analysis::getLocation(currentFrame, tmp2, false);
                 cvRectangle(currentFrame, p1, p2, cvScalar(0, 0, 255, 0), 1, 0, 0);
                 //Counting coordinates for making CI
                 int width = p2.x - p1.x,
@@ -134,7 +150,8 @@ int main(int argc, char *argv[]) {
                     //Saving Images
                     cpt->saveFrame("/home/psyholog/NetBeansProjects/CapturedImage.jpg", Ci);
                     cpt->saveFrame("/home/psyholog/NetBeansProjects/KeyFrame.jpg", currentFrame);
-                    currentKfSaved = true;
+                    //             currentKfSaved = true;
+                    isSaved = true;
                     cvReleaseImage(&Ci);
                 } catch (cv::Exception& e) {
 
@@ -142,7 +159,10 @@ int main(int argc, char *argv[]) {
             }
         } else {
             startTime = -1;
-            currentKfSaved = false;
+            //  currentKfSaved = false;
+            if (isSaved)
+                prs->putImage(p1, p2, cvLoadImage("/home/psyholog/NetBeansProjects/CapturedImage.jpg", 1));
+            prs->applyBuffer();
         }
         cvShowImage(winFrame, currentFrame);
         cvWaitKey(5);
@@ -156,6 +176,7 @@ int main(int argc, char *argv[]) {
                 return 0;
             }
         }
+
     }
 
     return 0;

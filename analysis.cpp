@@ -32,7 +32,7 @@ namespace iwb {
         matchRes = cvCreateImage(cvSize(
                 source->width - pattern->width + 1,
                 source->height - pattern->height + 1
-                ), IPL_DEPTH_32F, 0);
+                ), IPL_DEPTH_32F, 1);
 
         cvMatchTemplate(source, pattern, matchRes, CV_TM_SQDIFF);
         cvMinMaxLoc(matchRes, &minVal, &maxVal, &minLoc, &maxLoc, 0);
@@ -43,6 +43,25 @@ namespace iwb {
             minLoc.y += pattern->height;
         }
         return minLoc;
+    }
+
+    int Analysis::inWhichAreaIsMoving(IplImage* curr, IplImage* prev, CvPoint point[], int width[], int height[]) {
+        int area;
+
+        for (int i = 0; i < 5; i++) {
+            cvSetImageROI(curr, cvRect(point[i].x, point[i].y, width[i], height[i]));
+            cvSetImageROI(prev, cvRect(point[i].x, point[i].y, width[i], height[i]));
+            IplImage* diff = Analysis::getDiff(curr, prev);
+            cvResetImageROI(curr);
+            cvResetImageROI(prev);
+            if (isMoving(diff)) {
+                cvReleaseImage(&diff);
+                return area = i;
+            }
+            cvReleaseImage(&diff);
+        }
+
+        return -1;
     }
 
     bool Analysis::isMoving(const IplImage* diff) {
@@ -63,14 +82,14 @@ namespace iwb {
 
     void Analysis::doCalibrate(Capture* cpt, Presentation* prs) {
         //testScreen shoul be a big rectangle of blue color with black square in upper-left corner and a red one in bottom-right
-        IplImage* testScreen = cvLoadImage("~/testscreen.jpg", CV_LOAD_IMAGE_UNCHANGED);
+        //IplImage* testScreen = cvLoadImage("~/testscreen.jpg", CV_LOAD_IMAGE_UNCHANGED);
         //blackSquare should match size of square in upper left of testScreen
-        IplImage* blackSquare = cvLoadImage("~/blacksquare.jpg", CV_LOAD_IMAGE_UNCHANGED);
+        IplImage* blackSquare = cvLoadImage("~/blackSquare.jpg", CV_LOAD_IMAGE_UNCHANGED);
         //redSquare should match size of square in bottom right of testScreen
-        IplImage* redSquare = cvLoadImage("~/redsquare.jpg", CV_LOAD_IMAGE_UNCHANGED);
+        IplImage* redSquare = cvLoadImage("~/redSquare.jpg", CV_LOAD_IMAGE_UNCHANGED);
 
-        prs->putImage(cvPoint(0, 0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), testScreen);
-        prs->applyBuffer();
+        //prs->putImage(cvPoint(0, 0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), testScreen);
+        //prs->applyBuffer();
         IplImage* frame = cvQueryFrame(cpt->getCapture());
         CvPoint ul = Analysis::getLocation(frame, blackSquare, true);
         CvPoint br = Analysis::getLocation(frame, redSquare, false);
