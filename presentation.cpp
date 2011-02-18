@@ -43,6 +43,7 @@ namespace iwb {
          * We have to find the largest possible size bound by given rectangle
          * (upperLeft and lowerRight) but with respect to original image
          * aspect ratio.
+         * Do not used at the moment.
          */
         float coeffHeight = (float) height / (float) image->height;
         float coeffWidth = (float) width / (float) image->width;
@@ -60,11 +61,11 @@ namespace iwb {
          * best with CV_INTER_CUBIC (slow) or CV_INTER_LINEAR (faster but still
          * looks OK).
          */
-        IplImage* resizedImage = cvCreateImage(cvSize(newWidth, newHeight), IPL_DEPTH_8U, 3);
+        IplImage* resizedImage = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, 3);
         cvResize(image, resizedImage, CV_INTER_CUBIC);
 
         //Setting area for new image
-        cvSetImageROI(buffer, cvRect(upperLeft.x, upperLeft.y, newWidth, newHeight));
+        cvSetImageROI(buffer, cvRect(upperLeft.x, upperLeft.y, width, height));
         cvZero(buffer);
         cvCopyImage(resizedImage, buffer);
         cvResetImageROI(buffer);
@@ -90,9 +91,51 @@ namespace iwb {
          return screenHeight;
      }
 
-     void Presentation::drawScroller(CvPoint upperLeft, CvPoint lowerRight,
+    void Presentation::drawScroller(CvPoint upperLeft, CvPoint lowerRight,
              IplImage* image1, IplImage* image2, IplImage* image3){
 
+        int scrollerWidth = lowerRight.x - upperLeft.x;
+        int scrollerHeight = lowerRight.y - upperLeft.y;
+        IplImage* leftArrow = cvLoadImage("res/left.jpg", CV_LOAD_IMAGE_UNCHANGED);
+        IplImage* rightArrow = cvLoadImage("res/right.jpg", CV_LOAD_IMAGE_UNCHANGED);
+
+        /* Each image occupies 17% of scroller height and 67% of scroller lenght
+         * Each arrow occupies 7% of scroller height and 50% of scroller lenght
+         * Space between images and images and arrows - 7%
+         */
+        //calculations of relative coordinates
+        leftUL = cvPoint(upperLeft.x + round(0.05*scrollerWidth),
+                upperLeft.y + round(0.25*scrollerHeight));
+        leftBR = cvPoint(upperLeft.x + round(0.12*scrollerWidth),
+                upperLeft.y + round(0.75*scrollerHeight));
+
+        img1UL = cvPoint(upperLeft.x + round(0.18*scrollerWidth),
+                upperLeft.y + round(0.17*scrollerHeight));
+        img1BR = cvPoint(upperLeft.x + round(0.35*scrollerWidth),
+                upperLeft.y + round(0.84*scrollerHeight));
+
+        img2UL = cvPoint(upperLeft.x + round(0.41*scrollerWidth),
+                upperLeft.y + round(0.17*scrollerHeight));
+        img2BR = cvPoint(upperLeft.x + round(0.58*scrollerWidth),
+                upperLeft.y + round(0.84*scrollerHeight));
+
+        img3UL = cvPoint(upperLeft.x + round(0.65*scrollerWidth),
+                upperLeft.y + round(0.17*scrollerHeight));
+        img3BR = cvPoint(upperLeft.x + round(0.82*scrollerWidth),
+                upperLeft.y + round(0.84*scrollerHeight));
+
+        rightUL = cvPoint(upperLeft.x + round(0.88*scrollerWidth),
+                upperLeft.y + round(0.25*scrollerHeight));
+        rightBR = cvPoint(upperLeft.x + round(0.95*scrollerWidth),
+                upperLeft.y + round(0.75*scrollerHeight));
+
+        putImage(cvPoint(leftUL.x, leftUL.y), cvPoint(leftBR.x, leftBR.y), leftArrow);
+        putImage(cvPoint(img1UL.x, img1UL.y), cvPoint(img1BR.x, img1BR.y), image1);
+        putImage(cvPoint(img2UL.x, img2UL.y), cvPoint(img2BR.x, img2BR.y), image2);
+        putImage(cvPoint(img3UL.x, img3UL.y), cvPoint(img3BR.x, img3BR.y), image3);
+        putImage(cvPoint(rightUL.x, rightUL.y), cvPoint(rightBR.x, rightBR.y), rightArrow);
+
+        applyBuffer();
      }
 
 

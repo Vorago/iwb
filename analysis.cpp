@@ -45,8 +45,14 @@ namespace iwb {
         return minLoc;
     }
 
-    int Analysis::inWhichAreaIsMoving(IplImage* curr, IplImage* prev, CvPoint point[], int width[], int height[]) {
+    int Analysis::inWhichAreaIsMoving(IplImage* curr, IplImage* prev, Presentation* prs) {
         int area;
+
+        CvPoint point[] = {prs->leftUL, prs->img1UL, prs->img2UL, prs->img3UL, prs->rightUL};
+        int width[] = {prs->leftBR.x-prs->leftUL.x, prs->img1BR.x-prs->img1UL.x,
+        prs->img2BR.x-prs->img2UL.x, prs->img3BR.x-prs->img3UL.x, prs->rightBR.x-prs->rightUL.x};
+        int height[] = {prs->leftBR.y-prs->leftUL.y, prs->img1BR.y-prs->img1UL.y,
+        prs->img2BR.y-prs->img2UL.y, prs->img3BR.y-prs->img3UL.y, prs->rightBR.y-prs->rightUL.y};
 
         for (int i = 0; i < 5; i++) {
             cvSetImageROI(curr, cvRect(point[i].x, point[i].y, width[i], height[i]));

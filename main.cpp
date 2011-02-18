@@ -105,17 +105,9 @@ int main(int argc, char *argv[]) {
     IplImage* pr = NULL;
     CvPoint p1, p2;
 
-    //arrays for scroller point - upeerLeft point of area; width - width of area; height - height of area
-    CvPoint point[] = {cvPoint(0, 0), cvPoint(100, 0), cvPoint(200, 0), cvPoint(300, 0), cvPoint(400, 0)};
-    int width[] = {300, 300, 300, 300, 300};
-    int height[] = {50, 50, 50, 50, 50};
-    //int area =  number of area, ranging from 0 to 4
-    //int area = Analysis::inWhichAreaIsMoving(currentFrame, pr, point, width, height);
-
     for (;;) {
 
         currentFrame = cvQueryFrame(cpt->getCapture());
-        
         if (cpt->getPreviousFrame() == NULL) {
             cpt->setPreviousFrame(cvCloneImage(currentFrame));
             continue;

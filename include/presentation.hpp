@@ -24,6 +24,7 @@ namespace iwb {
         float rightOffset;
         float topOffset;
         float bottomOffset;
+        CvPoint leftUL, leftBR, img1UL, img1BR, img2UL, img2BR, img3UL, img3BR, rightUL, rightBR;
         /**
          * Constructor for displaying frames in window
          * @param width width of screen

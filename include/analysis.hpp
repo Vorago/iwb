@@ -49,7 +49,7 @@ namespace iwb {
          *
          * @return -1 if no motion, {0,1,2,3,4} otherwise
          */
-        static int inWhichAreaIsMoving(IplImage* curr, IplImage* prev, CvPoint point[], int width[], int height[]);
+        static int inWhichAreaIsMoving(IplImage* curr, IplImage* prev, Presentation* prs);
 
         /**
          * Function for calibrating projector output by setting offsets
