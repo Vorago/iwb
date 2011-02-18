@@ -30,6 +30,12 @@ namespace iwb {
 
     void Presentation::putImage(CvPoint upperLeft, CvPoint lowerRight, IplImage* image) {
         int newWidth, newHeight;
+        //calculations of new images coodrinates with respect to offset
+        upperLeft.x = upperLeft.x - leftOffset*screenWidth;
+        upperLeft.y = upperLeft.y - topOffset*screenHeight;
+        lowerRight.x = lowerRight.x - rightOffset*screenWidth;
+        lowerRight.y = lowerRight.y - bottomOffset*screenHeight;
+
         int width = lowerRight.x - upperLeft.x;
         int height = lowerRight.y - upperLeft.y;
 
@@ -83,5 +89,11 @@ namespace iwb {
      int Presentation::getScreenHeight(){
          return screenHeight;
      }
+
+     void Presentation::drawScroller(CvPoint upperLeft, CvPoint lowerRight,
+             IplImage* image1, IplImage* image2, IplImage* image3){
+
+     }
+
 
 }

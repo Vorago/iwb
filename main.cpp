@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
 
 
     Presentation* prs = new Presentation(resWidth, resHeight);
-    //Analysis::doCalibrate(cpt,prs);
+    Analysis::doCalibrate(cpt,prs);
     //Creating and loading Templates for making CI
     FILE *file = fopen("/home/psyholog/cj.txt", "r");
     IplImage *tmp1, *tmp2;

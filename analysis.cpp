@@ -84,9 +84,9 @@ namespace iwb {
         //testScreen shoul be a big rectangle of blue color with black square in upper-left corner and a red one in bottom-right
         //IplImage* testScreen = cvLoadImage("~/testscreen.jpg", CV_LOAD_IMAGE_UNCHANGED);
         //blackSquare should match size of square in upper left of testScreen
-        IplImage* blackSquare = cvLoadImage("~/blackSquare.jpg", CV_LOAD_IMAGE_UNCHANGED);
+        IplImage* blackSquare = cvLoadImage("blackSquare.jpg", CV_LOAD_IMAGE_UNCHANGED);
         //redSquare should match size of square in bottom right of testScreen
-        IplImage* redSquare = cvLoadImage("~/redSquare.jpg", CV_LOAD_IMAGE_UNCHANGED);
+        IplImage* redSquare = cvLoadImage("redSquare.jpg", CV_LOAD_IMAGE_UNCHANGED);
 
         //prs->putImage(cvPoint(0, 0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), testScreen);
         //prs->applyBuffer();
@@ -99,6 +99,7 @@ namespace iwb {
         prs->topOffset = ul.y / prs->getScreenHeight();
         prs->bottomOffset = (prs->getScreenHeight() - br.y) / prs->getScreenHeight();
 
-        cvReleaseImage(&frame);
+        //cvReleaseImage(&frame);
+        
     }
 }

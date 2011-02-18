@@ -66,14 +66,25 @@ namespace iwb {
           *
           * @return int width
           */
-         getScreenWidth();
+         int getScreenWidth();
 
          /**
           * Resolution height accessor
           *
           * @return int height
           */
-         getScreenHeight();
+         int getScreenHeight();
+         /**
+          * Function for drawing scroller with 3 images
+          *
+          * @param upperLeft upper left point of scroller
+          * @param lowerRight lower right point of scroller
+          * @param image1 one of three images to put
+          * @param image2 one of three images to put
+          * @param image3 one of three images to put
+          */
+         void drawScroller(CvPoint upperLeft, CvPoint lowerRight,
+         IplImage* image1, IplImage* image2, IplImage* image3);
     };
 }
 
