@@ -100,10 +100,54 @@ namespace iwb {
         CvPoint ul = Analysis::getLocation(frame, blackSquare, true);
         CvPoint br = Analysis::getLocation(frame, redSquare, false);
 
-        prs->leftOffset = ul.x / prs->getScreenWidth();
-        prs->rightOffset = (prs->getScreenWidth() - br.x) / prs->getScreenWidth();
-        prs->topOffset = ul.y / prs->getScreenHeight();
-        prs->bottomOffset = (prs->getScreenHeight() - br.y) / prs->getScreenHeight();
+        //set camera resolution depending on captured frame
+        cpt->screenHeight = frame->height;
+        cpt->screenWidth = frame->width;
+
+        prs->leftOffset = ul.x / cpt->screenWidth;
+        prs->rightOffset = (prs->getScreenWidth() - br.x) / cpt->screenWidth;
+        prs->topOffset = ul.y / cpt->screenHeight;
+        prs->bottomOffset = (prs->getScreenHeight() - br.y) / cpt->screenHeight;
+
+       /* Each image occupies 17% of scroller height and 67% of scroller lenght
+         * Each arrow occupies 7% of scroller height and 50% of scroller lenght
+         * Space between images and images and arrows - 7%
+         */
+        //calculations of relative coordinates
+
+        //@todo export those magic numbers to constants and recalc them
+        CvPoint upperLeft = cvPoint(0,0);
+        CvPoint lowerRight = cvPoint(400,200);
+        
+        int scrollerWidth = lowerRight.x - upperLeft.x;
+        int scrollerHeight = lowerRight.y - upperLeft.y;
+
+        prs->scrollerUL[0] = cvPoint(upperLeft.x + round(0.05*scrollerWidth),
+                upperLeft.y + round(0.25*scrollerHeight));
+        prs->scrollerBR[0] = cvPoint(upperLeft.x + round(0.12*scrollerWidth),
+                upperLeft.y + round(0.75*scrollerHeight));
+
+        prs->scrollerUL[1] = cvPoint(upperLeft.x + round(0.18*scrollerWidth),
+                upperLeft.y + round(0.17*scrollerHeight));
+        prs->scrollerBR[1] = cvPoint(upperLeft.x + round(0.35*scrollerWidth),
+                upperLeft.y + round(0.84*scrollerHeight));
+
+        prs->scrollerUL[2] = cvPoint(upperLeft.x + round(0.41*scrollerWidth),
+                upperLeft.y + round(0.17*scrollerHeight));
+        prs->scrollerBR[2] = cvPoint(upperLeft.x + round(0.58*scrollerWidth),
+                upperLeft.y + round(0.84*scrollerHeight));
+
+        prs->scrollerUL[3] = cvPoint(upperLeft.x + round(0.65*scrollerWidth),
+                upperLeft.y + round(0.17*scrollerHeight));
+        prs->scrollerBR[3] = cvPoint(upperLeft.x + round(0.82*scrollerWidth),
+                upperLeft.y + round(0.84*scrollerHeight));
+
+        prs->scrollerUL[4] = cvPoint(upperLeft.x + round(0.88*scrollerWidth),
+                upperLeft.y + round(0.25*scrollerHeight));
+        prs->scrollerBR[4] = cvPoint(upperLeft.x + round(0.95*scrollerWidth),
+                upperLeft.y + round(0.75*scrollerHeight));
+        //formulas here for capture..
+        //coeff = camW*(1-left-right)/projW
 
         //cvReleaseImage(&frame);
         

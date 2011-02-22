@@ -91,11 +91,9 @@ namespace iwb {
          return screenHeight;
      }
 
-    void Presentation::drawScroller(CvPoint upperLeft, CvPoint lowerRight,
+    void Presentation::drawScroller(Presentation *prs,
              IplImage* image1, IplImage* image2, IplImage* image3){
 
-        int scrollerWidth = lowerRight.x - upperLeft.x;
-        int scrollerHeight = lowerRight.y - upperLeft.y;
         IplImage* leftArrow = cvLoadImage("res/left.jpg", CV_LOAD_IMAGE_UNCHANGED);
         IplImage* rightArrow = cvLoadImage("res/right.jpg", CV_LOAD_IMAGE_UNCHANGED);
 
@@ -104,36 +102,13 @@ namespace iwb {
          * Space between images and images and arrows - 7%
          */
         //calculations of relative coordinates
-        leftUL = cvPoint(upperLeft.x + round(0.05*scrollerWidth),
-                upperLeft.y + round(0.25*scrollerHeight));
-        leftBR = cvPoint(upperLeft.x + round(0.12*scrollerWidth),
-                upperLeft.y + round(0.75*scrollerHeight));
+        
 
-        img1UL = cvPoint(upperLeft.x + round(0.18*scrollerWidth),
-                upperLeft.y + round(0.17*scrollerHeight));
-        img1BR = cvPoint(upperLeft.x + round(0.35*scrollerWidth),
-                upperLeft.y + round(0.84*scrollerHeight));
-
-        img2UL = cvPoint(upperLeft.x + round(0.41*scrollerWidth),
-                upperLeft.y + round(0.17*scrollerHeight));
-        img2BR = cvPoint(upperLeft.x + round(0.58*scrollerWidth),
-                upperLeft.y + round(0.84*scrollerHeight));
-
-        img3UL = cvPoint(upperLeft.x + round(0.65*scrollerWidth),
-                upperLeft.y + round(0.17*scrollerHeight));
-        img3BR = cvPoint(upperLeft.x + round(0.82*scrollerWidth),
-                upperLeft.y + round(0.84*scrollerHeight));
-
-        rightUL = cvPoint(upperLeft.x + round(0.88*scrollerWidth),
-                upperLeft.y + round(0.25*scrollerHeight));
-        rightBR = cvPoint(upperLeft.x + round(0.95*scrollerWidth),
-                upperLeft.y + round(0.75*scrollerHeight));
-
-        putImage(cvPoint(leftUL.x, leftUL.y), cvPoint(leftBR.x, leftBR.y), leftArrow);
-        putImage(cvPoint(img1UL.x, img1UL.y), cvPoint(img1BR.x, img1BR.y), image1);
-        putImage(cvPoint(img2UL.x, img2UL.y), cvPoint(img2BR.x, img2BR.y), image2);
-        putImage(cvPoint(img3UL.x, img3UL.y), cvPoint(img3BR.x, img3BR.y), image3);
-        putImage(cvPoint(rightUL.x, rightUL.y), cvPoint(rightBR.x, rightBR.y), rightArrow);
+        putImage(cvPoint(prs->scrollerUL[0].x, prs->scrollerUL[0].y), cvPoint(prs->scrollerBR[0].x, prs->scrollerBR[0].y), leftArrow);
+        putImage(cvPoint(prs->scrollerUL[1].x, prs->scrollerUL[1].y), cvPoint(prs->scrollerBR[1].x, prs->scrollerBR[1].y), image1);
+        putImage(cvPoint(prs->scrollerUL[2].x, prs->scrollerUL[2].y), cvPoint(prs->scrollerBR[2].x, prs->scrollerBR[2].y), image2);
+        putImage(cvPoint(prs->scrollerUL[3].x, prs->scrollerUL[3].y), cvPoint(prs->scrollerBR[3].x, prs->scrollerBR[3].y), image3);
+        putImage(cvPoint(prs->scrollerUL[4].x, prs->scrollerUL[4].y), cvPoint(prs->scrollerBR[4].x, prs->scrollerBR[4].y), rightArrow);
 
         applyBuffer();
      }

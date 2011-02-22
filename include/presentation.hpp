@@ -20,6 +20,8 @@ namespace iwb {
         int screenWidth;
         int screenHeight;
     public:
+        CvPoint scrollerUL[5];
+        CvPoint scrollerBR[5];
         float leftOffset;
         float rightOffset;
         float topOffset;
@@ -78,13 +80,12 @@ namespace iwb {
          /**
           * Function for drawing scroller with 3 images
           *
-          * @param upperLeft upper left point of scroller
-          * @param lowerRight lower right point of scroller
+          * @param prs presentation instance for saving coordinates to
           * @param image1 one of three images to put
           * @param image2 one of three images to put
           * @param image3 one of three images to put
           */
-         void drawScroller(CvPoint upperLeft, CvPoint lowerRight,
+         void drawScroller(Presentation *prs,
          IplImage* image1, IplImage* image2, IplImage* image3);
     };
 }
