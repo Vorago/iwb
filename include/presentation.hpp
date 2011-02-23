@@ -17,9 +17,9 @@ namespace iwb {
         IplImage* slide;
         IplImage* buffer;
         const char* winPresentFrame;
+    public:
         int screenWidth;
         int screenHeight;
-    public:
         CvPoint scrollerUL[5];
         CvPoint scrollerBR[5];
         float leftOffset;

@@ -122,33 +122,97 @@ namespace iwb {
         int scrollerWidth = lowerRight.x - upperLeft.x;
         int scrollerHeight = lowerRight.y - upperLeft.y;
 
-        prs->scrollerUL[0] = cvPoint(upperLeft.x + round(0.05*scrollerWidth),
-                upperLeft.y + round(0.25*scrollerHeight));
-        prs->scrollerBR[0] = cvPoint(upperLeft.x + round(0.12*scrollerWidth),
-                upperLeft.y + round(0.75*scrollerHeight));
+        prs->scrollerUL[0] = cvPoint(
+                upperLeft.x + round(0.05*scrollerWidth),
+                upperLeft.y + round(0.25*scrollerHeight)
+        );
+        prs->scrollerBR[0] = cvPoint(
+                upperLeft.x + round(0.12*scrollerWidth),
+                upperLeft.y + round(0.75*scrollerHeight)
+        );
 
-        prs->scrollerUL[1] = cvPoint(upperLeft.x + round(0.18*scrollerWidth),
-                upperLeft.y + round(0.17*scrollerHeight));
-        prs->scrollerBR[1] = cvPoint(upperLeft.x + round(0.35*scrollerWidth),
-                upperLeft.y + round(0.84*scrollerHeight));
+        prs->scrollerUL[1] = cvPoint(
+                upperLeft.x + round(0.18*scrollerWidth),
+                upperLeft.y + round(0.17*scrollerHeight)
+        );
+        prs->scrollerBR[1] = cvPoint(
+                upperLeft.x + round(0.35*scrollerWidth),
+                upperLeft.y + round(0.84*scrollerHeight)
+        );
 
-        prs->scrollerUL[2] = cvPoint(upperLeft.x + round(0.41*scrollerWidth),
-                upperLeft.y + round(0.17*scrollerHeight));
-        prs->scrollerBR[2] = cvPoint(upperLeft.x + round(0.58*scrollerWidth),
-                upperLeft.y + round(0.84*scrollerHeight));
+        prs->scrollerUL[2] = cvPoint(
+                upperLeft.x + round(0.41*scrollerWidth),
+                upperLeft.y + round(0.17*scrollerHeight)
+        );
+        prs->scrollerBR[2] = cvPoint(
+                upperLeft.x + round(0.58*scrollerWidth),
+                upperLeft.y + round(0.84*scrollerHeight)
+        );
 
-        prs->scrollerUL[3] = cvPoint(upperLeft.x + round(0.65*scrollerWidth),
-                upperLeft.y + round(0.17*scrollerHeight));
-        prs->scrollerBR[3] = cvPoint(upperLeft.x + round(0.82*scrollerWidth),
-                upperLeft.y + round(0.84*scrollerHeight));
+        prs->scrollerUL[3] = cvPoint(
+                upperLeft.x + round(0.65*scrollerWidth),
+                upperLeft.y + round(0.17*scrollerHeight)
+        );
+        prs->scrollerBR[3] = cvPoint(
+                upperLeft.x + round(0.82*scrollerWidth),
+                upperLeft.y + round(0.84*scrollerHeight)
+        );
 
-        prs->scrollerUL[4] = cvPoint(upperLeft.x + round(0.88*scrollerWidth),
-                upperLeft.y + round(0.25*scrollerHeight));
-        prs->scrollerBR[4] = cvPoint(upperLeft.x + round(0.95*scrollerWidth),
-                upperLeft.y + round(0.75*scrollerHeight));
+        prs->scrollerUL[4] = cvPoint(
+                upperLeft.x + round(0.88*scrollerWidth),
+                upperLeft.y + round(0.25*scrollerHeight)
+        );
+        prs->scrollerBR[4] = cvPoint(
+                upperLeft.x + round(0.95*scrollerWidth),
+                upperLeft.y + round(0.75*scrollerHeight)
+        );
         //formulas here for capture..
         //coeff = camW*(1-left-right)/projW
 
+        cpt->scrollerUL[0] = cvPoint(
+                prs->leftOffset*cpt->screenWidth + ((cpt->screenWidth*(1 - prs->leftOffset - prs->rightOffset))/prs->screenWidth)*prs->scrollerUL[0].x,
+                prs->topOffset*cpt->screenHeight + ((cpt->screenHeight*(1 - prs->topOffset - prs->bottomOffset))/prs->screenHeight)*prs->scrollerUL[0].y
+        );
+        cpt->scrollerBR[0] = cvPoint(
+                prs->leftOffset*cpt->screenWidth + ((cpt->screenWidth*(1 - prs->leftOffset - prs->rightOffset))/prs->screenWidth)*prs->scrollerUL[0].x,
+                prs->topOffset*cpt->screenHeight + ((cpt->screenHeight*(1 - prs->topOffset - prs->bottomOffset))/prs->screenHeight)*prs->scrollerUL[0].y
+        );
+
+        cpt->scrollerUL[1] = cvPoint(
+                prs->leftOffset*cpt->screenWidth + ((cpt->screenWidth*(1 - prs->leftOffset - prs->rightOffset))/prs->screenWidth)*prs->scrollerUL[1].x,
+                prs->topOffset*cpt->screenHeight + ((cpt->screenHeight*(1 - prs->topOffset - prs->bottomOffset))/prs->screenHeight)*prs->scrollerUL[1].y
+        );
+        cpt->scrollerBR[1] = cvPoint(
+                prs->leftOffset*cpt->screenWidth + ((cpt->screenWidth*(1 - prs->leftOffset - prs->rightOffset))/prs->screenWidth)*prs->scrollerBR[1].x,
+                prs->topOffset*cpt->screenHeight + ((cpt->screenHeight*(1 - prs->topOffset - prs->bottomOffset))/prs->screenHeight)*prs->scrollerBR[1].y
+        );
+        
+        cpt->scrollerUL[2] = cvPoint(
+                prs->leftOffset*cpt->screenWidth + ((cpt->screenWidth*(1 - prs->leftOffset - prs->rightOffset))/prs->screenWidth)*prs->scrollerUL[2].x,
+                prs->topOffset*cpt->screenHeight + ((cpt->screenHeight*(1 - prs->topOffset - prs->bottomOffset))/prs->screenHeight)*prs->scrollerUL[2].y
+        );
+        cpt->scrollerBR[2] = cvPoint(
+                prs->leftOffset*cpt->screenWidth + ((cpt->screenWidth*(1 - prs->leftOffset - prs->rightOffset))/prs->screenWidth)*prs->scrollerBR[2].x,
+                prs->topOffset*cpt->screenHeight + ((cpt->screenHeight*(1 - prs->topOffset - prs->bottomOffset))/prs->screenHeight)*prs->scrollerBR[2].y
+        );
+
+        cpt->scrollerUL[3] = cvPoint(
+                prs->leftOffset*cpt->screenWidth + ((cpt->screenWidth*(1 - prs->leftOffset - prs->rightOffset))/prs->screenWidth)*prs->scrollerUL[3].x,
+                prs->topOffset*cpt->screenHeight + ((cpt->screenHeight*(1 - prs->topOffset - prs->bottomOffset))/prs->screenHeight)*prs->scrollerUL[3].y
+        );
+        cpt->scrollerBR[3] = cvPoint(
+                prs->leftOffset*cpt->screenWidth + ((cpt->screenWidth*(1 - prs->leftOffset - prs->rightOffset))/prs->screenWidth)*prs->scrollerBR[3].x,
+                prs->topOffset*cpt->screenHeight + ((cpt->screenHeight*(1 - prs->topOffset - prs->bottomOffset))/prs->screenHeight)*prs->scrollerBR[3].y
+        );
+
+        cpt->scrollerUL[4] = cvPoint(
+                prs->leftOffset*cpt->screenWidth + ((cpt->screenWidth*(1 - prs->leftOffset - prs->rightOffset))/prs->screenWidth)*prs->scrollerUL[4].x,
+                prs->topOffset*cpt->screenHeight + ((cpt->screenHeight*(1 - prs->topOffset - prs->bottomOffset))/prs->screenHeight)*prs->scrollerUL[4].y
+        );
+        cpt->scrollerBR[4] = cvPoint(
+                prs->leftOffset*cpt->screenWidth + ((cpt->screenWidth*(1 - prs->leftOffset - prs->rightOffset))/prs->screenWidth)*prs->scrollerBR[4].x,
+                prs->topOffset*cpt->screenHeight + ((cpt->screenHeight*(1 - prs->topOffset - prs->bottomOffset))/prs->screenHeight)*prs->scrollerBR[4].y
+        );
         //cvReleaseImage(&frame);
         
     }

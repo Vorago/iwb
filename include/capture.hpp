@@ -17,9 +17,9 @@ namespace iwb {
     private:
         CvCapture* capture;
         IplImage* previousFrame;
+    public:
         CvPoint scrollerUL[5];
         CvPoint scrollerBR[5];
-    public:
         int screenWidth;
         int screenHeight;
         /**
