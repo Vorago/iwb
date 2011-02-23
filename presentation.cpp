@@ -5,8 +5,8 @@
  * Created on December 29, 2010, 11:42 PM
  */
 
-#include "include/presentation.hpp"
 
+#include "include/presentation.hpp"
 
 namespace iwb {
 
@@ -91,27 +91,34 @@ namespace iwb {
          return screenHeight;
      }
 
-    void Presentation::drawScroller(Presentation *prs,
-             IplImage* image1, IplImage* image2, IplImage* image3){
-
-        IplImage* leftArrow = cvLoadImage("res/left.jpg", CV_LOAD_IMAGE_UNCHANGED);
-        IplImage* rightArrow = cvLoadImage("res/right.jpg", CV_LOAD_IMAGE_UNCHANGED);
-
+    void Presentation::drawScroller(Presentation *prs, const char *image1,
+            const char *image2, const char *image3, IplImage* leftArrow, IplImage *rightArrow){
+        char filepath1[80], filepath2[80], filepath3[80];
+        snprintf(filepath1, sizeof(filepath1), "res/%s", image1);
+        IplImage *img1 = cvLoadImage(filepath1, CV_LOAD_IMAGE_UNCHANGED);
+        snprintf(filepath2, sizeof(filepath2), "res/%s", image2);
+        printf("\n%s   --filepath\n", filepath2);
+        IplImage *img2 = cvLoadImage(filepath2, CV_LOAD_IMAGE_UNCHANGED);
+        snprintf(filepath3, sizeof(filepath3), "res/%s", image3);
+        IplImage *img3 = cvLoadImage(filepath3, CV_LOAD_IMAGE_UNCHANGED);
         /* Each image occupies 17% of scroller height and 67% of scroller lenght
          * Each arrow occupies 7% of scroller height and 50% of scroller lenght
          * Space between images and images and arrows - 7%
          */
         //calculations of relative coordinates
-        
-
+        printf("%s\n", image1);printf("%s\n", image2);printf("%s\n", image3);
         putImage(cvPoint(prs->scrollerUL[0].x, prs->scrollerUL[0].y), cvPoint(prs->scrollerBR[0].x, prs->scrollerBR[0].y), leftArrow);
-        putImage(cvPoint(prs->scrollerUL[1].x, prs->scrollerUL[1].y), cvPoint(prs->scrollerBR[1].x, prs->scrollerBR[1].y), image1);
-        putImage(cvPoint(prs->scrollerUL[2].x, prs->scrollerUL[2].y), cvPoint(prs->scrollerBR[2].x, prs->scrollerBR[2].y), image2);
-        putImage(cvPoint(prs->scrollerUL[3].x, prs->scrollerUL[3].y), cvPoint(prs->scrollerBR[3].x, prs->scrollerBR[3].y), image3);
+        printf("test1\n");
+        putImage(cvPoint(prs->scrollerUL[1].x, prs->scrollerUL[1].y), cvPoint(prs->scrollerBR[1].x, prs->scrollerBR[1].y), img1);
+        printf("test2\n");
+        putImage(cvPoint(prs->scrollerUL[2].x, prs->scrollerUL[2].y), cvPoint(prs->scrollerBR[2].x, prs->scrollerBR[2].y), img2);
+        printf("test3\n");
+        putImage(cvPoint(prs->scrollerUL[3].x, prs->scrollerUL[3].y), cvPoint(prs->scrollerBR[3].x, prs->scrollerBR[3].y), img3);
+        printf("test4\n");
         putImage(cvPoint(prs->scrollerUL[4].x, prs->scrollerUL[4].y), cvPoint(prs->scrollerBR[4].x, prs->scrollerBR[4].y), rightArrow);
+        printf("test5\n");
 
         applyBuffer();
      }
-
 
 }

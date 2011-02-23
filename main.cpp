@@ -2,6 +2,7 @@
 #include "include/capture.hpp"
 #include "include/analysis.hpp"
 #include "include/presentation.hpp"
+#include "include/scroller.hpp"
 
 using namespace iwb;
 
@@ -84,7 +85,6 @@ int main(int argc, char *argv[]) {
         }*/
 
 
-
     Presentation* prs = new Presentation(resWidth, resHeight);
     Analysis::doCalibrate(cpt,prs);
     //Creating and loading Templates for making CI
@@ -105,6 +105,52 @@ int main(int argc, char *argv[]) {
     IplImage* pr = NULL;
     CvPoint p1, p2;
 
+    IplImage *leftArrow = cvLoadImage("res/left.jpg", CV_LOAD_IMAGE_UNCHANGED);
+    IplImage *rightArrow = cvLoadImage("res/right.jpg", CV_LOAD_IMAGE_UNCHANGED);
+
+    Scroller scroller;
+    scroller.loadFileNames();
+    printf("scroller 1 %s\n", scroller.imgArray[0]);
+    printf("scroller 2 %s\n", scroller.imgArray[1]);
+    printf("scroller 3 %s\n", scroller.imgArray[2]);
+    prs->drawScroller(prs, scroller.imgArray[0], scroller.imgArray[1],
+                scroller.imgArray[2], leftArrow, rightArrow);
+    printf("outerTest\n");
+    scroller.currentImg = 0;
+    int movingArea;
+    int imgIndex1, imgIndex2, imgIndex3;
+    /*
+    while(true){
+        movingArea = Analysis::inWhichAreaIsMoving(leftArrow, rightArrow, prs);
+        movingArea = 0; //0 or 4
+        if(movingArea == 0){ //left
+            if((scroller.imgArraySize - scroller.currentImg) >= 3) { //everything is okay
+                imgIndex1 = scroller.currentImg+1;
+                imgIndex2 = scroller.currentImg+2;
+                imgIndex3 = scroller.currentImg+3;
+            } else { //cycle
+                if((scroller.imgArraySize - scroller.currentImg) == 2) {
+                    imgIndex1 = scroller.currentImg+1;
+                    imgIndex2 = 0;
+                    imgIndex3 = 1;
+                } else {
+                    imgIndex1 = 0;
+                    imgIndex2 = 1;
+                    imgIndex3 = 2;
+                }
+            }
+            prs->drawScroller(prs, scroller.imgArray[imgIndex1], scroller.imgArray[imgIndex2],
+                scroller.imgArray[imgIndex3], leftArrow, rightArrow);
+        } else if (movingArea == 4){ //right
+
+            prs->drawScroller(prs, scroller.imgArray[0], scroller.imgArray[1],
+                scroller.imgArray[2], leftArrow, rightArrow);
+        }
+
+    }
+    */
+    cvWaitKey(5);
+
     for (;;) {
 
         currentFrame = cvQueryFrame(cpt->getCapture());
@@ -121,6 +167,7 @@ int main(int argc, char *argv[]) {
 
         //Just attempt to make timer
         int startTime;
+        /*
         if (!Analysis::isMoving(diff) && !isSaved) {
             if (startTime == -1) {
                 startTime = clock() / CLOCKS_PER_SEC;
@@ -156,7 +203,8 @@ int main(int argc, char *argv[]) {
                 prs->putImage(p1, p2, cvLoadImage("/home/psyholog/NetBeansProjects/CapturedImage.jpg", 1));
             prs->applyBuffer();
         }
-        cvShowImage(winFrame, currentFrame);
+         */
+        //cvShowImage(winFrame, currentFrame);
         cvWaitKey(5);
         cvReleaseImage(&diff);
 
@@ -170,6 +218,7 @@ int main(int argc, char *argv[]) {
         }
 
     }
+        
 
     return 0;
 }

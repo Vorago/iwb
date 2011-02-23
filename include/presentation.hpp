@@ -85,8 +85,8 @@ namespace iwb {
           * @param image2 one of three images to put
           * @param image3 one of three images to put
           */
-         void drawScroller(Presentation *prs,
-         IplImage* image1, IplImage* image2, IplImage* image3);
+         void drawScroller(Presentation *prs, const char *image1,const char *image2,
+         const char *image3, IplImage *leftArrow, IplImage *rightArrow);
     };
 }
 
