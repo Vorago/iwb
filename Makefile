@@ -1,5 +1,5 @@
-SOURCES = analysis.cpp capture.cpp main.cpp presentation.cpp
-HEADERS = include/analysis.hpp include/capture.hpp include/presentation.hpp
+SOURCES = analysis.cpp capture.cpp main.cpp presentation.cpp scroller.cpp
+HEADERS = include/analysis.hpp include/capture.hpp include/presentation.hpp include/scroller.hpp
 TARGET  = iwb
 
 CC     = g++

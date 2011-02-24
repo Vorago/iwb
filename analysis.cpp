@@ -117,7 +117,7 @@ namespace iwb {
 
         //@todo export those magic numbers to constants and recalc them
         CvPoint upperLeft = cvPoint(0,0);
-        CvPoint lowerRight = cvPoint(400,200);
+        CvPoint lowerRight = cvPoint(800,200);
         
         int scrollerWidth = lowerRight.x - upperLeft.x;
         int scrollerHeight = lowerRight.y - upperLeft.y;
