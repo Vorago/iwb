@@ -27,8 +27,8 @@ int main(int argc, char *argv[]) {
      * Process resolution in second parameter.
      * If none is given, use 800x600.
      */
-    int resWidth = 1000;
-    int resHeight = 800;
+    int resWidth = 800;
+    int resHeight = 600;
     if (argc == 3) {
         char* str = argv[2];
         char* pch;
@@ -77,21 +77,13 @@ int main(int argc, char *argv[]) {
      cvReleaseImage(&tmp2);*/
     //cpt->showDiff();
 
-    /*char c[256];
-        int a = 0;
-        while(a != 1){
-                a = scanf("%s",c);
-        }*/
-
-
-
     Presentation* prs = new Presentation(resWidth, resHeight);
-    Analysis::doCalibrate(cpt,prs);
+    //Analysis::doCalibrate(cpt,prs);
     //Creating and loading Templates for making CI
-    FILE *file = fopen("/home/psyholog/cj.txt", "r");
+    FILE *file = fopen("cj.txt", "r");
     IplImage *tmp1, *tmp2;
-    tmp1 = cvLoadImage("/home/psyholog/NetBeansProjects/UpLef.jpg", 1);
-    tmp2 = cvLoadImage("/home/psyholog/NetBeansProjects/BotRig.jpg", 1);
+    tmp1 = cvLoadImage("res/Cleft.jpg", 1);
+    tmp2 = cvLoadImage("res/Cright.jpg", 1);
     //making frame for test
     bool isSaved = false;
     const char* winFrame = "winFrame";
@@ -100,13 +92,13 @@ int main(int argc, char *argv[]) {
     //bool currentKfSaved = false;
     //Controller
     IplImage* currentFrame = NULL;
+    IplImage* cornerFrame = NULL;
     IplImage* diff = NULL;
     IplImage* Ci = NULL;
     IplImage* pr = NULL;
     CvPoint p1, p2;
 
     for (;;) {
-
         currentFrame = cvQueryFrame(cpt->getCapture());
         if (cpt->getPreviousFrame() == NULL) {
             cpt->setPreviousFrame(cvCloneImage(currentFrame));
@@ -128,32 +120,47 @@ int main(int argc, char *argv[]) {
             int timeDifference;
             timeDifference = clock() / CLOCKS_PER_SEC - startTime;
             if (timeDifference >= 2) {
-                p1 = Analysis::getLocation(currentFrame, tmp1, true);
-                p2 = Analysis::getLocation(currentFrame, tmp2, false);
-                cvRectangle(currentFrame, p1, p2, cvScalar(0, 0, 255, 0), 1, 0, 0);
-                //Counting coordinates for making CI
-                int width = p2.x - p1.x,
-                        height = p2.y - p1.y;
-                try {
-                    cvSetImageROI(currentFrame, cvRect(p1.x, p1.y, width, height));
-                    Ci = cvCreateImage(cvGetSize(currentFrame), currentFrame->depth, currentFrame->nChannels);
-                    cvCopyImage(currentFrame, Ci);
-                    cvResetImageROI(currentFrame);
-                    //Saving Images
-                    cpt->saveFrame("/home/psyholog/NetBeansProjects/CapturedImage.jpg", Ci);
-                    cpt->saveFrame("/home/psyholog/NetBeansProjects/KeyFrame.jpg", currentFrame);
-                    //             currentKfSaved = true;
-                    isSaved = true;
-                    cvReleaseImage(&Ci);
-                } catch (cv::Exception& e) {
+                if (cornerFrame == NULL) {
+                    puts("asd");
+                    //cvRectangle(currentFrame, cvPoint(0, 0), cvPoint(100, 100), cvScalar(0, 0, 255, 0), 1, 0, 0);
+                    cornerFrame = cvCloneImage(currentFrame);
+                    startTime = -1;
+                } else {
 
+                    p1 = Analysis::getLocation(Analysis::getDiff(cornerFrame, currentFrame), tmp1, true);
+
+                    p2 = Analysis::getLocation(Analysis::getDiff(cornerFrame, currentFrame), tmp2, false);
+                    cpt->saveFrame("diff.jpg", Analysis::getDiff(cornerFrame, currentFrame));
+                    cvRectangle(currentFrame, p1, p2, cvScalar(0, 0, 255, 0), 1, 0, 0);
+
+                    //Counting coordinates for making CI
+                    int width = p2.x - p1.x,
+                            height = p2.y - p1.y;
+                    try {
+
+                        cvSetImageROI(currentFrame, cvRect(p1.x, p1.y, width, height));
+                        Ci = cvCreateImage(cvGetSize(currentFrame), currentFrame->depth, currentFrame->nChannels);
+
+                        cvCopyImage(currentFrame, Ci);
+                        cvResetImageROI(currentFrame);
+                        //Saving Images
+                        cpt->saveFrame("CapturedImage.jpg", Ci);
+                        cpt->saveFrame("KeyFrame.jpg", currentFrame);
+                        //  currentKfSaved = true;
+
+                        isSaved = true;
+                        cvReleaseImage(&Ci);
+                        //cvReleaseImage(&cornerFrame);
+                    } catch (cv::Exception& e) {
+
+                    }
                 }
             }
         } else {
             startTime = -1;
             //  currentKfSaved = false;
             if (isSaved)
-                prs->putImage(p1, p2, cvLoadImage("/home/psyholog/NetBeansProjects/CapturedImage.jpg", 1));
+                prs->putImage(p1, p2, cvLoadImage("CapturedImage.jpg", 1));
             prs->applyBuffer();
         }
         cvShowImage(winFrame, currentFrame);
@@ -168,7 +175,6 @@ int main(int argc, char *argv[]) {
                 return 0;
             }
         }
-
     }
 
     return 0;
