@@ -6,30 +6,27 @@
 
 using namespace iwb;
 
-int main(int argc, char *argv[]) {
-
+bool argHandler(int argc, char* argv[], Capture **cpt, int *resWidth, int* resHeight){
     int cam;
-    Capture* cpt = 0;
+
     // Argument handling block
     if (argc >= 2) {
         char *endptr;
         cam = strtol(argv[1], &endptr, 10);
         if (*endptr == '\0') {
-            cpt = new Capture(cam);
+            *cpt = new Capture(cam);
         } else {
-            cpt = new Capture(argv[1]);
+            *cpt = new Capture(argv[1]);
         }
     } else {
         cam = 0;
-        cpt = new Capture(cam);
+        *cpt = new Capture(cam);
     }
 
-    /*
+    /**
      * Process resolution in second parameter.
      * If none is given, use 800x600.
      */
-    int resWidth = 800;
-    int resHeight = 600;
     if (argc == 3) {
         char* str = argv[2];
         char* pch;
@@ -37,68 +34,18 @@ int main(int argc, char *argv[]) {
         if (pch == NULL) {
             printf("Resolution which was expected in the second argument should "
                     "be of the form of 1024x768");
-            return -1;
+            return false;
         }
         pch[0] = '\0';
         pch++;
-        resWidth = atoi(str);
-        resHeight = atoi(pch);
+        *resWidth = atoi(str);
+        *resHeight = atoi(pch);
     }
 
-    /*  Presentation* prs = new Presentation(resWidth, resHeight);
-      IplImage* img = cvLoadImage("/home/psyholog/kruze.jpg", CV_LOAD_IMAGE_UNCHANGED);
-    
-      prs->putImage(cvPoint(100, 100), cvPoint(500, 700), img);
-      prs->putImage(cvPoint(100, 100), cvPoint(500, 700), img);
-      prs->applyBuffer();
-      cvWaitKey(0);
-      prs->clearArea(cvPoint(110, 110), cvPoint(200, 400));*/
+    return true;
+}
 
-    //Code below is commented intentionally for testing purposes
-    //And also in case of your curiosity you can test it
-
-    //This part draws a rectangle on preuploaded testFrame
-    //Upper left corner of rectangle is defined by template1 location in testFrame
-    //Lower right corner of rectangle is defined by template2 location in testFrame
-    /* IplImage *img1, *tmp1, *tmp2;
-     img1 = cvLoadImage("/home/psyholog/iwb/frame.jpg", 0);
-     tmp1 = cvLoadImage("/home/psyholog/NetBeansProjects/leftDownColorTmp.jpg", 0);
-         tmp2 = cvLoadImage("/home/psyholog/NetBeansProjects/rightUpColorTmp.jpg", 0);
-     cvRectangle(img1,
-             Analysis::getLocation(img1,tmp1,true),
-             Analysis::getLocation(img1,tmp2,false),
-             cvScalar(0, 0, 255, 0), 1, 0, 0);
-     cvNamedWindow("reference", CV_WINDOW_AUTOSIZE);
-     cvShowImage("reference", img1);
-
-     cvWaitKey(0);
-     cvDestroyWindow("reference");
-     cvReleaseImage(&img1);
-     cvReleaseImage(&tmp1);
-     cvReleaseImage(&tmp2);*/
-    //cpt->showDiff();
-
-    Presentation* prs = new Presentation(resWidth, resHeight);
-    Analysis::doCalibrate(cpt,prs);
-    //Creating and loading Templates for making CI
-    FILE *file = fopen("cj.txt", "r");
-    IplImage *tmp1, *tmp2;
-    tmp1 = cvLoadImage("res/Cleft.jpg", 1);
-    tmp2 = cvLoadImage("res/Cright.jpg", 1);
-    //making frame for test
-    bool isSaved = false;
-    const char* winFrame = "winFrame";
-    cvNamedWindow(winFrame, CV_WINDOW_AUTOSIZE);
-    int f;
-    //bool currentKfSaved = false;
-    //Controller
-    IplImage* currentFrame = NULL;
-    IplImage* cornerFrame = NULL;
-    IplImage* diff = NULL;
-    IplImage* Ci = NULL;
-    IplImage* pr = NULL;
-    CvPoint p1, p2;
-
+void scroller(Presentation* prs){
     // ====Scroller code start
     //TODO: make a function which will implement a calculation of imgIndexes
     // at the moment works only with three and more images in directory tmp/1
@@ -106,7 +53,7 @@ int main(int argc, char *argv[]) {
     IplImage *rightArrow = cvLoadImage("res/right.jpg", CV_LOAD_IMAGE_UNCHANGED);
     Scroller scroller;
     //here are loaded all files which are in directory tmp/1
-    scroller.loadFileNames(); 
+    scroller.loadFileNames();
 
     scroller.currentImg = 0;
     int movingArea;
@@ -162,23 +109,94 @@ int main(int argc, char *argv[]) {
         }
         //end of cycle
    // ====Scroller code end
+}
 
+int main(int argc, char *argv[]) {
+    Capture* cpt = 0;
+    int startTime;
+    int resWidth = 800;
+    int resHeight = 600;
+    
+    if(!argHandler(argc, argv, &cpt, &resWidth, &resHeight)) return -1;
+
+    //Code below is commented intentionally for testing purposes
+    //And also in case of your curiosity you can test it
+
+    //This part draws a rectangle on preuploaded testFrame
+    //Upper left corner of rectangle is defined by template1 location in testFrame
+    //Lower right corner of rectangle is defined by template2 location in testFrame
+    /* IplImage *img1, *tmp1, *tmp2;
+     img1 = cvLoadImage("/home/psyholog/iwb/frame.jpg", 0);
+     tmp1 = cvLoadImage("/home/psyholog/NetBeansProjects/leftDownColorTmp.jpg", 0);
+         tmp2 = cvLoadImage("/home/psyholog/NetBeansProjects/rightUpColorTmp.jpg", 0);
+     cvRectangle(img1,
+             Analysis::getLocation(img1,tmp1,true),
+             Analysis::getLocation(img1,tmp2,false),
+             cvScalar(0, 0, 255, 0), 1, 0, 0);
+     cvNamedWindow("reference", CV_WINDOW_AUTOSIZE);
+     cvShowImage("reference", img1);
+
+     cvWaitKey(0);
+     cvDestroyWindow("reference");
+     cvReleaseImage(&img1);
+     cvReleaseImage(&tmp1);
+     cvReleaseImage(&tmp2);*/
+    cpt->showDiff();
+
+    Presentation* prs = new Presentation(resWidth, resHeight);
+    Analysis::doCalibrate(cpt,prs);
+    //Creating and loading Templates for making CI
+    FILE *file = fopen("cj.txt", "r");
+    IplImage *tmp1, *tmp2;
+    tmp1 = cvLoadImage("res/Cleft.jpg", 1);
+    tmp2 = cvLoadImage("res/Cright.jpg", 1);
+    //making frame for test
+    bool isSaved = false;
+    const char* winFrame = "winFrame";
+    cvNamedWindow(winFrame, CV_WINDOW_AUTOSIZE);
+    int f;
+    //bool currentKfSaved = false;
+    //Controller
+    IplImage* currentFrame = NULL;
+    IplImage* cornerFrame = NULL;
+    IplImage* diff = NULL;
+    IplImage* Ci = NULL;
+    IplImage* previousFrame = NULL;
+    CvPoint p1, p2;
+
+//    scroller(&prs);
+
+    //=========================================================
+    // ((( Control loop start
     for (;;) {
+        
+        //--------------------------------------------------------------------------------------------------------------
+        // <<< Frame capture and release block
+        
+        //Capture current frame
         currentFrame = cvQueryFrame(cpt->getCapture());
         if (cpt->getPreviousFrame() == NULL) {
+            // Occurs only on first iteration, avoids dereferencing of null-pointer
             cpt->setPreviousFrame(cvCloneImage(currentFrame));
             continue;
         }
-        pr = cpt->getPreviousFrame();
-        diff = Analysis::getDiff(pr, currentFrame);
-
-        //int area = Analysis::inWhichAreaIsMoving(currentFrame, pr, point, width, height);
-        cvReleaseImage(&pr);
+        // Get previous frame
+        previousFrame = cpt->getPreviousFrame();
+        // Calculate difference between current and previous frame
+        diff = Analysis::getDiff(previousFrame, currentFrame);
+        // Release previous frame
+        cvReleaseImage(&previousFrame);
+        // Save current as previous frame for next iteration
         cpt->setPreviousFrame(cvCloneImage(currentFrame));
 
-        //Just attempt to make timer
-        int startTime;
+        // >>> Frame capture and release block
+        //--------------------------------------------------------------------------------------------------------------
+
         
+        // @todo Not sure where to place it:
+        //int area = Analysis::inWhichAreaIsMoving(currentFrame, pr, point, width, height);
+
+        //Just attempt to make timer
         if (!Analysis::isMoving(diff) && !isSaved) {
             if (startTime == -1) {
                 startTime = clock() / CLOCKS_PER_SEC;
@@ -187,14 +205,10 @@ int main(int argc, char *argv[]) {
             timeDifference = clock() / CLOCKS_PER_SEC - startTime;
             if (timeDifference >= 2) {
                 if (cornerFrame == NULL) {
-                    puts("asd");
-                    //cvRectangle(currentFrame, cvPoint(0, 0), cvPoint(100, 100), cvScalar(0, 0, 255, 0), 1, 0, 0);
                     cornerFrame = cvCloneImage(currentFrame);
                     startTime = -1;
                 } else {
-
                     p1 = Analysis::getLocation(Analysis::getDiff(cornerFrame, currentFrame), tmp1, true);
-
                     p2 = Analysis::getLocation(Analysis::getDiff(cornerFrame, currentFrame), tmp2, false);
                     cpt->saveFrame("diff.jpg", Analysis::getDiff(cornerFrame, currentFrame));
                     cvRectangle(currentFrame, p1, p2, cvScalar(0, 0, 255, 0), 1, 0, 0);
@@ -242,6 +256,8 @@ int main(int argc, char *argv[]) {
             }
         }
     }
+    // ))) Control loop end
+    //=========================================================
 
     return 0;
 }
