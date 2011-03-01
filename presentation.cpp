@@ -32,12 +32,12 @@ namespace iwb {
 
         int newWidth, newHeight;
         //calculations of new images coodrinates with respect to offset
+
         upperLeft.x = upperLeft.x - leftOffset*screenWidth;
         upperLeft.y = upperLeft.y - topOffset*screenHeight;
         lowerRight.x = lowerRight.x - rightOffset*screenWidth;
         lowerRight.y = lowerRight.y - bottomOffset*screenHeight;
-
-        int width = lowerRight.x - upperLeft.x;
+       int width = lowerRight.x - upperLeft.x;
         int height = lowerRight.y - upperLeft.y;
 
         /*
@@ -46,6 +46,7 @@ namespace iwb {
          * aspect ratio.
          * Do not used at the moment.
          */
+        
         float coeffHeight = (float) height / (float) image->height;
         float coeffWidth = (float) width / (float) image->width;
         if (coeffHeight > coeffWidth) {
@@ -62,14 +63,19 @@ namespace iwb {
          * best with CV_INTER_CUBIC (slow) or CV_INTER_LINEAR (faster but still
          * looks OK).
          */
+    
         IplImage* resizedImage = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, 3);
+        printf("resize1");
         cvResize(image, resizedImage, CV_INTER_CUBIC);
-
+    printf("inmputimage \n");
         //Setting area for new image
         cvSetImageROI(buffer, cvRect(upperLeft.x, upperLeft.y, width, height));
+            printf("inmputimage \n");
         cvZero(buffer);
         cvCopyImage(resizedImage, buffer);
+            printf("inmputimage \n");
         cvResetImageROI(buffer);
+            printf("inmputimage \n");
 
         cvReleaseImage(&resizedImage);
     }
@@ -108,7 +114,7 @@ namespace iwb {
         //calculations of relative coordinates
         putImage(cvPoint(prs->scrollerUL[0].x, prs->scrollerUL[0].y), cvPoint(prs->scrollerBR[0].x, prs->scrollerBR[0].y), leftArrow);
         putImage(cvPoint(prs->scrollerUL[1].x, prs->scrollerUL[1].y), cvPoint(prs->scrollerBR[1].x, prs->scrollerBR[1].y), img1);
-        putImage(cvPoint(prs->scrollerUL[2].x, prs->scrollerUL[2].y), cvPoint(prs->scrollerBR[2].x, prs->scrollerBR[2].y), img2);
+         putImage(cvPoint(prs->scrollerUL[2].x, prs->scrollerUL[2].y), cvPoint(prs->scrollerBR[2].x, prs->scrollerBR[2].y), img2);
         putImage(cvPoint(prs->scrollerUL[3].x, prs->scrollerUL[3].y), cvPoint(prs->scrollerBR[3].x, prs->scrollerBR[3].y), img3);
         putImage(cvPoint(prs->scrollerUL[4].x, prs->scrollerUL[4].y), cvPoint(prs->scrollerBR[4].x, prs->scrollerBR[4].y), rightArrow);
 

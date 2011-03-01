@@ -54,8 +54,7 @@ void scroller(Presentation* prs){
     Scroller scroller;
     //here are loaded all files which are in directory tmp/1
     scroller.loadFileNames();
-
-    scroller.currentImg = 0;
+    scroller.currentImg = 1;
     int movingArea;
     //default indexes - we'll show the first three pictures from array
     int imgIndex1=0, imgIndex2=1, imgIndex3=2;
@@ -63,7 +62,7 @@ void scroller(Presentation* prs){
                     scroller.imgArray[imgIndex3], leftArrow, rightArrow);
     //begin of cycle - we need to implement this part in for(;;) and to use inWhichAreaIsMoving
         //movingArea = Analysis::inWhichAreaIsMoving(leftArrow, rightArrow, prs);
-        movingArea = 0; //0 or 4 - string for tests
+        movingArea = 4; //0 or 4 - string for tests
         int position = scroller.imgArraySize - scroller.currentImg;
         if(movingArea == 0){ //left
             if(position == scroller.imgArraySize || position == 1) { //cycle
@@ -114,8 +113,8 @@ void scroller(Presentation* prs){
 int main(int argc, char *argv[]) {
     Capture* cpt = 0;
     int startTime;
-    int resWidth = 800;
-    int resHeight = 600;
+    int resWidth = 1024;
+    int resHeight = 786;
     
     if(!argHandler(argc, argv, &cpt, &resWidth, &resHeight)) return -1;
 
@@ -141,15 +140,15 @@ int main(int argc, char *argv[]) {
      cvReleaseImage(&img1);
      cvReleaseImage(&tmp1);
      cvReleaseImage(&tmp2);*/
-    cpt->showDiff();
+    //cpt->showDiff();
 
     Presentation* prs = new Presentation(resWidth, resHeight);
     Analysis::doCalibrate(cpt,prs);
     //Creating and loading Templates for making CI
     FILE *file = fopen("cj.txt", "r");
     IplImage *tmp1, *tmp2;
-    tmp1 = cvLoadImage("res/Cleft.jpg", 1);
-    tmp2 = cvLoadImage("res/Cright.jpg", 1);
+    tmp1 = cvLoadImage("res/Cleft.jpg", 0);
+    tmp2 = cvLoadImage("res/Cright.jpg", 0);
     //making frame for test
     bool isSaved = false;
     const char* winFrame = "winFrame";
@@ -164,7 +163,7 @@ int main(int argc, char *argv[]) {
     IplImage* previousFrame = NULL;
     CvPoint p1, p2;
 
-//    scroller(&prs);
+    scroller(prs);
 
     //=========================================================
     // ((( Control loop start
@@ -206,6 +205,7 @@ int main(int argc, char *argv[]) {
             if (timeDifference >= 2) {
                 if (cornerFrame == NULL) {
                     cornerFrame = cvCloneImage(currentFrame);
+                    puts("first");
                     startTime = -1;
                 } else {
                     p1 = Analysis::getLocation(Analysis::getDiff(cornerFrame, currentFrame), tmp1, true);
