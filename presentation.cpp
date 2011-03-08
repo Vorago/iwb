@@ -107,14 +107,11 @@ namespace iwb {
         IplImage *img2 = cvLoadImage(filepath, CV_LOAD_IMAGE_UNCHANGED);
         snprintf(filepath, sizeof(filepath), "tmp/1/%s", image3);
         IplImage *img3 = cvLoadImage(filepath, CV_LOAD_IMAGE_UNCHANGED);
-        /* Each image occupies 17% of scroller height and 67% of scroller lenght
-         * Each arrow occupies 7% of scroller height and 50% of scroller lenght
-         * Space between images and images and arrows - 7%
-         */
+
         //calculations of relative coordinates
         putImage(cvPoint(prs->scrollerUL[0].x, prs->scrollerUL[0].y), cvPoint(prs->scrollerBR[0].x, prs->scrollerBR[0].y), leftArrow);
         putImage(cvPoint(prs->scrollerUL[1].x, prs->scrollerUL[1].y), cvPoint(prs->scrollerBR[1].x, prs->scrollerBR[1].y), img1);
-         putImage(cvPoint(prs->scrollerUL[2].x, prs->scrollerUL[2].y), cvPoint(prs->scrollerBR[2].x, prs->scrollerBR[2].y), img2);
+        putImage(cvPoint(prs->scrollerUL[2].x, prs->scrollerUL[2].y), cvPoint(prs->scrollerBR[2].x, prs->scrollerBR[2].y), img2);
         putImage(cvPoint(prs->scrollerUL[3].x, prs->scrollerUL[3].y), cvPoint(prs->scrollerBR[3].x, prs->scrollerBR[3].y), img3);
         putImage(cvPoint(prs->scrollerUL[4].x, prs->scrollerUL[4].y), cvPoint(prs->scrollerBR[4].x, prs->scrollerBR[4].y), rightArrow);
 

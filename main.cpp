@@ -7,6 +7,14 @@
 
 using namespace iwb;
 
+void  buttons(Presentation* prs){
+    IplImage *yesButton = cvLoadImage("res/yesButton.jpg", CV_LOAD_IMAGE_UNCHANGED);
+    IplImage *noButton = cvLoadImage("res/noButton.jpg", CV_LOAD_IMAGE_UNCHANGED);
+
+    prs->putImage(cvPoint(prs->buttonsUL[0].x, prs->buttonsUL[0].y), cvPoint(prs->buttonsBR[0].x, prs->buttonsBR[0].y), yesButton);
+    prs->putImage(cvPoint(prs->buttonsUL[1].x, prs->buttonsUL[1].y), cvPoint(prs->buttonsBR[1].x, prs->buttonsBR[1].y), yesButton);
+}
+
 void scroller(Presentation* prs) {
     // ====Scroller code start
     //TODO: make a function which will implement a calculation of imgIndexes
@@ -104,6 +112,7 @@ int main(int argc, char *argv[]) {
     CvPoint p1, p2;
 
     scroller(prs);
+    buttons(prs);
 
     //=========================================================
     // ((( Control loop start

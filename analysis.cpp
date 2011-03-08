@@ -189,7 +189,6 @@ frame = cvQueryFrame(cpt->getCapture());
                 upperLeft.x + round(0.12 * scrollerWidth),
                 upperLeft.y + round(0.75 * scrollerHeight)
                 );
-
         prs->scrollerUL[1] = cvPoint(
                 upperLeft.x + round(0.18 * scrollerWidth),
                 upperLeft.y + round(0.17 * scrollerHeight)
@@ -224,7 +223,7 @@ frame = cvQueryFrame(cpt->getCapture());
         prs->scrollerBR[4] = cvPoint(
                 upperLeft.x + round(0.95 * scrollerWidth),
                 upperLeft.y + round(0.75 * scrollerHeight)
-                );
+                )
         //formulas here for capture..
         //coeff = camW*(1-left-right)/projW
 
@@ -271,6 +270,23 @@ frame = cvQueryFrame(cpt->getCapture());
         cpt->scrollerBR[4] = cvPoint(
                 prs->leftOffset * cpt->screenWidth + ((cpt->screenWidth * (1 - prs->leftOffset - prs->rightOffset)) / prs->screenWidth) * prs->scrollerBR[4].x,
                 prs->topOffset * cpt->screenHeight + ((cpt->screenHeight * (1 - prs->topOffset - prs->bottomOffset)) / prs->screenHeight) * prs->scrollerBR[4].y
+                );
+
+        prs->buttonsUL[0] = cvPoint(
+                upperLeft.x + round(0.05 * scrollerWidth),
+                upperLeft.y + round(1.08 * scrollerHeight)
+                );
+        prs->buttonsBR[0] = cvPoint(
+                upperLeft.x + round(0.17 * scrollerWidth),
+                upperLeft.y + round(1.25 * scrollerHeight)
+                );
+        prs->buttonsUL[1] = cvPoint(
+                upperLeft.x + round(0.22 * scrollerWidth),
+                upperLeft.y + round(1.08 * scrollerHeight)
+                );
+        prs->buttonsBR[1] = cvPoint(
+                upperLeft.x + round(0.34 * scrollerWidth),
+                upperLeft.y + round(1.25 * scrollerHeight)
                 );
         //cvReleaseImage(&frame);
 

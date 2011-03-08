@@ -22,6 +22,8 @@ namespace iwb {
         int screenHeight;
         CvPoint scrollerUL[5];
         CvPoint scrollerBR[5];
+        CvPoint buttonsUL[2];
+        CvPoint buttonsBR[2];
         float leftOffset;
         float rightOffset;
         float topOffset;
