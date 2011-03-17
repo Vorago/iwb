@@ -23,6 +23,16 @@ namespace iwb {
         return &saveFlag;
     }
 
+    void Handler::setLoadFlag() {
+        loadFlag = true;
+        saveFlag = false;
+    }
+
+    void Handler::setSaveFlag() {
+        saveFlag = true;
+        loadFlag = false;
+    }
+
     bool Handler::handleArguments(int argc, char* argv[], Capture **cpt, int *resWidth, int* resHeight) {
         int cam;
 

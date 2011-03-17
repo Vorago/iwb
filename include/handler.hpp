@@ -21,6 +21,8 @@ namespace iwb {
         virtual ~Handler();
         bool* getSaveFlag();
         bool* getLoadFlag();
+        void setSaveFlag();
+        void setLoadFlag();
         void handleSave();
         void handleLoad();
         bool handleArguments(int argc, char* argv[], Capture **cpt, int *resWidth, int* resHeight);
