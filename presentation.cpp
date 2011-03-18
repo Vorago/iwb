@@ -7,6 +7,7 @@
 
 
 #include "include/presentation.hpp"
+#include <stdio.h>
 
 namespace iwb {
 
@@ -121,4 +122,28 @@ namespace iwb {
         applyBuffer();
      }
 
+    void Presentation::drawConfirmation() {
+
+        IplImage *yesButton = cvLoadImage("res/left.jpg", CV_LOAD_IMAGE_UNCHANGED);
+        IplImage *noButton = cvLoadImage("res/right.jpg", CV_LOAD_IMAGE_UNCHANGED);
+
+//        putImage(cvPoint(10, 10), cvPoint(50, 50), yesButton);
+//        putImage(cvPoint(60, 10), cvPoint(110, 50), noButton);
+//        putImage(cvPoint(scrollerUL[0].x, scrollerUL[0].y), cvPoint(scrollerBR[0].x, scrollerBR[0].y), yesButton);
+//        putImage(cvPoint(scrollerUL[1].x, scrollerUL[1].y), cvPoint(scrollerBR[1].x, scrollerBR[1].y), noButton);
+        printf("ul: %d,%d , br: %d,%d", confirmationUL[0].x,  confirmationUL[0].y,  confirmationBR[0].x,  confirmationBR[0].y);
+        putImage(cvPoint(confirmationUL[0].x, confirmationUL[0].y), cvPoint(confirmationBR[0].x, confirmationBR[0].y), yesButton);
+        putImage(cvPoint(confirmationUL[1].x, confirmationUL[1].y), cvPoint(confirmationBR[1].x, confirmationBR[1].y), noButton);
+
+
+        applyBuffer();
+    }
+
+    void Presentation::drawComponents() {
+        // TODO: implement
+    }
+
+    void Presentation::addComponent(Drawable* component) {
+        components.push_back(component);
+    }
 }

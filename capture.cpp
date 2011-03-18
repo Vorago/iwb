@@ -49,6 +49,7 @@ namespace iwb {
         const char* winFrame = "winFrame";
         cvNamedWindow(winDiff, CV_WINDOW_AUTOSIZE);
         cvNamedWindow(winFrame, CV_WINDOW_AUTOSIZE);
+        
         for (;;) {
             IplImage* currentFrame = cvQueryFrame(capture);
 
@@ -60,7 +61,7 @@ namespace iwb {
             cvShowImage(winFrame, currentFrame);
             previousFrame = cvCloneImage(currentFrame);
             cvShowImage(winDiff, diff);
-            cvWaitKey(40);
+            cvWaitKey(0);
             cvReleaseImage(&diff);
         }
     }

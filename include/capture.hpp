@@ -20,6 +20,8 @@ namespace iwb {
     public:
         CvPoint scrollerUL[5];
         CvPoint scrollerBR[5];
+        CvPoint confirmationUL[2];
+        CvPoint confirmationBR[2];
         int screenWidth;
         int screenHeight;
         /**
