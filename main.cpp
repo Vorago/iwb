@@ -1,7 +1,6 @@
 #include <cstdio>
 #include <stdio.h>
 #include "include/capture.hpp"
-#include "include/analysis.hpp"
 #include "include/presentation.hpp"
 #include "include/scroller.hpp"
 #include "include/handler.hpp"
@@ -89,4 +88,5 @@ int main(int argc, char *argv[]) {
     result = app->run();
 
     return result;
+
 }
