@@ -10,18 +10,28 @@
 
 #include <opencv/highgui.h>
 #include <opencv/cv.h>
+#include <list>
+namespace iwb {
+    class Presentation;
+}
+#include "drawable.hpp"
 
 namespace iwb {
+    
     class Presentation {
     private:
         IplImage* slide;
         IplImage* buffer;
         const char* winPresentFrame;
+        std::list<Drawable*> components;
+
     public:
         int screenWidth;
         int screenHeight;
         CvPoint scrollerUL[5];
         CvPoint scrollerBR[5];
+        CvPoint confirmationUL[2];
+        CvPoint confirmationBR[2];
         float leftOffset;
         float rightOffset;
         float topOffset;
@@ -87,6 +97,22 @@ namespace iwb {
           */
          void drawScroller(Presentation *prs, const char *image1,const char *image2,
                            const char *image3, IplImage *leftArrow, IplImage *rightArrow);
+
+         void drawConfirmation();
+
+         /**
+          * Draws all the drawable components added to the presentation
+          * on the whiteboard.
+          */
+         void drawComponents();
+
+         /**
+          * Adds drawable component to other components that should be drawn.
+          * @param component
+          */
+         void addComponent(Drawable* component);
+
+         //TODO: remove the particular component
     };
 }
 

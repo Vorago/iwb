@@ -6,6 +6,7 @@
  */
 
 #include "include/handler.hpp"
+#include <stdio.h>
 
 namespace iwb {
 

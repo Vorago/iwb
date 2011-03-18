@@ -7,6 +7,8 @@
 
 #include "include/analysis.hpp"
 #include "include/constants.hpp"
+#include <opencv/highgui.h>
+#include <stdio.h>
 
 namespace iwb {
 
@@ -92,47 +94,45 @@ namespace iwb {
         IplImage* blackScreen = cvLoadImage("res/bg.jpg", 1);
         //blackSquare should match size of square in upper left of testScreen
 
-        IplImage* blackSquare = cvLoadImage("res/CleftCalib.jpg",1);
+//        IplImage* blackSquare = cvLoadImage("res/CleftCalib.jpg",1);
+        IplImage* blackSquare = cvLoadImage("res/Cleft.jpg",1);
 
         //redSquare should match size of square in bottom right of testScreen
-        IplImage* redSquare = cvLoadImage("res/CrightCalib.jpg", 1);
+//        IplImage* redSquare = cvLoadImage("res/CrightCalib.jpg", 1);
+        IplImage* redSquare = cvLoadImage("res/Cright.jpg", 1);
 
         //redSquare should match size of square in bottom right of testScreen
         IplImage* redSquare2 = cvLoadImage("res/Cright.jpg",0);
 
           IplImage* blackSquare2 = cvLoadImage("res/Cleft.jpg", 0);
 
-    prs->putImage(cvPoint(0, 0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), blackScreen);
-    prs->applyBuffer();
+        prs->putImage(cvPoint(0, 0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), blackScreen);
+        prs->applyBuffer();
 
         cvWaitKey(500);
         IplImage* frame =NULL;
-        IplImage* frame2 = NULL;
+        IplImage* frame2;
 
-for(int i=0;i<200;i++){
-    if(i==0){
+        for(int i=0;i<200;i++){
+            if(i==0){
+                cvQueryFrame(cpt->getCapture());
+                frame = cvQueryFrame(cpt->getCapture());
+                frame2=cvCloneImage(frame);
+                cpt->saveFrame("f1Copy.jpg", frame2);
+            }
+            cvQueryFrame(cpt->getCapture());
+            if(i==100){
+                prs->putImage(cvPoint(10, 10), cvPoint(64, 48), blackSquare);
+                prs->putImage(cvPoint(900, 600), cvPoint(950, 650), redSquare);
+                prs->applyBuffer();
+                cvWaitKey(100);
+            }
+            if(i==199){
+                frame = cvQueryFrame(cpt->getCapture());
+            }
+        }
 
-    cvQueryFrame(cpt->getCapture());
-frame = cvQueryFrame(cpt->getCapture());
-     frame2=cvCloneImage(frame);
-           cpt->saveFrame("f1Copy.jpg", frame2);
-  
-    }
-
-    cvQueryFrame(cpt->getCapture());
-    if(i==100){
-  
-        prs->putImage(cvPoint(10, 10), cvPoint(64, 48), blackSquare);
-        prs->putImage(cvPoint(900, 600), cvPoint(950, 650), redSquare);
-        prs->applyBuffer();
-        cvWaitKey(100);
-    }
-    if(i==199){
-        frame = cvQueryFrame(cpt->getCapture());
-  
-    }
-}
-
+        
         frame2 = cvLoadImage("f1Copy.jpg", 1);
         cpt->saveFrame("f1.jpg", frame2);
         cpt->saveFrame("f2.jpg", frame);
@@ -190,15 +190,6 @@ frame = cvQueryFrame(cpt->getCapture());
                 upperLeft.y + round(0.75 * scrollerHeight)
                 );
 
-        prs->scrollerUL[1] = cvPoint(
-                upperLeft.x + round(0.18 * scrollerWidth),
-                upperLeft.y + round(0.17 * scrollerHeight)
-                );
-        prs->scrollerBR[1] = cvPoint(
-                upperLeft.x + round(0.35 * scrollerWidth),
-                upperLeft.y + round(0.84 * scrollerHeight)
-                );
-
         prs->scrollerUL[2] = cvPoint(
                 upperLeft.x + round(0.41 * scrollerWidth),
                 upperLeft.y + round(0.17 * scrollerHeight)
@@ -222,6 +213,33 @@ frame = cvQueryFrame(cpt->getCapture());
                 upperLeft.y + round(0.25 * scrollerHeight)
                 );
         prs->scrollerBR[4] = cvPoint(
+                upperLeft.x + round(0.95 * scrollerWidth),
+                upperLeft.y + round(0.75 * scrollerHeight)
+                );
+
+        //@todo export those magic numbers to constants and recalc them
+        upperLeft = cvPoint(850, 0);
+        lowerRight = cvPoint(1000, 200);
+
+        int confirmWidth = lowerRight.x - upperLeft.x;
+        int confirmHeight = lowerRight.y - upperLeft.y;
+
+        printf("confirmWidth: %d, confirmHeight: %d", confirmWidth, confirmHeight);
+
+        prs->confirmationUL[0] = cvPoint(
+                upperLeft.x + round(0.00 * confirmWidth),
+                upperLeft.y + round(0.25 * confirmHeight)
+                );
+        prs->confirmationBR[0] = cvPoint(
+                upperLeft.x + round(0.45 * confirmWidth),
+                upperLeft.y + round(0.75 * confirmHeight)
+                );
+
+        prs->confirmationUL[1] = cvPoint(
+                upperLeft.x + round(0.50 * scrollerWidth),
+                upperLeft.y + round(0.25 * scrollerHeight)
+                );
+        prs->confirmationBR[1] = cvPoint(
                 upperLeft.x + round(0.95 * scrollerWidth),
                 upperLeft.y + round(0.75 * scrollerHeight)
                 );
@@ -274,5 +292,22 @@ frame = cvQueryFrame(cpt->getCapture());
                 );
         //cvReleaseImage(&frame);
 
+        cpt->confirmationUL[0] = cvPoint(
+                prs->leftOffset * cpt->screenWidth + ((cpt->screenWidth * (1 - prs->leftOffset - prs->rightOffset)) / prs->screenWidth) * prs->confirmationUL[0].x,
+                prs->topOffset * cpt->screenHeight + ((cpt->screenHeight * (1 - prs->topOffset - prs->bottomOffset)) / prs->screenHeight) * prs->confirmationUL[0].y
+                );
+        cpt->confirmationBR[0] = cvPoint(
+                prs->leftOffset * cpt->screenWidth + ((cpt->screenWidth * (1 - prs->leftOffset - prs->rightOffset)) / prs->screenWidth) * prs->confirmationUL[0].x,
+                prs->topOffset * cpt->screenHeight + ((cpt->screenHeight * (1 - prs->topOffset - prs->bottomOffset)) / prs->screenHeight) * prs->confirmationUL[0].y
+                );
+
+        cpt->confirmationUL[1] = cvPoint(
+                prs->leftOffset * cpt->screenWidth + ((cpt->screenWidth * (1 - prs->leftOffset - prs->rightOffset)) / prs->screenWidth) * prs->confirmationUL[1].x,
+                prs->topOffset * cpt->screenHeight + ((cpt->screenHeight * (1 - prs->topOffset - prs->bottomOffset)) / prs->screenHeight) * prs->confirmationUL[1].y
+                );
+        cpt->confirmationBR[1] = cvPoint(
+                prs->leftOffset * cpt->screenWidth + ((cpt->screenWidth * (1 - prs->leftOffset - prs->rightOffset)) / prs->screenWidth) * prs->confirmationBR[1].x,
+                prs->topOffset * cpt->screenHeight + ((cpt->screenHeight * (1 - prs->topOffset - prs->bottomOffset)) / prs->screenHeight) * prs->confirmationBR[1].y
+                );
     }
 }
