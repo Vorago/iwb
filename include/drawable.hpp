@@ -1,0 +1,46 @@
+/* 
+ * File:   drawable.hpp
+ * Author: fishi
+ *
+ * Created on Štvrtok, 2011, marec 17, 15:50
+ */
+
+#ifndef DRAWABLE_HPP
+#define	DRAWABLE_HPP
+
+#include <opencv/cv.h>
+namespace iwb {
+    class Drawable;
+}
+#include "presentation.hpp"
+
+
+namespace iwb {
+    /**
+     * Base class for everything that can be drawn on the whiteboard.
+     */
+    class Drawable {
+    protected:
+        CvPoint projectorUL;
+        CvPoint projectorBR;
+        int getProjectorWidth();
+        int getProjectorHeight();
+    public:
+        Drawable(CvPoint projectorUL, CvPoint projectorBR);
+        ~Drawable();
+        /**
+         * Method that is automatically called after instantiation
+         * of the class. It can be used for initialization.
+         */
+        virtual void initialize();
+
+        /**
+         * Method used for drawing on the projector.
+         * @param prs
+         */
+        virtual void draw(Presentation* prs) = 0;
+    };
+}
+
+#endif	/* DRAWABLE_HPP */
+
