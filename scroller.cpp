@@ -3,10 +3,11 @@
 
 namespace iwb {
 
-    Scroller::Scroller() {
+    Scroller::Scroller(Presentation* prs, Handler* hndl) {
         imgArraySize = 0;
         imgArray = NULL;
         currentImg = 0;
+        initialize(prs, hndl);
     }
 
     Scroller::~Scroller() {
@@ -61,7 +62,7 @@ namespace iwb {
         return 0;
     }
 
-    void Scroller::initialize() {
+    void Scroller::initialize(Presentation* prs, Handler* hndl) {
 
         printf("DEBUG: scroller initialized\n");
                 
@@ -165,16 +166,17 @@ namespace iwb {
                 topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorBR[4].y
                 );
 
-        char* paths[5];
+        char* paths[2] = {"res/left.jpg", "res/right.jpg"};
+//        paths[0] = "res/left.jpg";
+//        paths[1] = "res/right.jpg";
         // TODO: add image paths
 
-        for (int i = 0; i < 5; i++) {
-            buttons[i] = new Controller(paths[i], projectorUL[i], projectorBR[i], cameraUL[i], cameraBR[i]);
-        }
-    }
+        for (int i = 0; i < 2; i++) {
+            printf("%s\n", paths[i]);
+            buttons[i] = new Touchable(paths[i], projectorUL[i], projectorBR[i], cameraUL[i], cameraBR[i]);
+//            prs->addComponent(buttons[i]);
 
-    void Scroller::draw(Presentation* prs) {
-        // TODO: implement
+        }
     }
 
     void Scroller::shiftRight() {

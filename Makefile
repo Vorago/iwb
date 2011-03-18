@@ -1,4 +1,4 @@
-SOURCES = analysis.cpp capture.cpp main.cpp presentation.cpp scroller.cpp handler.cpp drawable.cpp touchable.cpp camera.cpp application.cpp controller.cpp
+SOURCES = analysis.cpp capture.cpp main.cpp presentation.cpp scroller.cpp handler.cpp drawable.cpp touchable.cpp camera.cpp application.cpp
 OBJECTS = $(SOURCES:%.cpp=$(OBJECTSFOLDER)/%.o)
 OBJECTSFOLDER=objects
 TARGET  = iwb

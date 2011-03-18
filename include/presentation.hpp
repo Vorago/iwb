@@ -112,6 +112,7 @@ namespace iwb {
           */
          void addComponent(Drawable* component);
 
+         void removeComponent(Drawable* component);
          //TODO: remove the particular component
     };
 }
