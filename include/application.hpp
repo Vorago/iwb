@@ -11,6 +11,7 @@
 #include "handler.hpp"
 #include "capture.hpp"
 #include "presentation.hpp"
+#include "scroller.hpp"
 
 namespace iwb {
     /**
@@ -30,6 +31,7 @@ namespace iwb {
         Handler* hndl;
         Capture* cpt;
         Presentation* prs;
+        Scroller* scroller;
     };
 }
 

@@ -21,12 +21,16 @@
 namespace iwb {
     class Scroller {
     private:
+        Presentation* prs;
+        Handler* hndl;
         Touchable* buttons[5];
 
         /**
          * Frees allocated memory and resets the variables
          */
         void freeFileNameArray();
+        void freeButtons();
+        void deleteButton(Touchable* button);
         
     public:
         int imgArraySize;
@@ -47,7 +51,7 @@ namespace iwb {
         void shiftRight();
         void shiftLeft();
 
-        virtual void initialize(Presentation* prs, Handler* hndl);
+        virtual void initialize();
 
     };
 }
