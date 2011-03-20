@@ -1,6 +1,6 @@
 /* 
  * File:   touchable.hpp
- * Author: fishi
+ * Author: fishi, cers
  *
  * Created on Štvrtok, 2011, marec 17, 16:01
  */
@@ -10,6 +10,10 @@
 
 #include "drawable.hpp"
 #include <opencv/cv.h>
+
+// These values need tweaking
+#define STD_THRESHOLD 200
+#define INTERACTION_TRIGGER CLOCKS_PER_SEC
 
 namespace iwb {
     /**
@@ -21,10 +25,15 @@ namespace iwb {
         CvPoint cameraBR;
         int getCameraWidth();
         int getCameraHeight();
+        void (*action)(void);
+        int interaction;
+        int threshold;
     public:
-        Touchable(char* imagePath, CvPoint projectorUL, CvPoint projectorBR, CvPoint cameraUL, CvPoint cameraBR);
+        Touchable(char* imagePath, CvPoint projectorUL, CvPoint projectorBR, 
+                  CvPoint cameraUL, CvPoint cameraBR, void (*action)(void), 
+                  int threshold);
         ~Touchable();
-        //TODO: implement the checking of touch events
+        void detectTouch(IplImage* mask);
     };
 }
 

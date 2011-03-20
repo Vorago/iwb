@@ -173,7 +173,7 @@ namespace iwb {
 
         for (int i = 0; i < 2; i++) {
             printf("%s\n", paths[i]);
-            buttons[i] = new Touchable(paths[i], projectorUL[i], projectorBR[i], cameraUL[i], cameraBR[i]);
+            buttons[i] = new Touchable(paths[i], projectorUL[i], projectorBR[i], cameraUL[i], cameraBR[i], NULL);
 //            prs->addComponent(buttons[i]);
 
         }
