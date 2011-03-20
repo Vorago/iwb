@@ -22,7 +22,7 @@ namespace iwb {
         int getCameraWidth();
         int getCameraHeight();
     public:
-        Touchable(char* imagePath, CvPoint projectorUL, CvPoint projectorBR, CvPoint cameraUL, CvPoint cameraBR);
+        Touchable(const char* imagePath, CvPoint projectorUL, CvPoint projectorBR, CvPoint cameraUL, CvPoint cameraBR);
         ~Touchable();
         //TODO: implement the checking of touch events
     };

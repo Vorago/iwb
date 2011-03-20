@@ -27,7 +27,7 @@ namespace iwb {
         int getProjectorWidth();
         int getProjectorHeight();
     public:
-        Drawable(char* imagePath, CvPoint projectorUL, CvPoint projectorBR);
+        Drawable(const char* imagePath, CvPoint projectorUL, CvPoint projectorBR);
         ~Drawable();
         /**
          * Method that is automatically called after instantiation

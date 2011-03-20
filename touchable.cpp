@@ -1,7 +1,7 @@
 #include "include/touchable.hpp"
 
 namespace iwb {
-    Touchable::Touchable(char* imagePath, CvPoint projectorUL, CvPoint projectorBR, CvPoint cameraUL, CvPoint cameraBR) : Drawable(imagePath, projectorUL, projectorBR) {
+    Touchable::Touchable(const char* imagePath, CvPoint projectorUL, CvPoint projectorBR, CvPoint cameraUL, CvPoint cameraBR) : Drawable(imagePath, projectorUL, projectorBR) {
         this->cameraUL = cameraUL;
         this->cameraBR = cameraBR;
     }

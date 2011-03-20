@@ -175,7 +175,7 @@ namespace iwb {
                 topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorBR[4].y
                 );
 
-        char* paths[2] = {"res/left.jpg", "res/right.jpg"};
+        const char* paths[2] = {"res/left.jpg", "res/right.jpg"};
 //        paths[0] = "res/left.jpg";
 //        paths[1] = "res/right.jpg";
         // TODO: add image paths
