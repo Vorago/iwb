@@ -86,6 +86,15 @@ namespace iwb {
                 upperLeft.y + round(0.75 * scrollerHeight)
                 );
 
+        projectorUL[1] = cvPoint(
+                upperLeft.x + round(0.17 * scrollerWidth),
+                upperLeft.y + round(0.17 * scrollerHeight)
+                );
+        projectorBR[1] = cvPoint(
+                upperLeft.x + round(0.34 * scrollerWidth),
+                upperLeft.y + round(0.84 * scrollerHeight)
+                );
+
         projectorUL[2] = cvPoint(
                 upperLeft.x + round(0.41 * scrollerWidth),
                 upperLeft.y + round(0.17 * scrollerHeight)
@@ -174,7 +183,7 @@ namespace iwb {
         for (int i = 0; i < 2; i++) {
             printf("%s\n", paths[i]);
             buttons[i] = new Touchable(paths[i], projectorUL[i], projectorBR[i], cameraUL[i], cameraBR[i]);
-//            prs->addComponent(buttons[i]);
+            prs->addComponent(buttons[i]);
 
         }
     }
