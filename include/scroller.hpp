@@ -13,14 +13,15 @@
 #include <cstdlib>
 #include <cstring>
 #include <opencv/cv.h>
-#include "controller.hpp"
+#include "touchable.hpp"
+#include "handler.hpp"
 
 
 
 namespace iwb {
     class Scroller {
     private:
-        Controller* buttons[5];
+        Touchable* buttons[5];
 
         /**
          * Frees allocated memory and resets the variables
@@ -34,7 +35,7 @@ namespace iwb {
         /**
          * Constructor initislizes variables
          */
-        Scroller();
+        Scroller(Presentation* prs, Handler* hndl);
 
         virtual ~Scroller();
         /**
@@ -42,12 +43,11 @@ namespace iwb {
          * Files are accessible from imgArray field
          */
         int loadFileNames();
-
-        virtual void draw(Presentation* prs);
+        
         void shiftRight();
         void shiftLeft();
 
-        virtual void initialize();
+        virtual void initialize(Presentation* prs, Handler* hndl);
 
     };
 }

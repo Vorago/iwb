@@ -1,7 +1,7 @@
 #include "include/touchable.hpp"
 
 namespace iwb {
-    Touchable::Touchable(CvPoint projectorUL, CvPoint projectorBR, CvPoint cameraUL, CvPoint cameraBR) : Drawable(projectorUL, projectorBR) {
+    Touchable::Touchable(char* imagePath, CvPoint projectorUL, CvPoint projectorBR, CvPoint cameraUL, CvPoint cameraBR) : Drawable(imagePath, projectorUL, projectorBR) {
         this->cameraUL = cameraUL;
         this->cameraBR = cameraBR;
     }
@@ -10,10 +10,10 @@ namespace iwb {
     }
 
     int Touchable::getCameraWidth() {
-        //TODO: Implement
+        return cameraBR.x - cameraUL.x;
     }
 
     int Touchable::getCameraHeight() {
-        //TODO: implement
+        return cameraBR.y - cameraUL.y;
     }
 }

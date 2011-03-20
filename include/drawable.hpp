@@ -21,12 +21,13 @@ namespace iwb {
      */
     class Drawable {
     protected:
+        IplImage* image;
         CvPoint projectorUL;
         CvPoint projectorBR;
         int getProjectorWidth();
         int getProjectorHeight();
     public:
-        Drawable(CvPoint projectorUL, CvPoint projectorBR);
+        Drawable(char* imagePath, CvPoint projectorUL, CvPoint projectorBR);
         ~Drawable();
         /**
          * Method that is automatically called after instantiation
@@ -38,7 +39,7 @@ namespace iwb {
          * Method used for drawing on the projector.
          * @param prs
          */
-        virtual void draw(Presentation* prs) = 0;
+        virtual void draw(Presentation* prs);
     };
 }
 

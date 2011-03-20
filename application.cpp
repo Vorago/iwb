@@ -22,8 +22,8 @@ namespace iwb {
         if (!hndl->handleArguments(argc, argv, &cpt, &resWidth, &resHeight)) return -1;
 
         prs = new Presentation(resWidth, resHeight);
-        Camera::getInstance()->calibrate(cpt, prs);
-        Scroller* scroller = new Scroller();
+//        Camera::getInstance()->calibrate(cpt, prs);
+        Scroller* scroller = new Scroller(prs, hndl);
 
         return 0;
     }

@@ -8,7 +8,8 @@
 #include "include/drawable.hpp"
 
 namespace iwb {
-    Drawable::Drawable(CvPoint projectorUL, CvPoint projectorBR) {
+    Drawable::Drawable(char* imagePath, CvPoint projectorUL, CvPoint projectorBR) {
+        image = cvLoadImage(imagePath, 0);
         this->projectorUL = projectorUL;
         this->projectorBR = projectorBR;
         
@@ -19,14 +20,18 @@ namespace iwb {
     }
 
     int Drawable::getProjectorWidth() {
-        //TODO: Implement
+        return projectorBR.x - projectorUL.x;
     }
 
     int Drawable::getProjectorHeight() {
-        //TODO: implement
+        return projectorBR.y - projectorUL.y;
     }
 
     void Drawable::initialize() {
         printf("DEBUG: drawable initialized\n");
+    }
+
+    void Drawable::draw(Presentation* prs) {
+        //TODO: implement
     }
 }
