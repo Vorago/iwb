@@ -17,6 +17,7 @@ namespace iwb {
     }
 
     Drawable::~Drawable() {
+        cvReleaseImage(&image);
     }
 
     int Drawable::getProjectorWidth() {
