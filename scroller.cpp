@@ -4,14 +4,17 @@
 namespace iwb {
 
     Scroller::Scroller(Presentation* prs, Handler* hndl) {
+        this->prs = prs;
+        this->hndl = hndl;
         imgArraySize = 0;
         imgArray = NULL;
         currentImg = 0;
-        initialize(prs, hndl);
+        initialize();
     }
 
     Scroller::~Scroller() {
         freeFileNameArray();
+        freeButtons();
     }
 
     void Scroller::freeFileNameArray(){
@@ -23,6 +26,20 @@ namespace iwb {
         imgArraySize = 0;
         currentImg = 0;
     }
+
+    void Scroller::freeButtons() {
+        for (int i = 0; i < 5; i++) {
+            if (buttons[i] != NULL) {
+                deleteButton(buttons[i]);
+            }
+        }
+    }
+
+    void Scroller::deleteButton(Touchable* button) {
+        prs->removeComponent(button);
+        delete(button);
+    }
+    
     int Scroller::loadFileNames(){
 
         /* TODO:
@@ -62,14 +79,16 @@ namespace iwb {
         return 0;
     }
 
-    void Scroller::initialize(Presentation* prs, Handler* hndl) {
+    void Scroller::initialize() {
 
-        printf("DEBUG: scroller initialized\n");
+        for (int i = 0; i < 5; i++) {
+            buttons[i] = NULL;
+        }
                 
         CvPoint projectorUL[5];
         CvPoint projectorBR[5];
         CvPoint cameraUL[5];
-        CvPoint cameraBR[5];;
+        CvPoint cameraBR[5];
 
         CvPoint upperLeft = cvPoint(0, 0);
         CvPoint lowerRight = cvPoint(800, 200);
@@ -84,6 +103,15 @@ namespace iwb {
         projectorBR[0] = cvPoint(
                 upperLeft.x + round(0.12 * scrollerWidth),
                 upperLeft.y + round(0.75 * scrollerHeight)
+                );
+
+        projectorUL[1] = cvPoint(
+                upperLeft.x + round(0.17 * scrollerWidth),
+                upperLeft.y + round(0.17 * scrollerHeight)
+                );
+        projectorBR[1] = cvPoint(
+                upperLeft.x + round(0.34 * scrollerWidth),
+                upperLeft.y + round(0.84 * scrollerHeight)
                 );
 
         projectorUL[2] = cvPoint(
@@ -126,8 +154,8 @@ namespace iwb {
                 topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorUL[0].y
                 );
         cameraBR[0] = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorUL[0].x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorUL[0].y
+                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorBR[0].x,
+                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorBR[0].y
                 );
 
         cameraUL[1] = cvPoint(
@@ -166,17 +194,31 @@ namespace iwb {
                 topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorBR[4].y
                 );
 
-        char* paths[2] = {"res/left.jpg", "res/right.jpg"};
+        const char* paths[2] = {"res/left.jpg", "res/right.jpg"};
 //        paths[0] = "res/left.jpg";
 //        paths[1] = "res/right.jpg";
         // TODO: add image paths
+        buttons[0] = new Touchable(paths[0], projectorUL[0], projectorBR[0], cameraUL[0], cameraBR[0]);
+        prs->addComponent(buttons[0]);
 
+<<<<<<< HEAD
         for (int i = 0; i < 2; i++) {
             printf("%s\n", paths[i]);
             buttons[i] = new Touchable(paths[i], projectorUL[i], projectorBR[i], cameraUL[i], cameraBR[i], NULL);
 //            prs->addComponent(buttons[i]);
+=======
+        buttons[4] = new Touchable(paths[1], projectorUL[4], projectorBR[4], cameraUL[4], cameraBR[4]);
+        prs->addComponent(buttons[4]);
+>>>>>>> 0ad4087dab7e62ce8133a2a3dfc4996c93c9f676
 
-        }
+        deleteButton(buttons[0]);
+
+//        for (int i = 0; i < 2; i++) {
+//            printf("%s\n", paths[i]);
+//            buttons[i] = new Touchable(paths[i], projectorUL[i], projectorBR[i], cameraUL[i], cameraBR[i]);
+//            prs->addComponent(buttons[i]);
+//
+//        }
     }
 
     void Scroller::shiftRight() {

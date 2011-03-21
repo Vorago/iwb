@@ -40,6 +40,18 @@ namespace iwb {
     }
 
     void Camera::calibrate(Capture* cpt, Presentation* prs){
+#ifdef NO_CALIBRATION
+        printf("DEBUG: camera calibration disabled!\n");
+
+        width = 1024;
+        height = 768;
+        leftOffset = 0;
+        rightOffset = 0;
+        topOffset = 0;
+        bottomOffset = 0;
+
+        return;
+#endif
 
         printf("DEBUG: calibrating camera\n");
 

@@ -140,10 +140,18 @@ namespace iwb {
     }
 
     void Presentation::drawComponents() {
-        // TODO: implement
+        for (std::list<Drawable*>::iterator component = components.begin(); component != components.end(); component++) {
+            (*component)->draw(this);
+        }
+
+        applyBuffer();
     }
 
     void Presentation::addComponent(Drawable* component) {
         components.push_back(component);
+    }
+
+    void Presentation::removeComponent(Drawable* component) {
+        components.remove(component);
     }
 }

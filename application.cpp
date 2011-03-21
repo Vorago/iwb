@@ -22,8 +22,8 @@ namespace iwb {
         if (!hndl->handleArguments(argc, argv, &cpt, &resWidth, &resHeight)) return -1;
 
         prs = new Presentation(resWidth, resHeight);
-//        Camera::getInstance()->calibrate(cpt, prs);
-        Scroller* scroller = new Scroller(prs, hndl);
+        Camera::getInstance()->calibrate(cpt, prs);
+        scroller = new Scroller(prs, hndl);
 
         return 0;
     }
@@ -44,7 +44,7 @@ namespace iwb {
 	         *gs = cvCreateImage(cvGetSize(bg), IPL_DEPTH_8U, 1),
 	         *blur = cvCreateImage(cvGetSize(bg), bg->depth, bg->nChannels),
 	         *bw = cvCreateImage(cvGetSize(bg), IPL_DEPTH_8U, 1);
-	while (true) {
+//	while (true) {
 		cf = cvQueryFrame(cpt->getCapture());
 		cfmat = cv::cvarrToMat(cf);
 		cvSub(bg, cf, dst_img, NULL);
@@ -61,8 +61,12 @@ namespace iwb {
 		prs->putImage(o,p,dst_img);
 		prs->applyBuffer();
         cvShowImage(winFrame, cf);
-		cvWaitKey(5);
-        }
 
+        prs->drawComponents();
+		cvWaitKey(5);
+//        }
+
+        delete(scroller);
+        return 0;
     }
 }
