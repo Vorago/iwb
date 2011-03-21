@@ -18,6 +18,8 @@ int main(int argc, char *argv[]) {
 
     result = app->run();
 
+    delete(app);
+
     return result;
 
 }

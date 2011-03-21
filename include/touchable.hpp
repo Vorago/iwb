@@ -29,7 +29,7 @@ namespace iwb {
         int interaction;
         int threshold;
     public:
-        Touchable(const char* imagePath, CvPoint projectorUL, CvPoint projectorBR, 
+        Touchable(char* imagePath, CvPoint projectorUL, CvPoint projectorBR, 
                   CvPoint cameraUL, CvPoint cameraBR, void (*action)(void), int threshold=STD_THRESHOLD);
         ~Touchable();
         void detectTouch(IplImage* mask);

@@ -9,12 +9,20 @@
 #ifndef SCROLLER_HPP
 #define	SCROLLER_HPP
 
+#define LEFT_ARROW  0
+#define RIGHT_ARROW 4
+
+#define LEFT_IMAGE      1
+#define MIDDLE_IMAGE    2
+#define RIGHT_IMAGE     3
+
 #include <dirent.h>
 #include <cstdlib>
 #include <cstring>
 #include <opencv/cv.h>
 #include "touchable.hpp"
 #include "handler.hpp"
+#include "confirmation.hpp"
 
 
 
@@ -31,6 +39,7 @@ namespace iwb {
         void freeFileNameArray();
         void freeButtons();
         void deleteButton(Touchable* button);
+        void displayImages();
         
     public:
         int imgArraySize;
@@ -52,6 +61,8 @@ namespace iwb {
         void shiftLeft();
 
         virtual void initialize();
+
+        void displayConfirmation();
 
     };
 }

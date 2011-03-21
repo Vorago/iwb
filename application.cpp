@@ -9,8 +9,17 @@
 #include "include/scroller.hpp"
 #include "include/handler.hpp"
 #include "include/camera.hpp"
+#include "include/confirmation.hpp"
 
 namespace iwb {
+
+    Application::~Application() {
+        // TODO: make sure that order used doesn't lead to memory leaks
+        delete(cpt);
+        delete(scroller);
+        delete(hndl);
+        delete(prs);
+    }
 
     int Application::initialize(int argc, char* argv[]) {
         hndl = new Handler();
@@ -24,6 +33,7 @@ namespace iwb {
         prs = new Presentation(resWidth, resHeight);
         Camera::getInstance()->calibrate(cpt, prs);
         scroller = new Scroller(prs, hndl);
+//        Confirmation::create(prs, hndl);
 
         return 0;
     }
@@ -39,7 +49,6 @@ namespace iwb {
 
         CvMat *mask = cvCreateMat(bg->height, bg->width, CV_8UC1);
         cvSet(mask, cvScalar(1));
-
         IplImage *dst_img = cvCreateImage(cvGetSize(bg), bg->depth, bg->nChannels),
                  *gs = cvCreateImage(cvGetSize(bg), IPL_DEPTH_8U, 1),
                  *blur = cvCreateImage(cvGetSize(bg), bg->depth, bg->nChannels),

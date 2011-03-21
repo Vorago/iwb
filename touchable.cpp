@@ -2,7 +2,7 @@
 #include <opencv/cv.h>
 
 namespace iwb {
-    Touchable::Touchable(const char* imagePath, CvPoint projectorUL, CvPoint projectorBR, CvPoint cameraUL, CvPoint cameraBR, void (*action)(void), int threshold) : Drawable(imagePath, projectorUL, projectorBR) {
+    Touchable::Touchable(char* imagePath, CvPoint projectorUL, CvPoint projectorBR, CvPoint cameraUL, CvPoint cameraBR, void (*action)(void), int threshold) : Drawable(imagePath, projectorUL, projectorBR) {
         this->cameraUL = CvPoint(cameraUL);
         this->cameraBR = CvPoint(cameraBR);
         this->threshold = threshold;
