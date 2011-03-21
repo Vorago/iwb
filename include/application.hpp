@@ -19,6 +19,7 @@ namespace iwb {
      */
     class Application {
     public:
+        ~Application();
         /**
          * Initializes the application.
          * @param argc
