@@ -3,6 +3,22 @@
 #include <opencv/cv.h>
 
 namespace iwb {
+
+    Confirmation* Confirmation::instance = NULL;
+
+    bool Confirmation::create(Presentation* prs, Handler* hndl) {
+        if (instance == NULL) {
+            instance = new Confirmation(prs, hndl);
+            return true;
+        }
+        return false;
+    }
+
+    void Confirmation::hide() {
+        delete(instance);
+        instance = NULL;
+    }
+    
     Confirmation::Confirmation(Presentation* prs, Handler* hndl) {
         this->prs = prs;
         this->hndl = hndl;

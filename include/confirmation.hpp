@@ -15,9 +15,12 @@
 namespace iwb {
     class Confirmation {
     public:
-        Confirmation(Presentation* prs, Handler* hndl);
+        static bool create(Presentation* prs, Handler* hndl);
+        static void hide();
         ~Confirmation();
     private:
+        static Confirmation* instance;
+        Confirmation(Presentation* prs, Handler* hndl);
         Presentation* prs;
         Handler* hndl;
         Touchable* yesButton;
