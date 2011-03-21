@@ -72,5 +72,18 @@ namespace iwb {
 
         return true;
     }
+	void Handler::detectTouchedComponents(IplImage *mask) {
+	    for (std::list<Touchable*>::iterator component = components.begin(); component != components.end(); component++) {
+            (*component)->detectTouch(mask);
+        }
+
+	}
+    void Handler::addComponent(Touchable* component) {
+        components.push_back(component);
+    }
+
+    void Handler::removeComponent(Touchable* component) {
+        components.remove(component);
+    }
 
 }

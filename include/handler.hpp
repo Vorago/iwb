@@ -9,6 +9,8 @@
 #define	HANDLER_HPP
 
 #include "capture.hpp"
+#include <list>
+#include "touchable.hpp"
 
 namespace iwb {
 
@@ -16,6 +18,7 @@ namespace iwb {
     private:
         bool saveFlag;
         bool loadFlag;
+        std::list<Touchable*> components;
     public:
         Handler();
         virtual ~Handler();
@@ -26,6 +29,9 @@ namespace iwb {
         void handleSave();
         void handleLoad();
         bool handleArguments(int argc, char* argv[], Capture **cpt, int *resWidth, int* resHeight);
+		void detectTouchedComponents(IplImage *mask);
+		void addComponent(Touchable* component);
+		void removeComponent(Touchable* component);
     };
 
 }

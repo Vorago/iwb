@@ -78,6 +78,9 @@ namespace iwb {
         }
         return 0;
     }
+		void testcb() {
+			printf("TOUCHED!\n");
+		};
 
     void Scroller::initialize() {
 
@@ -198,20 +201,15 @@ namespace iwb {
 //        paths[0] = "res/left.jpg";
 //        paths[1] = "res/right.jpg";
         // TODO: add image paths
-        buttons[0] = new Touchable(paths[0], projectorUL[0], projectorBR[0], cameraUL[0], cameraBR[0]);
+        buttons[0] = new Touchable(paths[0], projectorUL[0], projectorBR[0], cameraUL[0], cameraBR[0], &testcb);
         prs->addComponent(buttons[0]);
+        hndl->addComponent(buttons[0]);
 
-<<<<<<< HEAD
-        for (int i = 0; i < 2; i++) {
-            printf("%s\n", paths[i]);
-            buttons[i] = new Touchable(paths[i], projectorUL[i], projectorBR[i], cameraUL[i], cameraBR[i], NULL);
-//            prs->addComponent(buttons[i]);
-=======
-        buttons[4] = new Touchable(paths[1], projectorUL[4], projectorBR[4], cameraUL[4], cameraBR[4]);
+        buttons[4] = new Touchable(paths[1], projectorUL[4], projectorBR[4], cameraUL[4], cameraBR[4], &testcb);
         prs->addComponent(buttons[4]);
->>>>>>> 0ad4087dab7e62ce8133a2a3dfc4996c93c9f676
+        hndl->addComponent(buttons[4]);
 
-        deleteButton(buttons[0]);
+//        deleteButton(buttons[0]);
 
 //        for (int i = 0; i < 2; i++) {
 //            printf("%s\n", paths[i]);

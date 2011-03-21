@@ -66,17 +66,12 @@ namespace iwb {
          */
     
         IplImage* resizedImage = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, 3);
-        printf("resize1");
         cvResize(image, resizedImage, CV_INTER_CUBIC);
-    printf("inmputimage \n");
         //Setting area for new image
         cvSetImageROI(buffer, cvRect(upperLeft.x, upperLeft.y, width, height));
-            printf("inmputimage \n");
         cvZero(buffer);
         cvCopyImage(resizedImage, buffer);
-            printf("inmputimage \n");
         cvResetImageROI(buffer);
-            printf("inmputimage \n");
 
         cvReleaseImage(&resizedImage);
     }

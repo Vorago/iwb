@@ -23,7 +23,7 @@ namespace iwb {
     private:
         Presentation* prs;
         Handler* hndl;
-        Touchable* buttons[5];
+        Touchable *buttons[5];
 
         /**
          * Frees allocated memory and resets the variables

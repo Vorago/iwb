@@ -13,7 +13,7 @@
 
 // These values need tweaking
 #define STD_THRESHOLD 200
-#define INTERACTION_TRIGGER CLOCKS_PER_SEC
+#define INTERACTION_TRIGGER 100
 
 namespace iwb {
     /**
@@ -29,13 +29,8 @@ namespace iwb {
         int interaction;
         int threshold;
     public:
-<<<<<<< HEAD
-        Touchable(char* imagePath, CvPoint projectorUL, CvPoint projectorBR, 
-                  CvPoint cameraUL, CvPoint cameraBR, void (*action)(void), 
-                  int threshold);
-=======
-        Touchable(const char* imagePath, CvPoint projectorUL, CvPoint projectorBR, CvPoint cameraUL, CvPoint cameraBR);
->>>>>>> 0ad4087dab7e62ce8133a2a3dfc4996c93c9f676
+        Touchable(const char* imagePath, CvPoint projectorUL, CvPoint projectorBR, 
+                  CvPoint cameraUL, CvPoint cameraBR, void (*action)(void), int threshold=STD_THRESHOLD);
         ~Touchable();
         void detectTouch(IplImage* mask);
     };

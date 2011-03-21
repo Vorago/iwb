@@ -43,8 +43,8 @@ namespace iwb {
 #ifdef NO_CALIBRATION
         printf("DEBUG: camera calibration disabled!\n");
 
-        width = 1024;
-        height = 768;
+        width = 320;
+        height = 240;
         leftOffset = 0;
         rightOffset = 0;
         topOffset = 0;
