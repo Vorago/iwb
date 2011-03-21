@@ -8,7 +8,7 @@
 #ifndef CAMERA_HPP
 #define	CAMERA_HPP
 
-#define NO_CALIBRATION
+//#define NO_CALIBRATION
 
 #include "presentation.hpp"
 #include "capture.hpp"

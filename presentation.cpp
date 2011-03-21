@@ -8,6 +8,10 @@
 
 #include "include/presentation.hpp"
 #include <stdio.h>
+//#include <gdk/gdk.h>
+#include <gtk/gtkwidget.h>
+#include <gdk/gdkwindow.h>
+
 
 namespace iwb {
 
@@ -16,6 +20,8 @@ namespace iwb {
         slide = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, 3);
         winPresentFrame = "winPresentation";
         cvNamedWindow(winPresentFrame, CV_WINDOW_AUTOSIZE);
+        GdkWindow *w = gtk_widget_get_parent_window((GtkWidget*)cvGetWindowHandle(winPresentFrame));
+		gdk_window_fullscreen(w); 
         cvShowImage(winPresentFrame, slide);
         screenWidth = width;
         screenHeight = height;
