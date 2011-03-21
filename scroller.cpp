@@ -96,47 +96,47 @@ namespace iwb {
         int scrollerWidth = lowerRight.x - upperLeft.x;
         int scrollerHeight = lowerRight.y - upperLeft.y;
 
-        projectorUL[0] = cvPoint(
+        projectorUL[LEFT_ARROW] = cvPoint(
                 upperLeft.x + round(0.05 * scrollerWidth),
                 upperLeft.y + round(0.25 * scrollerHeight)
                 );
-        projectorBR[0] = cvPoint(
+        projectorBR[LEFT_ARROW] = cvPoint(
                 upperLeft.x + round(0.12 * scrollerWidth),
                 upperLeft.y + round(0.75 * scrollerHeight)
                 );
 
-        projectorUL[1] = cvPoint(
+        projectorUL[LEFT_IMAGE] = cvPoint(
                 upperLeft.x + round(0.17 * scrollerWidth),
                 upperLeft.y + round(0.17 * scrollerHeight)
                 );
-        projectorBR[1] = cvPoint(
+        projectorBR[LEFT_IMAGE] = cvPoint(
                 upperLeft.x + round(0.34 * scrollerWidth),
                 upperLeft.y + round(0.84 * scrollerHeight)
                 );
 
-        projectorUL[2] = cvPoint(
+        projectorUL[MIDDLE_IMAGE] = cvPoint(
                 upperLeft.x + round(0.41 * scrollerWidth),
                 upperLeft.y + round(0.17 * scrollerHeight)
                 );
-        projectorBR[2] = cvPoint(
+        projectorBR[MIDDLE_IMAGE] = cvPoint(
                 upperLeft.x + round(0.58 * scrollerWidth),
                 upperLeft.y + round(0.84 * scrollerHeight)
                 );
 
-        projectorUL[3] = cvPoint(
+        projectorUL[RIGHT_IMAGE] = cvPoint(
                 upperLeft.x + round(0.65 * scrollerWidth),
                 upperLeft.y + round(0.17 * scrollerHeight)
                 );
-        projectorBR[3] = cvPoint(
+        projectorBR[RIGHT_IMAGE] = cvPoint(
                 upperLeft.x + round(0.82 * scrollerWidth),
                 upperLeft.y + round(0.84 * scrollerHeight)
                 );
 
-        projectorUL[4] = cvPoint(
+        projectorUL[RIGHT_ARROW] = cvPoint(
                 upperLeft.x + round(0.88 * scrollerWidth),
                 upperLeft.y + round(0.25 * scrollerHeight)
                 );
-        projectorBR[4] = cvPoint(
+        projectorBR[RIGHT_ARROW] = cvPoint(
                 upperLeft.x + round(0.95 * scrollerWidth),
                 upperLeft.y + round(0.75 * scrollerHeight)
                 );
@@ -149,62 +149,60 @@ namespace iwb {
         float topOffset = camera->getRightOffset();
         float bottomOffset = camera->getBottomOffset();
 
-        cameraUL[0] = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorUL[0].x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorUL[0].y
+        cameraUL[LEFT_ARROW] = cvPoint(
+                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorUL[LEFT_ARROW].x,
+                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorUL[LEFT_ARROW].y
                 );
-        cameraBR[0] = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorBR[0].x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorBR[0].y
-                );
-
-        cameraUL[1] = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorUL[1].x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorUL[1].y
-                );
-        cameraBR[1] = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorBR[1].x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorBR[1].y
+        cameraBR[LEFT_ARROW] = cvPoint(
+                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorBR[LEFT_ARROW].x,
+                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorBR[LEFT_ARROW].y
                 );
 
-        cameraUL[2] = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorUL[2].x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorUL[2].y
+        cameraUL[LEFT_IMAGE] = cvPoint(
+                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorUL[LEFT_IMAGE].x,
+                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorUL[LEFT_IMAGE].y
                 );
-        cameraBR[2] = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorBR[2].x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorBR[2].y
-                );
-
-        cameraUL[3] = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorUL[3].x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorUL[3].y
-                );
-        cameraBR[3] = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorBR[3].x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorBR[3].y
+        cameraBR[LEFT_IMAGE] = cvPoint(
+                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorBR[LEFT_IMAGE].x,
+                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorBR[LEFT_IMAGE].y
                 );
 
-        cameraUL[4] = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorUL[4].x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorUL[4].y
+        cameraUL[MIDDLE_IMAGE] = cvPoint(
+                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorUL[MIDDLE_IMAGE].x,
+                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorUL[MIDDLE_IMAGE].y
                 );
-        cameraBR[4] = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorBR[4].x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorBR[4].y
+        cameraBR[MIDDLE_IMAGE] = cvPoint(
+                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorBR[MIDDLE_IMAGE].x,
+                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorBR[MIDDLE_IMAGE].y
                 );
 
-        const char* paths[2] = {"res/left.jpg", "res/right.jpg"};
-//        paths[0] = "res/left.jpg";
-//        paths[1] = "res/right.jpg";
+        cameraUL[RIGHT_IMAGE] = cvPoint(
+                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorUL[RIGHT_IMAGE].x,
+                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorUL[RIGHT_IMAGE].y
+                );
+        cameraBR[RIGHT_IMAGE] = cvPoint(
+                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorBR[RIGHT_IMAGE].x,
+                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorBR[RIGHT_IMAGE].y
+                );
+
+        cameraUL[RIGHT_ARROW] = cvPoint(
+                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorUL[RIGHT_ARROW].x,
+                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorUL[RIGHT_ARROW].y
+                );
+        cameraBR[RIGHT_ARROW] = cvPoint(
+                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorBR[RIGHT_ARROW].x,
+                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorBR[RIGHT_ARROW].y
+                );
+
+        const char* paths[MIDDLE_IMAGE] = {"res/left.jpg", "res/right.jpg"};
+//        paths[LEFT_ARROW] = "res/left.jpg";
+//        paths[LEFT_IMAGE] = "res/right.jpg";
         // TODO: add image paths
-        buttons[0] = new Touchable(paths[0], projectorUL[0], projectorBR[0], cameraUL[0], cameraBR[0]);
-        prs->addComponent(buttons[0]);
+        buttons[LEFT_ARROW] = new Touchable(paths[0], projectorUL[LEFT_ARROW], projectorBR[LEFT_ARROW], cameraUL[LEFT_ARROW], cameraBR[LEFT_ARROW]);
+        prs->addComponent(buttons[LEFT_ARROW]);
 
-        buttons[4] = new Touchable(paths[1], projectorUL[4], projectorBR[4], cameraUL[4], cameraBR[4]);
-        prs->addComponent(buttons[4]);
-
-        deleteButton(buttons[0]);
+        buttons[RIGHT_ARROW] = new Touchable(paths[1], projectorUL[RIGHT_ARROW], projectorBR[RIGHT_ARROW], cameraUL[RIGHT_ARROW], cameraBR[RIGHT_ARROW]);
+        prs->addComponent(buttons[RIGHT_ARROW]);
 
 //        for (int i = 0; i < 2; i++) {
 //            printf("%s\n", paths[i]);
@@ -212,13 +210,61 @@ namespace iwb {
 //            prs->addComponent(buttons[i]);
 //
 //        }
+        loadFileNames();
+
+        // FIXME: this code will crash if there are less than three images in the folder
+        char filepath[80];
+        snprintf(filepath, sizeof(filepath), "tmp/1/%s", imgArray[0]);
+        buttons[LEFT_IMAGE] = new Touchable(filepath, projectorUL[LEFT_IMAGE], projectorBR[LEFT_IMAGE], cameraUL[LEFT_IMAGE], cameraBR[LEFT_IMAGE]);
+        prs->addComponent(buttons[LEFT_IMAGE]);
+
+        snprintf(filepath, sizeof(filepath), "tmp/1/%s", imgArray[1]);
+        buttons[MIDDLE_IMAGE] = new Touchable(filepath, projectorUL[MIDDLE_IMAGE], projectorBR[MIDDLE_IMAGE], cameraUL[MIDDLE_IMAGE], cameraBR[MIDDLE_IMAGE]);
+        prs->addComponent(buttons[MIDDLE_IMAGE]);
+
+        snprintf(filepath, sizeof(filepath), "tmp/1/%s", imgArray[2]);
+        buttons[RIGHT_IMAGE] = new Touchable(filepath, projectorUL[RIGHT_IMAGE], projectorBR[RIGHT_IMAGE], cameraUL[RIGHT_IMAGE], cameraBR[RIGHT_IMAGE]);
+        prs->addComponent(buttons[RIGHT_IMAGE]);
+
+        displayImages();
+        
     }
 
-    void Scroller::shiftRight() {
-        // TODO: to do
+    void Scroller::displayImages() {
+        int first = currentImg % imgArraySize;
+        int second = (currentImg + 1) % imgArraySize;
+        int third = (currentImg + 2) % imgArraySize;
+
+        char filepath[80];
+        snprintf(filepath, sizeof(filepath), "tmp/1/%s", imgArray[first]);
+        buttons[LEFT_IMAGE]->setImagePath(filepath);
+        snprintf(filepath, sizeof(filepath), "tmp/1/%s", imgArray[second]);
+        buttons[MIDDLE_IMAGE]->setImagePath(filepath);
+        snprintf(filepath, sizeof(filepath), "tmp/1/%s", imgArray[third]);
+        buttons[RIGHT_IMAGE]->setImagePath(filepath);
     }
 
     void Scroller::shiftLeft() {
-        // TODO: to do
+        currentImg--;
+        if (currentImg < 0) {
+            currentImg = imgArraySize - 1;
+        }
+
+        displayImages();
+    }
+
+    void Scroller::shiftRight() {
+        currentImg++;
+        if (currentImg > imgArraySize - 1) {
+            currentImg = 0;
+        }
+
+        displayImages();
+    }
+
+    void Scroller::displayConfirmation() {
+        if (Confirmation::create(prs, hndl)) {
+            printf("DEBUG: confirmation dialog created!\n");
+        }
     }
 }
