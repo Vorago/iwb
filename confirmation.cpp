@@ -39,6 +39,9 @@ namespace iwb {
         prs->removeComponent(button);
         delete(button);
     }
+		void testcb2() {
+			printf("TOUCHED!\n");
+		};
 
     void Confirmation::initialize() {
         CvPoint upperLeft = cvPoint(850, 0);
@@ -102,12 +105,12 @@ namespace iwb {
                 topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * noBR.y
                 );
 
-        const char* paths[2] = {"res/yes.jpg", "res/no.jpg"};
+        char* paths[2] = {"res/yes.jpg", "res/no.jpg"};
 
-        yesButton = new Touchable(paths[0], yesUL, yesBR, yesCameraUL, yesCameraBR);
+        yesButton = new Touchable(paths[0], yesUL, yesBR, yesCameraUL, yesCameraBR, &testcb2);
         prs->addComponent(yesButton);
 
-        noButton= new Touchable(paths[1], noUL, noBR, noCameraUL, noCameraBR);
+        noButton= new Touchable(paths[1], noUL, noBR, noCameraUL, noCameraBR, &testcb2);
         prs->addComponent(noButton);
     }
 }

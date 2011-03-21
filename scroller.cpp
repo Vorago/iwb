@@ -78,6 +78,9 @@ namespace iwb {
         }
         return 0;
     }
+		void testcb() {
+			printf("TOUCHED!\n");
+		};
 
     void Scroller::initialize() {
 
@@ -194,15 +197,17 @@ namespace iwb {
                 topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorBR[RIGHT_ARROW].y
                 );
 
-        const char* paths[MIDDLE_IMAGE] = {"res/left.jpg", "res/right.jpg"};
+        char* paths[MIDDLE_IMAGE] = {"res/left.jpg", "res/right.jpg"};
 //        paths[LEFT_ARROW] = "res/left.jpg";
 //        paths[LEFT_IMAGE] = "res/right.jpg";
         // TODO: add image paths
-        buttons[LEFT_ARROW] = new Touchable(paths[0], projectorUL[LEFT_ARROW], projectorBR[LEFT_ARROW], cameraUL[LEFT_ARROW], cameraBR[LEFT_ARROW]);
+        buttons[LEFT_ARROW] = new Touchable(paths[0], projectorUL[LEFT_ARROW], projectorBR[LEFT_ARROW], cameraUL[LEFT_ARROW], cameraBR[LEFT_ARROW], &testcb);
         prs->addComponent(buttons[LEFT_ARROW]);
+        hndl->addComponent(buttons[LEFT_ARROW]);
 
-        buttons[RIGHT_ARROW] = new Touchable(paths[1], projectorUL[RIGHT_ARROW], projectorBR[RIGHT_ARROW], cameraUL[RIGHT_ARROW], cameraBR[RIGHT_ARROW]);
+        buttons[RIGHT_ARROW] = new Touchable(paths[1], projectorUL[RIGHT_ARROW], projectorBR[RIGHT_ARROW], cameraUL[RIGHT_ARROW], cameraBR[RIGHT_ARROW], &testcb);
         prs->addComponent(buttons[RIGHT_ARROW]);
+        hndl->addComponent(buttons[RIGHT_ARROW]);
 
 //        for (int i = 0; i < 2; i++) {
 //            printf("%s\n", paths[i]);
@@ -215,15 +220,15 @@ namespace iwb {
         // FIXME: this code will crash if there are less than three images in the folder
         char filepath[80];
         snprintf(filepath, sizeof(filepath), "tmp/1/%s", imgArray[0]);
-        buttons[LEFT_IMAGE] = new Touchable(filepath, projectorUL[LEFT_IMAGE], projectorBR[LEFT_IMAGE], cameraUL[LEFT_IMAGE], cameraBR[LEFT_IMAGE]);
+        buttons[LEFT_IMAGE] = new Touchable(filepath, projectorUL[LEFT_IMAGE], projectorBR[LEFT_IMAGE], cameraUL[LEFT_IMAGE], cameraBR[LEFT_IMAGE], &testcb);
         prs->addComponent(buttons[LEFT_IMAGE]);
 
         snprintf(filepath, sizeof(filepath), "tmp/1/%s", imgArray[1]);
-        buttons[MIDDLE_IMAGE] = new Touchable(filepath, projectorUL[MIDDLE_IMAGE], projectorBR[MIDDLE_IMAGE], cameraUL[MIDDLE_IMAGE], cameraBR[MIDDLE_IMAGE]);
+        buttons[MIDDLE_IMAGE] = new Touchable(filepath, projectorUL[MIDDLE_IMAGE], projectorBR[MIDDLE_IMAGE], cameraUL[MIDDLE_IMAGE], cameraBR[MIDDLE_IMAGE], &testcb);
         prs->addComponent(buttons[MIDDLE_IMAGE]);
 
         snprintf(filepath, sizeof(filepath), "tmp/1/%s", imgArray[2]);
-        buttons[RIGHT_IMAGE] = new Touchable(filepath, projectorUL[RIGHT_IMAGE], projectorBR[RIGHT_IMAGE], cameraUL[RIGHT_IMAGE], cameraBR[RIGHT_IMAGE]);
+        buttons[RIGHT_IMAGE] = new Touchable(filepath, projectorUL[RIGHT_IMAGE], projectorBR[RIGHT_IMAGE], cameraUL[RIGHT_IMAGE], cameraBR[RIGHT_IMAGE], &testcb);
         prs->addComponent(buttons[RIGHT_IMAGE]);
 
         displayImages();
