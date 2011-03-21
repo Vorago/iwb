@@ -32,7 +32,8 @@ namespace iwb {
                         this->interaction += 2;
                     }
                     if (this->interaction > INTERACTION_TRIGGER) {
-                        this->action();
+                        if (this->action != NULL)
+                            this->action();
                         this->interaction = 0;
                         return;
                     }
