@@ -29,6 +29,9 @@ namespace iwb {
     public:
         Drawable(const char* imagePath, CvPoint projectorUL, CvPoint projectorBR);
         ~Drawable();
+
+        void setImagePath(const char* imagePath);
+        
         /**
          * Method that is automatically called after instantiation
          * of the class. It can be used for initialization.

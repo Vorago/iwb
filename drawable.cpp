@@ -28,6 +28,11 @@ namespace iwb {
         return projectorBR.y - projectorUL.y;
     }
 
+    void Drawable::setImagePath(const char* imagePath) {
+        cvReleaseImage(&image);
+        image = cvLoadImage(imagePath, CV_LOAD_IMAGE_UNCHANGED);
+    }
+
     void Drawable::initialize() {
         printf("DEBUG: drawable initialized\n");
     }
