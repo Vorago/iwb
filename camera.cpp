@@ -112,9 +112,13 @@ namespace iwb {
         prs->putImage(cvPoint(0,0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), frame);
         prs->applyBuffer();
         // display result longer
-        cvWaitKey(5000);
+        cvWaitKey(2000);
         prs->clearArea(cvPoint(0,0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()));
         prs->applyBuffer();
+        cvWaitKey(1000);
+        //cvNamedWindow("Foobar", CV_WINDOW_AUTOSIZE);
+        //cvShowImage("Foobar", cvQueryFrame(cpt->getCapture()));
+        //cvWaitKey(500);
 
 //        cvReleaseImage(&frame);
 

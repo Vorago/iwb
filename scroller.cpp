@@ -80,9 +80,14 @@ namespace iwb {
         }
         return 0;
     }
-		void testcb() {
-			printf("TOUCHED!\n");
-		};
+
+	void testcb() {
+		printf("TOUCHED!\n");
+	};
+
+    void touchme() {
+        printf("TOUCHED LEFT!\n");
+    }
 
     void Scroller::initialize() {
 
@@ -147,7 +152,7 @@ namespace iwb {
 //        paths[LEFT_ARROW] = "res/left.jpg";
 //        paths[LEFT_IMAGE] = "res/right.jpg";
         // TODO: add image paths
-        buttons[LEFT_ARROW] = new Touchable(paths[0], prs, hndl, projectorUL[LEFT_ARROW], projectorBR[LEFT_ARROW], &testcb);
+        buttons[LEFT_ARROW] = new Touchable(paths[0], prs, hndl, projectorUL[LEFT_ARROW], projectorBR[LEFT_ARROW], &touchme);
 
         buttons[RIGHT_ARROW] = new Touchable(paths[1], prs, hndl, projectorUL[RIGHT_ARROW], projectorBR[RIGHT_ARROW], &testcb);
 

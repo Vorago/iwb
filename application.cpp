@@ -39,10 +39,16 @@ namespace iwb {
     }
 
     int Application::run() {
+    int i;
         IplImage *cf = cvCreateImage(cvSize(320, 240), IPL_DEPTH_8U, 3);
+        for (i=0; i<100; i++)
+            cf = cvQueryFrame(cpt->getCapture());
+        cpt->saveFrame("bgcapt.jpg", cf);
+        cvWaitKey(5000);
         cf = cvQueryFrame(cpt->getCapture());
+        cpt->saveFrame("bgcapt2.jpg", cf);
 
-        IplImage *bg = cvCloneImage(cf);;
+        IplImage *bg = cvCloneImage(cf);
         CvMat bgmat = cv::cvarrToMat(bg);
         const char* winFrame = "winFrame";
 	    cvNamedWindow(winFrame, CV_WINDOW_AUTOSIZE);
