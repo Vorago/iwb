@@ -26,35 +26,30 @@ namespace iwb {
         return this->height;
     }
 
-    float Camera::getLeftOffset() {
-        return this->leftOffset;
+    int Camera::getProjectorWidth() {
+        return this->projectorWidth;
     }
 
-    float Camera::getRightOffset() {
-        return this->rightOffset;
+    int Camera::getProjectorHeight() {
+        return this->projectorHeight;
     }
 
-    float Camera::getTopOffset() {
-        return this->topOffset;
-    }
-
-    float Camera::getBottomOffset() {
-        return this->bottomOffset;
+    CvPoint Camera::getProjectorOrigin() {
+        return this->projectorOrigin;
     }
 
     void Camera::calibrate(Capture* cpt, Presentation* prs){
-//#ifdef NO_CALIBRATION
+#ifdef NO_CALIBRATION
         printf("DEBUG: camera calibration disabled!\n");
 
         this->width = 320;
         this->height = 240;
-        this->leftOffset = 0;
-        this->rightOffset = 0;
-        this->topOffset = 0;
-        this->bottomOffset = 0;
+        this->projectorWidth = 320;
+        this->projectorHeight = 240;
+        this->projectorOrigin = cvPoint(0,0);
 
-//        return;
-//#endif
+        return;
+#endif
 
         printf("DEBUG: calibrating camera\n");
 
@@ -70,8 +65,9 @@ namespace iwb {
         bool patternFound = false;
         int cc;
 
+        printf("trying to find chessboard");
         while (!patternFound) {
-            printf("trying to find chessboard\n");
+            printf(".");
             frame = cvQueryFrame(cpt->getCapture());
             patternFound = cvFindChessboardCorners(frame, nsquares, corners, &cc,
                                                    CV_CALIB_CB_ADAPTIVE_THRESH | 
@@ -82,7 +78,28 @@ namespace iwb {
             prs->applyBuffer();
             cvWaitKey(5);
         }
-        //cpt->saveFrame("cbfound.jpg", frame);
+        printf("\n");
+        float x = 2*corners[0].x-corners[1].x,
+              y = 2*corners[0].y-corners[7].y;
+
+        this->projectorOrigin = cvPoint((int)x, (int)y);
+
+        x = 2*corners[34].x-corners[33].x;
+        y = 2*corners[34].y-corners[27].y;
+
+
+        this->projectorWidth = (int)(x-this->projectorOrigin.x);
+        this->projectorHeight = (int)(y-this->projectorOrigin.y);
+
+        printf("Projector: (%d, %d): %dx%d)\n", this->projectorOrigin.x, this->projectorOrigin.y, this->projectorWidth,this->projectorHeight);
+
+        cpt->saveFrame("cbfound.jpg", frame);
+
+        // improve result (thoug through testing, it seems it makes it worse - disabling)
+        // could use simple linear regression to get a "better" calibration.
+//        IplImage *frame_gray = cvCreateImage(cvGetSize(frame), IPL_DEPTH_8U, 1);
+//        cvFindCornerSubPix( frame_gray, corners, cc, cvSize( 11, 11 ), 
+//                        cvSize( -1, -1 ), cvTermCriteria( CV_TERMCRIT_EPS+CV_TERMCRIT_ITER, 30, 0.1 ));
 
         // draw calibration result
         cvDrawChessboardCorners( frame, nsquares , corners, cc, patternFound );
@@ -108,98 +125,5 @@ namespace iwb {
 //        }
 
 
-/*        cvPoint *corners[4];
-
-        corners[0] = cvPoint(0,0);
-        corners[1] = cvPoint(0,prs->getScreenHeight());
-        corners[2] = cvPoint(prs->getScreenWidth(), prs->getScreenHeight());
-        corners[3] = cpPoint(prs->getScreenWidth(), 0);
-
-        IplImage *calibration = cvCreateImage(cvSize(prs->getScreenWidth(), prs->getScreenHeight()), IPL_DEPTH_8U, 3);
-        cvPolyFill(calibration, corners, )*/
-
-        
-/*
-        //testScreen shoul be a big rectangle of blue color with black square in upper-left corner and a red one in bottom-right
-        IplImage* blackScreen = cvLoadImage("res/bg.jpg", 1);
-        //blackSquare should match size of square in upper left of testScreen
-
-//        IplImage* blackSquare = cvLoadImage("res/CleftCalib.jpg",1);
-        IplImage* blackSquare = cvLoadImage("res/CleftCalib.jpg",1);
-
-        //redSquare should match size of square in bottom right of testScreen
-//        IplImage* redSquare = cvLoadImage("res/CrightCalib.jpg", 1);
-        IplImage* redSquare = cvLoadImage("res/CrightCalib.jpg", 1);
-
-        //redSquare should match size of square in bottom right of testScreen
-        IplImage* redSquare2 = cvLoadImage("res/Cright.jpg",0);
-
-          IplImage* blackSquare2 = cvLoadImage("res/Cleft.jpg", 0);
-
-        prs->putImage(cvPoint(0, 0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), blackScreen);
-        prs->applyBuffer();
-
-        cvWaitKey(500);
-        IplImage* frame =NULL;
-        IplImage* frame2;
-
-        for(int i=0;i<200;i++){
-            if(i==0){
-                cvQueryFrame(cpt->getCapture());
-                frame = cvQueryFrame(cpt->getCapture());
-                frame2=cvCloneImage(frame);
-                cpt->saveFrame("f1Copy.jpg", frame2);
-            }
-            cvQueryFrame(cpt->getCapture());
-            if(i==100){
-                prs->putImage(cvPoint(10, 10), cvPoint(64, 48), blackSquare);
-                prs->putImage(cvPoint(900, 600), cvPoint(950, 650), redSquare);
-                prs->applyBuffer();
-                cvWaitKey(100);
-            }
-            if(i==199){
-                frame = cvQueryFrame(cpt->getCapture());
-            }
-        }
-        prs->putImage(cvPoint(0, 0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), blackScreen);
-        prs->applyBuffer();
-        cvWaitKey(100);
-
-
-        frame2 = cvLoadImage("f1Copy.jpg", 1);
-        cpt->saveFrame("f1.jpg", frame2);
-        cpt->saveFrame("f2.jpg", frame);
-        IplImage *diff = Analysis::getDiff(frame2, frame);
-
-        cpt->saveFrame("diff.jpg", diff);
-        CvPoint ul = Analysis::getLocation(diff, blackSquare2, true);
-        CvPoint br = Analysis::getLocation(diff, redSquare2, false);
-        cvReleaseImage(&diff);
-        cvReleaseImage(&blackScreen);
-        cvReleaseImage(&blackSquare);
-        cvReleaseImage(&redSquare);
-
-
-
-        printf("%d\n", ul.x);
-        printf("%d\n", ul.y);
-        printf("--------\n");
-        printf("%d\n", br.x);
-        printf("%d\n", br.y);
-        printf("--------\n");
-
-
-        //set camera resolution depending on captured frame
-        this->height = frame->height;
-        this->width = frame->width;
-//        printf("%d\n", cpt->screenWidth);
-   //     printf("%d\n", cpt->screenHeight);
-      //  printf("--------\n");
-       // cpt->saveFrame("calibrate.jpg", frame);
-        this->leftOffset = ul.x / this->width;
-        this->rightOffset = (prs->getScreenWidth() - br.x) / this->width;
-        this->topOffset = ul.y / this->height;
-        this->bottomOffset = (prs->getScreenHeight() - br.y) / this->height;
-        */
     }
 }

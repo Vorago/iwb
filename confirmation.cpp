@@ -56,10 +56,6 @@ namespace iwb {
         CvPoint yesBR;
         CvPoint noUL;
         CvPoint noBR;
-        CvPoint yesCameraUL;
-        CvPoint yesCameraBR;
-        CvPoint noCameraUL;
-        CvPoint noCameraBR;
 
         yesUL = cvPoint(
                 upperLeft.x + round(0.00 * confirmWidth),
@@ -79,38 +75,10 @@ namespace iwb {
                 upperLeft.y + round(0.75 * confirmHeight)
                 );
 
-        Camera* camera = Camera::getInstance();
-        int screenWidth = camera->getWidth();
-        int screenHeight = camera->getHeight();
-        float leftOffset = camera->getLeftOffset();
-        float rightOffset = camera->getRightOffset();
-        float topOffset = camera->getRightOffset();
-        float bottomOffset = camera->getBottomOffset();
-
-        yesCameraUL = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * yesUL.x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * yesUL.y
-                );
-        yesCameraBR = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * yesBR.x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * yesBR.y
-                );
-
-        noCameraUL = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * noUL.x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * noUL.y
-                );
-        noCameraBR = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * noBR.x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * noBR.y
-                );
-
         char* paths[2] = {"res/yes.jpg", "res/no.jpg"};
 
-        yesButton = new Touchable(paths[0], yesUL, yesBR, yesCameraUL, yesCameraBR, &testcb2);
-        prs->addComponent(yesButton);
+        yesButton = new Touchable(paths[0], this->prs, this->hndl, yesUL, yesBR, &testcb2);
 
-        noButton= new Touchable(paths[1], noUL, noBR, noCameraUL, noCameraBR, &testcb2);
-        prs->addComponent(noButton);
+        noButton= new Touchable(paths[1], this->prs, this->hndl, noUL, noBR, &testcb2);
     }
 }

@@ -9,6 +9,8 @@
 #define	TOUCHABLE_HPP
 
 #include "drawable.hpp"
+namespace iwb {class Touchable;}
+#include "handler.hpp"
 #include <opencv/cv.h>
 
 // These values need tweaking
@@ -28,11 +30,12 @@ namespace iwb {
         void (*action)(void);
         int interaction;
         int threshold;
+        Handler *hndl;
     public:
-        Touchable(char* imagePath, CvPoint projectorUL, CvPoint projectorBR, 
-                  CvPoint cameraUL, CvPoint cameraBR, void (*action)(void), int threshold=STD_THRESHOLD);
+        Touchable(char* imagePath, Presentation *prs, Handler *hndl, CvPoint projectorUL, CvPoint projectorBR, void (*action)(void), int threshold=STD_THRESHOLD);
         ~Touchable();
         void detectTouch(IplImage* mask);
+        CvPoint cfppoint(CvPoint p);
     };
 }
 

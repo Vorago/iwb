@@ -36,6 +36,8 @@ namespace iwb {
     }
 
     void Scroller::deleteButton(Touchable* button) {
+        //FIXME move to deconstructors of touchable and drawable
+        //hndl->removeComponent(button);
         prs->removeComponent(button);
         delete(button);
     }
@@ -90,8 +92,6 @@ namespace iwb {
                 
         CvPoint projectorUL[5];
         CvPoint projectorBR[5];
-        CvPoint cameraUL[5];
-        CvPoint cameraBR[5];
 
         CvPoint upperLeft = cvPoint(0, 0);
         CvPoint lowerRight = cvPoint(800, 200);
@@ -143,71 +143,13 @@ namespace iwb {
                 upperLeft.x + round(0.95 * scrollerWidth),
                 upperLeft.y + round(0.75 * scrollerHeight)
                 );
-        
-        Camera* camera = Camera::getInstance();
-        int screenWidth = camera->getWidth();
-        int screenHeight = camera->getHeight();
-        float leftOffset = camera->getLeftOffset();
-        float rightOffset = camera->getRightOffset();
-        float topOffset = camera->getRightOffset();
-        float bottomOffset = camera->getBottomOffset();
-
-        cameraUL[LEFT_ARROW] = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorUL[LEFT_ARROW].x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorUL[LEFT_ARROW].y
-                );
-        cameraBR[LEFT_ARROW] = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorBR[LEFT_ARROW].x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorBR[LEFT_ARROW].y
-                );
-
-        cameraUL[LEFT_IMAGE] = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorUL[LEFT_IMAGE].x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorUL[LEFT_IMAGE].y
-                );
-        cameraBR[LEFT_IMAGE] = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorBR[LEFT_IMAGE].x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorBR[LEFT_IMAGE].y
-                );
-
-        cameraUL[MIDDLE_IMAGE] = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorUL[MIDDLE_IMAGE].x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorUL[MIDDLE_IMAGE].y
-                );
-        cameraBR[MIDDLE_IMAGE] = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorBR[MIDDLE_IMAGE].x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorBR[MIDDLE_IMAGE].y
-                );
-
-        cameraUL[RIGHT_IMAGE] = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorUL[RIGHT_IMAGE].x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorUL[RIGHT_IMAGE].y
-                );
-        cameraBR[RIGHT_IMAGE] = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorBR[RIGHT_IMAGE].x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorBR[RIGHT_IMAGE].y
-                );
-
-        cameraUL[RIGHT_ARROW] = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorUL[RIGHT_ARROW].x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorUL[RIGHT_ARROW].y
-                );
-        cameraBR[RIGHT_ARROW] = cvPoint(
-                leftOffset * screenWidth + ((screenWidth * (1 - leftOffset - rightOffset)) / screenWidth) * projectorBR[RIGHT_ARROW].x,
-                topOffset * screenHeight + ((screenHeight * (1 - topOffset - bottomOffset)) / screenHeight) * projectorBR[RIGHT_ARROW].y
-                );
-
         char* paths[MIDDLE_IMAGE] = {"res/left.jpg", "res/right.jpg"};
 //        paths[LEFT_ARROW] = "res/left.jpg";
 //        paths[LEFT_IMAGE] = "res/right.jpg";
         // TODO: add image paths
-        buttons[LEFT_ARROW] = new Touchable(paths[0], projectorUL[LEFT_ARROW], projectorBR[LEFT_ARROW], cameraUL[LEFT_ARROW], cameraBR[LEFT_ARROW], &testcb);
-        prs->addComponent(buttons[LEFT_ARROW]);
-        hndl->addComponent(buttons[LEFT_ARROW]);
+        buttons[LEFT_ARROW] = new Touchable(paths[0], prs, hndl, projectorUL[LEFT_ARROW], projectorBR[LEFT_ARROW], &testcb);
 
-        buttons[RIGHT_ARROW] = new Touchable(paths[1], projectorUL[RIGHT_ARROW], projectorBR[RIGHT_ARROW], cameraUL[RIGHT_ARROW], cameraBR[RIGHT_ARROW], &testcb);
-        prs->addComponent(buttons[RIGHT_ARROW]);
-        hndl->addComponent(buttons[RIGHT_ARROW]);
+        buttons[RIGHT_ARROW] = new Touchable(paths[1], prs, hndl, projectorUL[RIGHT_ARROW], projectorBR[RIGHT_ARROW], &testcb);
 
 //        for (int i = 0; i < 2; i++) {
 //            printf("%s\n", paths[i]);
@@ -220,16 +162,13 @@ namespace iwb {
         // FIXME: this code will crash if there are less than three images in the folder
         char filepath[80];
         snprintf(filepath, sizeof(filepath), "tmp/1/%s", imgArray[0]);
-        buttons[LEFT_IMAGE] = new Touchable(filepath, projectorUL[LEFT_IMAGE], projectorBR[LEFT_IMAGE], cameraUL[LEFT_IMAGE], cameraBR[LEFT_IMAGE], &testcb);
-        prs->addComponent(buttons[LEFT_IMAGE]);
+        buttons[LEFT_IMAGE] = new Touchable(filepath, prs, hndl, projectorUL[LEFT_IMAGE], projectorBR[LEFT_IMAGE], &testcb);
 
         snprintf(filepath, sizeof(filepath), "tmp/1/%s", imgArray[1]);
-        buttons[MIDDLE_IMAGE] = new Touchable(filepath, projectorUL[MIDDLE_IMAGE], projectorBR[MIDDLE_IMAGE], cameraUL[MIDDLE_IMAGE], cameraBR[MIDDLE_IMAGE], &testcb);
-        prs->addComponent(buttons[MIDDLE_IMAGE]);
+        buttons[MIDDLE_IMAGE] = new Touchable(filepath, prs, hndl, projectorUL[MIDDLE_IMAGE], projectorBR[MIDDLE_IMAGE], &testcb);
 
         snprintf(filepath, sizeof(filepath), "tmp/1/%s", imgArray[2]);
-        buttons[RIGHT_IMAGE] = new Touchable(filepath, projectorUL[RIGHT_IMAGE], projectorBR[RIGHT_IMAGE], cameraUL[RIGHT_IMAGE], cameraBR[RIGHT_IMAGE], &testcb);
-        prs->addComponent(buttons[RIGHT_IMAGE]);
+        buttons[RIGHT_IMAGE] = new Touchable(filepath, prs, hndl, projectorUL[RIGHT_IMAGE], projectorBR[RIGHT_IMAGE], &testcb);
 
         displayImages();
         

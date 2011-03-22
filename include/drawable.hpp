@@ -26,8 +26,9 @@ namespace iwb {
         CvPoint projectorBR;
         int getProjectorWidth();
         int getProjectorHeight();
+        Presentation *prs;
     public:
-        Drawable(const char* imagePath, CvPoint projectorUL, CvPoint projectorBR);
+        Drawable(const char* imagePath, Presentation *prs, CvPoint projectorUL, CvPoint projectorBR);
         ~Drawable();
 
         void setImagePath(const char* imagePath);
@@ -36,7 +37,7 @@ namespace iwb {
          * Method that is automatically called after instantiation
          * of the class. It can be used for initialization.
          */
-        virtual void initialize();
+//        virtual void initialize();
 
         /**
          * Method used for drawing on the projector.
