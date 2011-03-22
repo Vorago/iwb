@@ -12,6 +12,8 @@
 #include "capture.hpp"
 #include "presentation.hpp"
 #include "scroller.hpp"
+#include "analysis.hpp"
+#include "imageFrame.hpp"
 
 namespace iwb {
     /**
@@ -31,8 +33,11 @@ namespace iwb {
     protected:
         Handler* hndl;
         Capture* cpt;
+        ImageFrame* imageFrame;
         Presentation* prs;
         Scroller* scroller;
+        Analysis* analysis;
+
     };
 }
 

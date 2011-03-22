@@ -113,6 +113,8 @@ namespace iwb {
          void addComponent(Drawable* component);
 
          void removeComponent(Drawable* component);
+
+         void drawDiff(IplImage* diff);
     };
 }
 

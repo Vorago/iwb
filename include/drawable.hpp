@@ -22,15 +22,17 @@ namespace iwb {
     class Drawable {
     protected:
         IplImage* image;
-        CvPoint projectorUL;
-        CvPoint projectorBR;
+//        CvPoint projectorUL;
+//        CvPoint projectorBR;
         int getProjectorWidth();
         int getProjectorHeight();
     public:
+        CvPoint projectorUL;
+        CvPoint projectorBR;
         Drawable(const char* imagePath, CvPoint projectorUL, CvPoint projectorBR);
         ~Drawable();
 
-        void setImagePath(const char* imagePath);
+        virtual void setImagePath(const char* imagePath);
         
         /**
          * Method that is automatically called after instantiation

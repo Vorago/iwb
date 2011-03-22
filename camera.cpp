@@ -101,36 +101,36 @@ namespace iwb {
         frame2 = cvLoadImage("f1Copy.jpg", 1);
         cpt->saveFrame("f1.jpg", frame2);
         cpt->saveFrame("f2.jpg", frame);
-        IplImage *diff = Analysis::getDiff(frame2, frame);
-
-        cpt->saveFrame("diff.jpg", diff);
-        CvPoint ul = Analysis::getLocation(diff, blackSquare2, true);
-        CvPoint br = Analysis::getLocation(diff, redSquare2, false);
-        cvReleaseImage(&diff);
+//        IplImage *diff = Analysis::getDiff(frame2, frame);
+//
+//        cpt->saveFrame("diff.jpg", diff);
+//        CvPoint ul = Analysis::getLocation(diff, blackSquare2, true);
+//        CvPoint br = Analysis::getLocation(diff, redSquare2, false);
+//        cvReleaseImage(&diff);
         cvReleaseImage(&blackScreen);
         cvReleaseImage(&blackSquare);
         cvReleaseImage(&redSquare);
 
 
 
-        printf("%d\n", ul.x);
-        printf("%d\n", ul.y);
-        printf("--------\n");
-        printf("%d\n", br.x);
-        printf("%d\n", br.y);
-        printf("--------\n");
+//        printf("%d\n", ul.x);
+//        printf("%d\n", ul.y);
+//        printf("--------\n");
+//        printf("%d\n", br.x);
+//        printf("%d\n", br.y);
+//        printf("--------\n");
 
 
-        //set camera resolution depending on captured frame
-        height = frame->height;
-        width = frame->width;
-//        printf("%d\n", cpt->screenWidth);
-   //     printf("%d\n", cpt->screenHeight);
-      //  printf("--------\n");
-       // cpt->saveFrame("calibrate.jpg", frame);
-        leftOffset = ul.x / width;
-        rightOffset = (prs->getScreenWidth() - br.x) / width;
-        topOffset = ul.y / height;
-        bottomOffset = (prs->getScreenHeight() - br.y) / height;
+//        //set camera resolution depending on captured frame
+//        height = frame->height;
+//        width = frame->width;
+////        printf("%d\n", cpt->screenWidth);
+//   //     printf("%d\n", cpt->screenHeight);
+//      //  printf("--------\n");
+//       // cpt->saveFrame("calibrate.jpg", frame);
+//        leftOffset = ul.x / width;
+//        rightOffset = (prs->getScreenWidth() - br.x) / width;
+//        topOffset = ul.y / height;
+//        bottomOffset = (prs->getScreenHeight() - br.y) / height;
     }
 }

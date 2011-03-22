@@ -155,4 +155,15 @@ namespace iwb {
     void Presentation::removeComponent(Drawable* component) {
         components.remove(component);
     }
+
+    void Presentation::drawDiff(IplImage* diff) {
+
+            CvPoint o, p;
+            o.x = 0;
+            o.y = 0;
+            p.x = screenWidth;
+            p.y = screenHeight;
+            putImage(o,p,diff);
+            applyBuffer();
+    }
 }
