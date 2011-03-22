@@ -35,6 +35,6 @@ namespace iwb {
     }
 
     void Drawable::draw(Presentation* prs) {
-        prs->putImage(projectorUL, projectorBR, image);
+        prs->putImage(projectorUL, projectorBR, NULL, NULL, image);
     }
 }

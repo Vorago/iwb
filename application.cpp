@@ -11,6 +11,8 @@
 #include "include/camera.hpp"
 #include "include/confirmation.hpp"
 
+#include <QtGui/QApplication>
+
 namespace iwb {
 
     Application::~Application() {
@@ -22,15 +24,14 @@ namespace iwb {
     }
 
     int Application::initialize(int argc, char* argv[]) {
+        QApplication a (argc, argv);
+
         hndl = new Handler();
         cpt = NULL;
 
-        int resWidth = 1024;
-        int resHeight = 768;
+        if (!hndl->handleArguments(argc, argv, &cpt, 0, 0)) return -1;
 
-        if (!hndl->handleArguments(argc, argv, &cpt, &resWidth, &resHeight)) return -1;
-
-        prs = new Presentation(resWidth, resHeight);
+        prs = new Presentation();
         Camera::getInstance()->calibrate(cpt, prs);
         scroller = new Scroller(prs, hndl);
 //        Confirmation::create(prs, hndl);
@@ -74,12 +75,13 @@ namespace iwb {
             cvThreshold(gs,bw,128,255,CV_THRESH_TRUNC/*|CV_THRESH_OTSU*/);
             cvThreshold(bw,gs,12,255,CV_THRESH_BINARY/*|CV_THRESH_OTSU*/);
             cvCvtColor(gs,dst_img,CV_GRAY2RGB);
-            prs->putImage(o,p,dst_img);
+            prs->putImage(o,p,NULL,NULL,dst_img);
             prs->applyBuffer();
             cvShowImage(winFrame, cf);
 
             prs->drawComponents();
-			hndl->detectTouchedComponents(gs);
+            hndl->detectTouchedComponents(gs);
+
             cvWaitKey(5);
         }
 

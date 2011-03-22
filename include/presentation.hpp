@@ -11,9 +11,12 @@
 #include <opencv/highgui.h>
 #include <opencv/cv.h>
 #include <list>
+#include "mainwindow.h"
+
 namespace iwb {
     class Presentation;
 }
+
 #include "drawable.hpp"
 
 namespace iwb {
@@ -22,7 +25,7 @@ namespace iwb {
     private:
         IplImage* slide;
         IplImage* buffer;
-        const char* winPresentFrame;
+        MainWindow *window;
         std::list<Drawable*> components;
 
     public:
@@ -32,17 +35,15 @@ namespace iwb {
         CvPoint scrollerBR[5];
         CvPoint confirmationUL[2];
         CvPoint confirmationBR[2];
-        float leftOffset;
-        float rightOffset;
-        float topOffset;
-        float bottomOffset;
+        unsigned int leftOffset;
+        unsigned int rightOffset;
+        unsigned int topOffset;
+        unsigned int bottomOffset;
         CvPoint leftUL, leftBR, img1UL, img1BR, img2UL, img2BR, img3UL, img3BR, rightUL, rightBR;
         /**
          * Constructor for displaying frames in window
-         * @param width width of screen
-         * @param height height of screen
          */
-        Presentation(int width, int height);
+        Presentation();
 
         /**
          * Destructor closes window
@@ -64,7 +65,8 @@ namespace iwb {
          * @param lowerRight lower right point
          * @param image image to put
          */
-        void putImage(CvPoint upperLeft, CvPoint lowerRight, IplImage* image);
+        void putImage(CvPoint upperLeft, CvPoint lowerRight,
+             CvPoint *OutupperLeft, CvPoint *OutlowerRight, IplImage* image);
 
         /**
          * Function for updating displayed image
@@ -95,7 +97,7 @@ namespace iwb {
           * @param image2 one of three images to put
           * @param image3 one of three images to put
           */
-         void drawScroller(Presentation *prs, const char *image1,const char *image2,
+         void drawScroller(const char *image1,const char *image2,
                            const char *image3, IplImage *leftArrow, IplImage *rightArrow);
 
          void drawConfirmation();

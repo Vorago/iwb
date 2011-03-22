@@ -106,7 +106,7 @@ namespace iwb {
 
           IplImage* blackSquare2 = cvLoadImage("res/Cleft.jpg", 0);
 
-        prs->putImage(cvPoint(0, 0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), blackScreen);
+        prs->putImage(cvPoint(0, 0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), NULL, NULL, blackScreen);
         prs->applyBuffer();
 
         cvWaitKey(500);
@@ -122,8 +122,8 @@ namespace iwb {
             }
             cvQueryFrame(cpt->getCapture());
             if(i==100){
-                prs->putImage(cvPoint(10, 10), cvPoint(64, 48), blackSquare);
-                prs->putImage(cvPoint(900, 600), cvPoint(950, 650), redSquare);
+                prs->putImage(cvPoint(10, 10), cvPoint(64, 48), NULL, NULL, blackSquare);
+                prs->putImage(cvPoint(900, 600), cvPoint(950, 650), NULL, NULL, redSquare);
                 prs->applyBuffer();
                 cvWaitKey(100);
             }

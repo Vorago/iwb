@@ -56,7 +56,7 @@ namespace iwb {
         CvSize nsquares = cvSize(6,4);
         CvPoint2D32f* corners = new CvPoint2D32f[ 6*4 ];
         IplImage *cb = cvLoadImage("res/chessboard.png",1);
-        prs->putImage(cvPoint(0,0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), cb);
+        prs->putImage(cvPoint(0,0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), NULL, NULL, cb);
         prs->applyBuffer();
 
         //IplImage *fake = cvLoadImage("fake.jpg", 1);
@@ -109,7 +109,7 @@ namespace iwb {
 
         // draw calibration result
         cvDrawChessboardCorners( frame, nsquares , corners, cc, patternFound );
-        prs->putImage(cvPoint(0,0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), frame);
+        prs->putImage(cvPoint(0,0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), NULL, NULL, frame);
         prs->applyBuffer();
         // display result longer
         cvWaitKey(2000);
