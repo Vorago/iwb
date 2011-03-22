@@ -53,9 +53,11 @@ namespace iwb {
 
         printf("DEBUG: calibrating camera\n");
 
-        CvSize nsquares = cvSize(7,5);
-        CvPoint2D32f* corners = new CvPoint2D32f[ 7*5 ];
-        //IplImage *cb = cvLoadImage("res/chessboard.png",1);
+        CvSize nsquares = cvSize(6,4);
+        CvPoint2D32f* corners = new CvPoint2D32f[ 6*4 ];
+        IplImage *cb = cvLoadImage("res/chessboard.png",1);
+        prs->putImage(cvPoint(0,0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), cb);
+        prs->applyBuffer();
 
         //IplImage *fake = cvLoadImage("fake.jpg", 1);
         //IplImage *src = cvCreateImage(cvGetSize(fake), IPL_DEPTH_8U, 1);
@@ -65,27 +67,31 @@ namespace iwb {
         bool patternFound = false;
         int cc;
 
-        printf("trying to find chessboard");
         while (!patternFound) {
-            printf(".");
+            printf("trying to find chessboard\n");
             frame = cvQueryFrame(cpt->getCapture());
             patternFound = cvFindChessboardCorners(frame, nsquares, corners, &cc,
                                                    CV_CALIB_CB_ADAPTIVE_THRESH | 
                                                    CV_CALIB_CB_FILTER_QUADS | 
-                                                   CV_CALIB_CB_FAST_CHECK);
-            prs->putImage(cvPoint(0,0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), frame);
+                                                   CV_CALIB_CB_FAST_CHECK |
+                                                   CV_CALIB_CB_NORMALIZE_IMAGE);
+//            prs->putImage(cvPoint(0,0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), frame);
 
-            prs->applyBuffer();
+//            prs->applyBuffer();
             cvWaitKey(5);
         }
         printf("\n");
-        float x = 2*corners[0].x-corners[1].x,
-              y = 2*corners[0].y-corners[7].y;
+        //float x = 2*corners[0].x-corners[1].x,
+        //      y = 2*corners[0].y-corners[7].y;
+        float x = corners[0].x-1.5*(corners[1].x-corners[0].x),
+              y = corners[0].y-1.5*(corners[7].y-corners[0].y);
 
         this->projectorOrigin = cvPoint((int)x, (int)y);
 
-        x = 2*corners[34].x-corners[33].x;
-        y = 2*corners[34].y-corners[27].y;
+        //x = 2*corners[34].x-corners[33].x;
+        //y = 2*corners[34].y-corners[27].y;
+        x = corners[23].x+1.5*(corners[23].x-corners[22].x);
+        y = corners[23].y+1.5*(corners[23].y-corners[17].y);
 
 
         this->projectorWidth = (int)(x-this->projectorOrigin.x);
@@ -93,7 +99,7 @@ namespace iwb {
 
         printf("Projector: (%d, %d): %dx%d)\n", this->projectorOrigin.x, this->projectorOrigin.y, this->projectorWidth,this->projectorHeight);
 
-        cpt->saveFrame("cbfound.jpg", frame);
+        //cpt->saveFrame("cbfound.jpg", frame);
 
         // improve result (thoug through testing, it seems it makes it worse - disabling)
         // could use simple linear regression to get a "better" calibration.
@@ -107,7 +113,10 @@ namespace iwb {
         prs->applyBuffer();
         // display result longer
         cvWaitKey(5000);
+        prs->clearArea(cvPoint(0,0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()));
+        prs->applyBuffer();
 
+//        cvReleaseImage(&frame);
 
 
 // generate chessboard programatically. (htf does cvFillPoly work?! - using image for now)

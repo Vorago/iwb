@@ -39,7 +39,8 @@ namespace iwb {
     }
 
     int Application::run() {
-        IplImage *cf = cvQueryFrame(cpt->getCapture());
+        IplImage *cf = cvCreateImage(cvSize(320, 240), IPL_DEPTH_8U, 3);
+        cf = cvQueryFrame(cpt->getCapture());
 
         IplImage *bg = cvCloneImage(cf);;
         CvMat bgmat = cv::cvarrToMat(bg);
