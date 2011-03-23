@@ -1,6 +1,7 @@
 #include "include/imageFrame.hpp"
 #include "include/confirmation.hpp"
 #include "include/camera.hpp"
+#include "include/cornerDetector.hpp"
 #include <opencv/cv.h>
 
 namespace iwb {
@@ -42,7 +43,16 @@ namespace iwb {
 //            calculate = false;
 //        }
                         // Second time capturing still frame
+
+        CornerDetector cd;
         IplImage* diff = analysis->getCornerDiff(capturedFrame, currentFrame);
+//        if (!cd.detect(diff, &cameraUL, &cameraBR)) {
+//            printf("DEBUG: IT'S FAAAAAAAAAAAALSE YOU KNOW\n");
+//            cvSaveImage("cornercornerCAPTURED.jpg", capturedFrame);
+//            cvSaveImage("cornercornerCURRENT.jpg", currentFrame);
+//            cvSaveImage("cornercornercorner.jpg", diff);
+//            return;
+//        }
                         cameraUL = analysis->getLocation(diff, ulImage, true);
                         cameraBR = analysis->getLocation(diff, brImage, false);
 
@@ -69,8 +79,8 @@ namespace iwb {
 //                        cvRectangle(diff, projectorUL, projectorBR, cvScalar(0, 0, 255, 0), 1, 0, 0);
         cpt->saveFrame("cornerDiff.jpg", diff);
 
-                        printf("if ul.x: %d, ul.y: %d\n", cameraUL.x, cameraUL.y);
-                        printf("if br.x: %d, br.y: %d\n", cameraBR.x, cameraBR.y);
+                        printf("if ul.x: %d, ul.y: %d\n", projectorUL.x, projectorUL.y);
+                        printf("if br.x: %d, br.y: %d\n", projectorBR.x, projectorBR.y);
 //                        cpt->saveFrame("diff.jpg", Analysis::getDiff(capturedFrame, currentFrame));
                         // ]]] Save KF & CI
                         //------------------------------------------------------------------------------
@@ -88,10 +98,10 @@ namespace iwb {
                             cvSetImageROI(currentFrame, cvRect(cameraUL.x, cameraUL.y, width, height));
                             IplImage* Ci = cvCreateImage(cvGetSize(currentFrame), currentFrame->depth, currentFrame->nChannels);
 
-                            if (currentFrame != NULL)
-                                cvReleaseImage(&currentFrame);
                             cvCopyImage(currentFrame, Ci);
                             capturedFrame = cvCloneImage(Ci);
+//                            if (currentFrame != NULL)
+//                                cvReleaseImage(&currentFrame);
 
                             cvResetImageROI(currentFrame);
 //                            // Saving Images
