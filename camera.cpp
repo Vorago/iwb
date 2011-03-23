@@ -84,7 +84,7 @@ namespace iwb {
         //float x = 2*corners[0].x-corners[1].x,
         //      y = 2*corners[0].y-corners[7].y;
         float x = corners[0].x-1.5*(corners[1].x-corners[0].x),
-              y = corners[0].y-1.5*(corners[7].y-corners[0].y);
+              y = corners[0].y-1.5*(corners[6].y-corners[0].y);
 
         this->projectorOrigin = cvPoint((int)x, (int)y);
 
