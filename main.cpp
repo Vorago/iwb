@@ -1,8 +1,3 @@
-#include "include/capture.hpp"
-#include "include/presentation.hpp"
-#include "include/scroller.hpp"
-#include "include/handler.hpp"
-#include "include/camera.hpp"
 #include "include/application.hpp"
 
 using namespace iwb;

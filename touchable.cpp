@@ -1,16 +1,35 @@
 #include "include/touchable.hpp"
+#include "include/camera.hpp"
 #include <opencv/cv.h>
 
 namespace iwb {
-    Touchable::Touchable(char* imagePath, CvPoint projectorUL, CvPoint projectorBR, CvPoint cameraUL, CvPoint cameraBR, void (*action)(void), int threshold) : Drawable(imagePath, projectorUL, projectorBR) {
-        this->cameraUL = CvPoint(cameraUL);
-        this->cameraBR = CvPoint(cameraBR);
+    Touchable::Touchable(char* imagePath, Presentation *prs, Handler *hndl, CvPoint projectorUL, CvPoint projectorBR, void (*action)(void), int threshold) : Drawable(imagePath, prs, projectorUL, projectorBR) {
+        this->cameraUL = this->cfppoint(projectorUL);
+        this->cameraBR = this->cfppoint(projectorBR);
         this->threshold = threshold;
         this->action = action;
         this->interaction = 0;
+        this->hndl = hndl;
+        this->prs = prs;
+        hndl->addComponent(this);
     }
 
     Touchable::~Touchable() {
+    }
+    
+    // calculates the position in camera coords from projector coords
+    CvPoint Touchable::cfppoint(CvPoint p) {
+        Camera *camera = Camera::getInstance();
+        CvPoint po = camera->getProjectorOrigin();
+        int pw = camera->getProjectorWidth(),
+            ph = camera->getProjectorHeight(),
+            w  = this->prs->screenWidth,
+            h  = this->prs->screenHeight;
+        //printf("\n\nx: po.x(%d) w(%d) pw(%d) p.x(%d)\ny: po.y(%d) h(%d) ph(%d) p.y(%d)\n", po.x, w, pw, p.x, po.y, h, ph, p.y);
+        int x = po.x+((float)pw/w)*p.x,
+            y = po.y+((float)ph/h)*p.y;
+        //printf("(%d, %d)", x,y);
+        return cvPoint(x,y);
     }
 
     int Touchable::getCameraWidth() {

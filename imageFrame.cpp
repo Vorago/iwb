@@ -4,7 +4,7 @@
 #include <opencv/cv.h>
 
 namespace iwb {
-    ImageFrame::ImageFrame(Capture* cpt, Analysis* analysis) : Drawable("res/yes.jpg", cvPoint(0, 0), cvPoint(1024, 768)) {
+    ImageFrame::ImageFrame(Capture* cpt, Presentation* prs, Analysis* analysis) : Drawable("res/yes.jpg", prs, cvPoint(0, 0), cvPoint(1024, 768)) {
         this->cpt = cpt;
         this->analysis = analysis;
 
@@ -188,7 +188,7 @@ namespace iwb {
     void ImageFrame::draw(Presentation* prs) {
         if (currentProcess == DRAWING || currentProcess == SAVING_IMAGE) {
 //            prs->putImage(projectorUL, projectorBR, image);
-            prs->putImage(cameraUL, cameraBR, image);
+            prs->putImage(cameraUL, cameraBR, NULL, NULL, image);
         }
     }
 }

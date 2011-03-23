@@ -25,10 +25,9 @@ namespace iwb {
         ~Camera();
         int getWidth();
         int getHeight();
-        float getLeftOffset();
-        float getRightOffset();
-        float getTopOffset();
-        float getBottomOffset();
+        int getProjectorHeight();
+        int getProjectorWidth();
+        CvPoint getProjectorOrigin();
         void calibrate(Capture* cpt, Presentation* prs);
     protected:
         Camera();
@@ -36,10 +35,9 @@ namespace iwb {
         static Camera* instance;
         int width;
         int height;
-        float leftOffset;
-        float rightOffset;
-        float topOffset;
-        float bottomOffset;
+        int projectorWidth;
+        int projectorHeight;
+        CvPoint projectorOrigin;
     };
 }
 

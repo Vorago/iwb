@@ -8,12 +8,13 @@
 #include "include/drawable.hpp"
 
 namespace iwb {
-    Drawable::Drawable(const char* imagePath, CvPoint projectorUL, CvPoint projectorBR) {
+    Drawable::Drawable(const char* imagePath, Presentation *prs, CvPoint projectorUL, CvPoint projectorBR) {
         image = cvLoadImage(imagePath, CV_LOAD_IMAGE_UNCHANGED);
         this->projectorUL = projectorUL;
         this->projectorBR = projectorBR;
-        
-        initialize();
+        this->prs = prs;
+        prs->addComponent(this);
+            
     }
 
     Drawable::~Drawable() {
@@ -33,11 +34,7 @@ namespace iwb {
         image = cvLoadImage(imagePath, CV_LOAD_IMAGE_UNCHANGED);
     }
 
-    void Drawable::initialize() {
-        printf("DEBUG: drawable initialized\n");
-    }
-
     void Drawable::draw(Presentation* prs) {
-        prs->putImage(projectorUL, projectorBR, image);
+        prs->putImage(projectorUL, projectorBR, NULL, NULL, image);
     }
 }

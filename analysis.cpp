@@ -141,9 +141,9 @@ namespace iwb {
             cvCvtColor(blur, gs,CV_RGB2GRAY);
             cvThreshold(gs,bw,128,255,CV_THRESH_TRUNC/*|CV_THRESH_OTSU*/);
             cvThreshold(bw,gs,12,255,CV_THRESH_BINARY/*|CV_THRESH_OTSU*/);
-            cvCvtColor(gs,dst_img,CV_GRAY2RGB);
+//            cvCvtColor(gs,dst_img,CV_GRAY2RGB);
 
-            return dst_img;
+            return gs;
     }
 
     CvPoint Analysis::getLocation(IplImage *source, IplImage *pattern, bool upperLeft) {

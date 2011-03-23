@@ -8,6 +8,7 @@
 #ifndef HANDLER_HPP
 #define	HANDLER_HPP
 
+namespace iwb {class Handler;}
 #include "capture.hpp"
 #include <list>
 #include "touchable.hpp"

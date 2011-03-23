@@ -24,7 +24,7 @@
 namespace iwb {
     class ImageFrame : public Drawable {
     public:
-        ImageFrame(Capture* cpt, Analysis* analysis);
+        ImageFrame(Capture* cpt, Presentation* prs, Analysis* analysis);
         ~ImageFrame();
         virtual void setImagePath(const char* imagePath);
         void update();

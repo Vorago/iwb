@@ -12,6 +12,8 @@
 #include "include/confirmation.hpp"
 #include "include/imageFrame.hpp"
 
+#include <QtGui/QApplication>
+
 namespace iwb {
 
     Application::~Application() {
@@ -23,18 +25,17 @@ namespace iwb {
     }
 
     int Application::initialize(int argc, char* argv[]) {
+        QApplication a (argc, argv);
+
         hndl = new Handler();
         cpt = NULL;
 
-        int resWidth = 1440;
-        int resHeight = 900;
-
-        if (!hndl->handleArguments(argc, argv, &cpt, &resWidth, &resHeight)) return -1;
+        if (!hndl->handleArguments(argc, argv, &cpt, 0, 0)) return -1;
 
         analysis = new Analysis(cpt);
-        prs = new Presentation(resWidth, resHeight);
+        prs = new Presentation();
         Camera::getInstance()->calibrate(cpt, prs);
-        imageFrame = new ImageFrame(cpt, analysis);
+        imageFrame = new ImageFrame(cpt, prs, analysis);
 //        imageFrame->setImagePath("res/no.jpg");
         imageFrame->saveFrame();
         prs->addComponent(imageFrame);
@@ -45,25 +46,36 @@ namespace iwb {
     }
 
     int Application::run() {
-        IplImage *cf;
+    int i;
+        IplImage *cf = cvCreateImage(cvSize(320, 240), IPL_DEPTH_8U, 3);
+        IplImage *diff = cvCreateImage(cvSize(640, 480), IPL_DEPTH_8U, 3);
+        IplImage *gs;
+        for (i=0; i<100; i++)
+            cf = cvQueryFrame(cpt->getCapture());
+        cpt->saveFrame("bgcapt.jpg", cf);
+//        cvWaitKey(5000);
+        cf = cvQueryFrame(cpt->getCapture());
+        cpt->saveFrame("bgcapt2.jpg", cf);
+
         const char* winFrame = "winFrame";
         cvNamedWindow(winFrame, CV_WINDOW_AUTOSIZE);
 //        cvNamedWindow("test", CV_WINDOW_AUTOSIZE);
 
         cpt->getCapture();
-        cvWaitKey(3000);
+//        cvWaitKey(3000);
         
         while(true) {
             imageFrame->update();
             cf = cvQueryFrame(cpt->getCapture());
-//            cvRectangle(cf, imageFrame->projectorUL, imageFrame->projectorBR, cvScalar(0, 0, 255, 0), 1, 0, 0);
             cvShowImage(winFrame, cf);
 
-            prs->drawDiff(cvCloneImage(analysis->getDiff()));
+            gs = cvCloneImage(analysis->getDiff());
+            cvCvtColor(gs, diff, CV_GRAY2RGB);
+            prs->drawDiff(diff);
             prs->drawComponents();
 
-//            cvShowImage("test", cvCloneImage(analysis->getCornerDiff()));
-    //			hndl->detectTouchedComponents(gs);
+            // TODO: somehow get this gs from somewhere
+            hndl->detectTouchedComponents(gs);
             cvWaitKey(5);
         }
 
