@@ -45,24 +45,24 @@ namespace iwb {
     }
 
     void Capture::showDiff() {
-        const char* winDiff = "winDiff";
-        const char* winFrame = "winFrame";
-        cvNamedWindow(winDiff, CV_WINDOW_AUTOSIZE);
-        cvNamedWindow(winFrame, CV_WINDOW_AUTOSIZE);
-        
-        for (;;) {
-            IplImage* currentFrame = cvQueryFrame(capture);
-
-            if (previousFrame == NULL) {
-                previousFrame = cvCloneImage(currentFrame);
-                continue;
-            }
-            IplImage* diff = Analysis::getDiff(previousFrame, currentFrame);
-            cvShowImage(winFrame, currentFrame);
-            previousFrame = cvCloneImage(currentFrame);
-            cvShowImage(winDiff, diff);
-            cvWaitKey(0);
-            cvReleaseImage(&diff);
-        }
+//        const char* winDiff = "winDiff";
+//        const char* winFrame = "winFrame";
+//        cvNamedWindow(winDiff, CV_WINDOW_AUTOSIZE);
+//        cvNamedWindow(winFrame, CV_WINDOW_AUTOSIZE);
+//
+//        for (;;) {
+//            IplImage* currentFrame = cvQueryFrame(capture);
+//
+//            if (previousFrame == NULL) {
+//                previousFrame = cvCloneImage(currentFrame);
+//                continue;
+//            }
+//            IplImage* diff = Analysis::getDiff(previousFrame, currentFrame);
+//            cvShowImage(winFrame, currentFrame);
+//            previousFrame = cvCloneImage(currentFrame);
+//            cvShowImage(winDiff, diff);
+//            cvWaitKey(0);
+//            cvReleaseImage(&diff);
+//        }
     }
 }

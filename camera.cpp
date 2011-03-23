@@ -42,10 +42,12 @@ namespace iwb {
 #ifdef NO_CALIBRATION
         printf("DEBUG: camera calibration disabled!\n");
 
-        this->width = 320;
-        this->height = 240;
-        this->projectorWidth = 320;
-        this->projectorHeight = 240;
+        IplImage* cf = cvQueryFrame(cpt->getCapture());
+
+        this->width = cf->width;
+        this->height = cf->height;
+        this->projectorWidth = prs->getScreenWidth();
+        this->projectorHeight = prs->getScreenHeight();
         this->projectorOrigin = cvPoint(0,0);
 
         return;
@@ -56,7 +58,7 @@ namespace iwb {
         CvSize nsquares = cvSize(6,4);
         CvPoint2D32f* corners = new CvPoint2D32f[ 6*4 ];
         IplImage *cb = cvLoadImage("res/chessboard.png",1);
-        prs->putImage(cvPoint(0,0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), cb);
+        prs->putImage(cvPoint(0,0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), NULL, NULL, cb);
         prs->applyBuffer();
 
         //IplImage *fake = cvLoadImage("fake.jpg", 1);
@@ -109,7 +111,7 @@ namespace iwb {
 
         // draw calibration result
         cvDrawChessboardCorners( frame, nsquares , corners, cc, patternFound );
-        prs->putImage(cvPoint(0,0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), frame);
+        prs->putImage(cvPoint(0,0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), NULL, NULL, frame);
         prs->applyBuffer();
         // display result longer
         cvWaitKey(2000);
@@ -136,7 +138,5 @@ namespace iwb {
 //                cvFillPoly(...)
 //            }
 //        }
-
-
     }
 }

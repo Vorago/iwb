@@ -24,7 +24,7 @@ namespace iwb {
          * @param frame2 seconf frame for differentiation
          * @return monochrome frame with difference
          */
-        static IplImage* getDiff(IplImage* frame1, IplImage* frame2);
+//        static IplImage* getDiff(IplImage* frame1, IplImage* frame2);
 
         /**
          * Function for coordinates extraction
@@ -42,7 +42,7 @@ namespace iwb {
          * @param diff monochrome frame with difference
          * @return true if diff contains white, false otherwise
          */
-        static bool isMoving(const IplImage* diff);
+        bool isMoving(const IplImage* diff);
 
         /**
          * Function for motion detection
@@ -64,6 +64,20 @@ namespace iwb {
          * @param prs Presentation class instance for outputting test picture
          */
         static void doCalibrate(Capture* cpt, Presentation* prs);
+
+        Analysis(Capture* cpt);
+        ~Analysis();
+        IplImage* getDiff();
+        IplImage* getMovementDiff();
+        IplImage* getCornerDiff(IplImage* withoutCorners, IplImage* withCorners);
+
+        void update();
+    protected:
+        Capture* cpt;
+        IplImage* bg;
+        IplImage* previousFrame;
+        
+        void initialize();
     };
 }
 #endif	/* ANALYSIS_HPP */

@@ -9,7 +9,7 @@
 #define	CONSTANTS_HPP
 namespace iwb {
     namespace constants {
-        const int threshold = 70;
+        const int threshold = 100;
 
     }
 }
