@@ -103,7 +103,7 @@ namespace iwb {
     }
 
     void ImageFrame::checkForCapture() {
-        refreshCornerCoords(false);
+        refreshCornerCoords(NULL);
     }
 
     void ImageFrame::checkForMovement() {
