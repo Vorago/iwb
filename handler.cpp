@@ -6,6 +6,7 @@
  */
 
 #include "include/handler.hpp"
+#include <opencv/cv.h>
 #include <stdio.h>
 
 namespace iwb {
@@ -73,9 +74,10 @@ namespace iwb {
         return true;
     }
 	void Handler::detectTouchedComponents(IplImage *mask) {
+            cvSaveImage("mask.jpg", mask);
 	    for (std::list<Touchable*>::iterator component = components.begin(); component != components.end(); component++) {
-            (*component)->detectTouch(mask);
-        }
+                (*component)->detectTouch(mask);
+            }
 
 	}
     void Handler::addComponent(Touchable* component) {

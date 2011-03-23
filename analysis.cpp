@@ -45,6 +45,11 @@ namespace iwb {
 
     }
 
+    void Analysis::refreshBackground() {
+        bg = cvCloneImage(cvQueryFrame(cpt->getCapture()));
+        cpt->saveFrame("omg_bg.jpg", bg);
+    }
+
     void Analysis::initialize() {
         bg = cvCloneImage(cvQueryFrame(cpt->getCapture()));
         cpt->saveFrame("omg_bg.jpg", bg);
@@ -142,7 +147,7 @@ namespace iwb {
             cvSub(bg, cf, dst_img, NULL);
             cvSmooth(dst_img, blur, CV_BLUR, 5);
             cvCvtColor(blur, gs,CV_RGB2GRAY);
-            cvThreshold(gs,bw,128,255,CV_THRESH_TRUNC/*|CV_THRESH_OTSU*/);
+            cvThreshold(gs,bw,128,255, CV_THRESH_TRUNC/*|CV_THRESH_OTSU*/);
             cvThreshold(bw,gs,12,255,CV_THRESH_BINARY/*|CV_THRESH_OTSU*/);
 //            cvCvtColor(gs,dst_img,CV_GRAY2RGB);
 

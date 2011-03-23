@@ -15,8 +15,8 @@ namespace iwb {class Touchable;}
 #include <boost/function.hpp>
 
 // These values need tweaking
-#define STD_THRESHOLD 200
-#define INTERACTION_TRIGGER 100
+#define STD_THRESHOLD 2
+#define INTERACTION_TRIGGER 2000
 
 namespace iwb {
     /**

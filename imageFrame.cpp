@@ -4,7 +4,7 @@
 #include <opencv/cv.h>
 
 namespace iwb {
-    ImageFrame::ImageFrame(Capture* cpt, Presentation* prs, Analysis* analysis) : Drawable("res/yes.jpg", prs, cvPoint(0, 0), cvPoint(1024, 768)) {
+    ImageFrame::ImageFrame(Capture* cpt, Presentation* prs, Analysis* analysis) : Drawable("res/bg.jpg", prs, cvPoint(100, 300), cvPoint(924, 768)) {
         this->cpt = cpt;
         this->analysis = analysis;
 
@@ -45,6 +45,27 @@ namespace iwb {
         IplImage* diff = analysis->getCornerDiff(capturedFrame, currentFrame);
                         cameraUL = analysis->getLocation(diff, ulImage, true);
                         cameraBR = analysis->getLocation(diff, brImage, false);
+
+        Camera *camera = Camera::getInstance();
+        CvPoint po = camera->getProjectorOrigin();
+        int pw = camera->getProjectorWidth(),
+            ph = camera->getProjectorHeight(),
+            w  = this->prs->screenWidth,
+            h  = this->prs->screenHeight,
+        x = cameraUL.x,
+        y = cameraUL.y;
+
+        //printf("\n\nx: po.x(%d) w(%d) pw(%d) p.x(%d)\ny: po.y(%d) h(%d) ph(%d) p.y(%d)\n", po.x, w, pw, p.x, po.y, h, ph, p.y);
+//        int x = po.x+((float)pw/w)*p.x,
+//            y = po.y+((float)ph/h)*p.y;
+        projectorUL.x = (int)((float)x - po.x)* w / pw;
+        projectorUL.y = (int)((float)y - po.y)* h / ph;
+        x = cameraBR.x,
+        y = cameraBR.y;
+        projectorBR.x = (int)((float)x - po.x)* w / pw;
+        projectorBR.y = (int)((float)y - po.y)* h / ph;
+        //printf("(%d, %d)", x,y);
+//        return cvPoint(x,y);
 //                        cvRectangle(diff, projectorUL, projectorBR, cvScalar(0, 0, 255, 0), 1, 0, 0);
         cpt->saveFrame("cornerDiff.jpg", diff);
 
@@ -89,6 +110,7 @@ namespace iwb {
     void ImageFrame::setImagePath(const char* imagePath) {
         if (captureState == IDLE && currentProcess == DRAWING) {
             cvReleaseImage(&image);
+            printf(">>>>>>>>>>>> %s\n", imagePath);
             image = cvLoadImage(imagePath, CV_LOAD_IMAGE_UNCHANGED);
             currentProcess = CHANGING_IMAGE;
             captureState = GETTING_CAPTURE;
@@ -194,7 +216,7 @@ namespace iwb {
     void ImageFrame::draw(Presentation* prs) {
         if (currentProcess == DRAWING || currentProcess == SAVING_IMAGE) {
 //            prs->putImage(projectorUL, projectorBR, image);
-            prs->putImage(cameraUL, cameraBR, NULL, NULL, image);
+            prs->putImage(projectorUL, projectorBR, NULL, NULL, image);
             prs->applyBuffer();
         }
     }

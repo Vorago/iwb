@@ -115,20 +115,18 @@ namespace iwb {
 
         // draw calibration result
         cvDrawChessboardCorners( frame, nsquares , corners, cc, patternFound );
-        prs->putImage(cvPoint(0,0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), NULL, NULL, frame);
+        IplImage* bg;
+        bg = cvLoadImage("res/bg.jpg", CV_LOAD_IMAGE_UNCHANGED);
+        prs->putImage(cvPoint(0,0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), NULL, NULL, bg);
         prs->applyBuffer();
         // display result longer
         cvWaitKey(2000);
         prs->clearArea(cvPoint(0,0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()));
         prs->applyBuffer();
         cvWaitKey(1000);
-
-        IplImage* cf;
-        cf = cvLoadImage("res/bg.jpg", CV_LOAD_IMAGE_UNCHANGED);
-        prs->putImage(cvPoint(0,0), cvPoint(width, height), NULL, NULL, cf);
-        prs->applyBuffer();
+        
         for (int i=0; i<100; i++)
-            cf = cvQueryFrame(cpt->getCapture());
+            cvQueryFrame(cpt->getCapture());
         //cvNamedWindow("Foobar", CV_WINDOW_AUTOSIZE);
         //cvShowImage("Foobar", cvQueryFrame(cpt->getCapture()));
         //cvWaitKey(500);

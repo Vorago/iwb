@@ -209,24 +209,34 @@ namespace iwb {
     }
 
     void Scroller::setImageToBeDisplayed(int imagePosition) {
-        if (!Confirmation::create(prs, hndl, boost::bind(&iwb::Scroller::handleYesButton, this), boost::bind(&iwb::Scroller::handleNoButton, this))) {
-            return;
-        }
-        if (imageToBeDisplayed != NULL) {
-            free(imageToBeDisplayed);
-        }
+//        if (!Confirmation::create(prs, hndl, boost::bind(&iwb::Scroller::handleYesButton, this), boost::bind(&iwb::Scroller::handleNoButton, this))) {
+//            return;
+//        }
+//        if (imageToBeDisplayed != NULL) {
+//            free(imageToBeDisplayed);
+//        }
+//
+//        imageToBeDisplayed = (char*)malloc(80 * sizeof(char*));
+//
+//        getImagePath(imagePosition, imageToBeDisplayed);
 
         imageToBeDisplayed = (char*)malloc(80 * sizeof(char*));
 
         getImagePath(imagePosition, imageToBeDisplayed);
+
+        imageFrame->setImagePath(imageToBeDisplayed);
     }
 
     void Scroller::handleYesButton() {
         printf("YEEEEEEEEEEEEEEEEEEEEEEEEES \n");
+        Confirmation::hide();
+        imageFrame->setImagePath(imageToBeDisplayed);
+
     }
 
     void Scroller::handleNoButton() {
         printf("NOOOOOOOOOOOOOOOOOOOOOOOOOO \n");
+        Confirmation::hide();
     }
 
     void Scroller::getImagePath(int imagePosition, char* path) {

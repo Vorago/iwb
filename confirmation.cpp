@@ -36,6 +36,7 @@ namespace iwb {
     }
 
     void Confirmation::deleteButton(Touchable* button) {
+        hndl->removeComponent(button);
         prs->removeComponent(button);
         delete(button);
     }

@@ -37,10 +37,10 @@ namespace iwb {
         prs = new Presentation();
         Camera::getInstance()->calibrate(cpt, prs);
         analysis = new Analysis(cpt);
-//        imageFrame = new ImageFrame(cpt, prs, analysis);
+        imageFrame = new ImageFrame(cpt, prs, analysis);
 //        imageFrame->setImagePath("res/no.jpg");
-//        imageFrame->saveFrame();
-//        prs->addComponent(imageFrame);
+        imageFrame->saveFrame();
+        prs->addComponent(imageFrame);
         scroller = new Scroller(prs, hndl, imageFrame);
 //        Confirmation::create(prs, hndl);
 
@@ -65,9 +65,32 @@ namespace iwb {
 
         cpt->getCapture();
 //        cvWaitKey(3000);
-        
+        IplImage* previous = cvCloneImage(cvQueryFrame(cpt->getCapture()));
+        IplImage* current;
+        IplImage* movementDiff;
+
+        int threshold = 1;
+        bool backgroundChanged = false;
         while(true) {
-//            imageFrame->update();
+            current = cvCloneImage(cvQueryFrame(cpt->getCapture()));
+            movementDiff = analysis->getCornerDiff(previous, current);
+            cvSaveImage("movementDiff.jpg", movementDiff);
+//            int c = 0;
+//            for (int x=0; x<movementDiff->width && !backgroundChanged; x++)
+//            for (int y=0; y<movementDiff->height && !backgroundChanged; y++) {
+//                int elem = CV_IMAGE_ELEM( movementDiff, uchar, y, x);
+//                if (elem) {
+//                    printf(" %d ", elem);
+//                    c++;
+//
+//                }
+//            }
+//                    if (c < threshold) {
+//                        analysis->refreshBackground();
+//                        backgroundChanged = true;
+//                        printf("#### CHANGING BACKGROUND #####\n");
+//                    }
+            imageFrame->update();
             cf = cvQueryFrame(cpt->getCapture());
             gs = analysis->getDiff();
             cvCvtColor(gs, diff, CV_GRAY2RGB);
@@ -81,7 +104,17 @@ namespace iwb {
             hndl->detectTouchedComponents(gs);
             cvReleaseImage(&gs);
             cvWaitKey(5);
+
+            cvReleaseImage(&previous);
+
+            previous = current;
+            backgroundChanged = false;
         }
+
+
+            cvReleaseImage(&previous);
+            cvReleaseImage(&current);
+            cvReleaseImage(&movementDiff);
 
 //        delete(scroller);
         delete(analysis);

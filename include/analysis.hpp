@@ -66,6 +66,8 @@ namespace iwb {
          */
         static void doCalibrate(Capture* cpt, Presentation* prs);
 
+        void refreshBackground();
+
         Analysis(Capture* cpt);
         ~Analysis();
         IplImage* getDiff();

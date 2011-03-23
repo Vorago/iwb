@@ -43,8 +43,14 @@ namespace iwb {
         int x,y,c = 0;
         if (this->interaction > 1)
             this->interaction--;
+        if (mask == NULL) {
+            printf("!!!! OMG OMG mask is NULLL LLLLL\n");
+            return;
+        }
+//        for (x=this->cameraUL.x; x<this->cameraBR.x; x++)
+//            for (y=this->cameraUL.y; y<this->cameraBR.y; y++)
         for (x=this->cameraUL.x; x<this->cameraBR.x; x++)
-            for (y=this->cameraUL.y; y<this->cameraBR.y; y++)
+            for (y=this->cameraBR.y; y<this->cameraBR.y+10; y++)
                 if (CV_IMAGE_ELEM( mask, uchar, y, x)) {
                     c++;
                     if (c >= this->threshold) {
@@ -52,6 +58,7 @@ namespace iwb {
                     }
                     if (this->interaction > INTERACTION_TRIGGER) {
                         printf("DETECTED TOUCH!\n");
+                        cvSaveImage("touchedMask.jpg", mask);
                         if (this->action != NULL)
                             this->action();
                         this->interaction = 0;
