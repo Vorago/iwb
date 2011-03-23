@@ -204,6 +204,7 @@ namespace iwb {
     }
 
     void Scroller::shiftRight() {
+        printf("GOT HERE\n");
         currentImg++;
         if (currentImg > imgArraySize - 1) {
             currentImg = 0;

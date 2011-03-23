@@ -51,6 +51,7 @@ namespace iwb {
                         this->interaction += 2;
                     }
                     if (this->interaction > INTERACTION_TRIGGER) {
+                        printf("DETECTED TOUCH!\n");
                         if (this->action != NULL)
                             this->action();
                         this->interaction = 0;
