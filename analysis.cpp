@@ -47,6 +47,7 @@ namespace iwb {
 
     void Analysis::initialize() {
         bg = cvCloneImage(cvQueryFrame(cpt->getCapture()));
+        cpt->saveFrame("omg_bg.jpg", bg);
 //        cvWaitKey(3000);
 //        bg = cvCloneImage(cvQueryFrame(cpt->getCapture()));
     }

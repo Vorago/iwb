@@ -34,13 +34,13 @@ namespace iwb {
 
         if (!hndl->handleArguments(argc, argv, &cpt, 0, 0)) return -1;
 
-        analysis = new Analysis(cpt);
         prs = new Presentation();
         Camera::getInstance()->calibrate(cpt, prs);
-        imageFrame = new ImageFrame(cpt, prs, analysis);
+        analysis = new Analysis(cpt);
+//        imageFrame = new ImageFrame(cpt, prs, analysis);
 //        imageFrame->setImagePath("res/no.jpg");
-        imageFrame->saveFrame();
-        prs->addComponent(imageFrame);
+//        imageFrame->saveFrame();
+//        prs->addComponent(imageFrame);
         scroller = new Scroller(prs, hndl, imageFrame);
 //        Confirmation::create(prs, hndl);
 
@@ -54,27 +54,27 @@ namespace iwb {
         IplImage *cf = cvCreateImage(cvSize(camWidth, camHeight), IPL_DEPTH_8U, 3);
         IplImage *diff = cvCreateImage(cvSize(camWidth, camHeight), IPL_DEPTH_8U, 3);
         IplImage *gs = NULL;
-        for (i=0; i<100; i++)
-            cf = cvQueryFrame(cpt->getCapture());
         cpt->saveFrame("bgcapt.jpg", cf);
 //        cvWaitKey(5000);
         cf = cvQueryFrame(cpt->getCapture());
         cpt->saveFrame("bgcapt2.jpg", cf);
 
-        const char* winFrame = "winFrame";
-        cvNamedWindow(winFrame, CV_WINDOW_AUTOSIZE);
+//        const char* winFrame = "winFrame";
+//        cvNamedWindow(winFrame, CV_WINDOW_AUTOSIZE);
 //        cvNamedWindow("test", CV_WINDOW_AUTOSIZE);
 
         cpt->getCapture();
 //        cvWaitKey(3000);
         
         while(true) {
-            imageFrame->update();
+//            imageFrame->update();
             cf = cvQueryFrame(cpt->getCapture());
-            cvShowImage(winFrame, cf);
             gs = analysis->getDiff();
             cvCvtColor(gs, diff, CV_GRAY2RGB);
-            prs->drawDiff(diff);
+//            cvShowImage(winFrame, diffs);
+//            prs->drawDiff(diff);
+
+//            prs->putImage(cvPoint(0,0), cvPoint(prs->getScreenWidth(), prs->getScreenHeight()), NULL, NULL, analysis->bg);
             prs->drawComponents();
 
             // TODO: somehow get this gs from somewhere

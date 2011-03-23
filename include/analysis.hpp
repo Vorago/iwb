@@ -17,6 +17,7 @@ namespace iwb {
 
     class Analysis {
     public:
+        IplImage* bg;
         /**
          * Function for frame differentiation
          *
@@ -74,7 +75,6 @@ namespace iwb {
         void update();
     protected:
         Capture* cpt;
-        IplImage* bg;
         IplImage* previousFrame;
         
         void initialize();
