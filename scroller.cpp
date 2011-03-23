@@ -148,7 +148,7 @@ namespace iwb {
                 upperLeft.x + round(0.95 * scrollerWidth),
                 upperLeft.y + round(0.75 * scrollerHeight)
                 );
-        char* paths[MIDDLE_IMAGE] = {"res/left.jpg", "res/right.jpg"};
+        char* paths[MIDDLE_IMAGE] = {(char*) "res/left.jpg", (char*) "res/right.jpg"};
 //        paths[LEFT_ARROW] = "res/left.jpg";
 //        paths[LEFT_IMAGE] = "res/right.jpg";
         // TODO: add image paths

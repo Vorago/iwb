@@ -75,7 +75,7 @@ namespace iwb {
                 upperLeft.y + round(0.75 * confirmHeight)
                 );
 
-        char* paths[2] = {"res/yes.jpg", "res/no.jpg"};
+        char* paths[2] = {(char*) "res/yes.jpg", (char*)"res/no.jpg"};
 
         yesButton = new Touchable(paths[0], this->prs, this->hndl, yesUL, yesBR, &testcb2);
 
