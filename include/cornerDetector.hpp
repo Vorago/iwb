@@ -7,6 +7,7 @@
 #define WHITE 255
 #define BLACK 0
 #define forpix(x,y,src)   for(int y=0; y<src->height; y++) for(int x=0; x<src->width; x++)
+#define forpixc(x,y,src,lu,br)   for(int y=lu.y; y<=br.y; y++) for(int x=ul.x; x<=br.x; x++)
 #define ford(dx,dy)   for(int dy=-1; dy<2; dy++) for(int dx=-1; dx<2; dx++)
 #define forbrd(dx,dy)   for(int dy=0; dy<2; dy++) for(int dx=0; dx<2; dx++)
 
@@ -30,7 +31,6 @@ namespace iwb {
 
             clean(src);
             inflate(src, WHITE);
-            fix(src);
 //            inflate(src, WHITE);
 //            inflate(src, BLACK);
             
@@ -41,6 +41,7 @@ namespace iwb {
                 point.y = y;
                 CvPoint lu, br;
                 if(floodCut(src, fragment, point, lu, br)) {
+                    fix(fragment, lu, br);
                     fragmentCount++;
                     if(fragmentCount >2 ) return false;
                     if(fragmentCount == 1){
@@ -75,97 +76,60 @@ namespace iwb {
             cout << "---| --- |---" << endl;
         }
 
-        bool isACorner(IplImage* src, CvPoint ul, CvPoint br, bool isUpperLeft){
-            int h = br.y - ul.y;
-            int w = br.x - ul.x;
-            int s = MAX(h,w);
-            int* bufA = (int*)malloc(sizeof(int)*s*2);
-            int* bufB = (int*)malloc(sizeof(int)*s*2);
-            memset(bufA, 0, sizeof(int)*s*2);
-            memset(bufB, 0, sizeof(int)*s*2);
-
-            // slashes (first half)
-            for(int i=0; i<s; i++){
-                int diag = i;
-                unsigned char c = BLACK;
-                for(int j=0; j<=i; j++){
-
-                    int x = ul.x + j;
-                    int y = ul.y + i-j;
-                    unsigned char c2 = Pixels(src, x,y);
-                    if(c != c2){
-                        if(c2 == WHITE){
-                            bufA[diag]++;
-                        }
-                        c = c2;
-                    }
-                }
+        bool sameVertical(IplImage* src, int x, int dx, int y1, int y2){
+            for(int y = y1; y<=y2; y++){
+                if(Pixels(src,x,y) != Pixels(src,x+dx,y)) return false;
             }
-            // slashes (second half)
-            for(int i=1; i<s; i++){
-                int diag = i + s - 1;
-                unsigned char c = BLACK;
-                for(int j=s; j>=i; j--){
-                    int x = ul.x + s-j+i;
-                    int y = ul.y + j;
-                    unsigned char c2 = Pixels(src, x,y);
-                    if(c != c2){
-                        if(c2 == WHITE){
-                            bufA[diag]++;
-                        }
-                        c = c2;
-                    }
-                }
-            }
-
-            // backslashes (first half)
-            for(int i=0; i<=s; i++){
-                int diag = i;
-                unsigned char c = BLACK;
-                for(int j=0; j<=i; j++){
-                    int x = ul.x + j;
-                    int y = ul.y + s-i+j-1;
-                    unsigned char c2 = Pixels(src, x,y);
-                    if(c != c2){
-                        if(c2 == WHITE){
-                            bufB[diag]++;
-                        }
-                        c = c2;
-                    }
-                }
-            }
-
-            //backslashes (second half)
-            for(int i=1; i<s; i++){
-                int diag = s+i;
-                unsigned char c = BLACK;
-                for(int j=0; j<s-i; j++){
-                    int x = ul.x + i+j;
-                    int y = ul.y + j;
-                    unsigned char c2 = Pixels(src, x,y);
-                    if(c != c2){
-                        if(c2 == WHITE){
-                            bufB[diag]++;
-                        }
-                        c = c2;
-                    }
-                }
-            }
-
-            if(isUpperLeft){
-                //check for UL corner
-            }else{
-                //check for BR corner
-            }
-
-//            for(int i=0; i<s*2-1; i++)
-//                cout << "i: " << i << " B: " << bufB[i] << endl;
-//            cvSaveImage("lookatme.jpg", src);
-            
-            free(bufA);
-            free(bufB);
-
             return true;
+        }
+
+        bool sameHorizontal(IplImage* src, int y, int dy, int x1, int x2){
+            for(int x = x1; x<=x2; x++){
+                if(Pixels(src,x,y) != Pixels(src,x,y+dy)) return false;
+            }
+            return true;
+        }
+
+        bool isACorner(IplImage* src, CvPoint ul, CvPoint br, bool isUpperLeft){
+
+            int x1=ul.x+1;
+            int x2=br.x-1;
+            int y1=ul.y+1;
+            int y2=br.y-1;
+
+            int i;
+            int x;
+            bool areTheSame;
+
+            //------------------------------------------------------------------------------------
+
+            while(sameVertical(src, x1, -1 , ul.y, br.y)) x1++;
+            while(sameVertical(src, x2, 1 , ul.y, br.y)) x2--;
+            while(sameHorizontal(src, y1, -1, ul.x, br.x)) y1++;
+            while(sameHorizontal(src, y2, 1, ul.x, br.x)) y2--;
+            x1--; x2++; y1--; y2++;
+            //------------------------------------------------------------------------------------
+
+//            cout << "-- RESULT" << endl;
+//            cout << x1  << " : " << y1 << endl;
+//            cout << x2  << " : " << y2 << endl;
+//            dump(src, cvPoint(x1,y1), cvPoint(x2,y2));
+            
+//            if(isUpperLeft){
+//                //check for UL corner
+//            }else{
+//                //check for BR corner
+//            }
+            if(((x2-x1 != 1) || (y2-y1 != 1))) return false;
+
+            int sum = 0;
+            for(int i=y1; i<=y2;i++){
+                for(int j=x1; j<=x2; j++){
+                    if(Pixels(src,j,i) == WHITE) sum++;
+                }
+            }
+
+            return (sum == 3);
         }
 
         void Rectangle(IplImage *src, CvPoint lu, CvPoint br, unsigned char color){
@@ -218,7 +182,7 @@ namespace iwb {
 
         }
 
-        void fix(IplImage* src) {
+        void fix(IplImage* src, CvPoint ul, CvPoint br) {
             IplImage* buffer = cvCloneImage(src);
 
             bool repeat;
@@ -226,10 +190,9 @@ namespace iwb {
 
                 repeat = false;
 
-                forpix(x, y, src) {
+                forpixc(x, y, src, ul, br) {
 
                     int sum = 0;
-                    unsigned char must = Pixels(src, x, y) > 128 ? WHITE : BLACK;
                     for (int dx = -1; dx < 2; dx++) {
                         for (int dy = -1; dy < 2; dy++) {
 
@@ -243,7 +206,7 @@ namespace iwb {
                     }
                     if (sum == 12 || sum == 22 || sum == 33) {
                         Pixels(buffer, x, y) = WHITE;
-                        repeat = (must == BLACK);
+                        repeat = true;
                     }
                 }
                 cvCopyImage(buffer, src);

@@ -21,6 +21,7 @@ namespace iwb {
      */
     class Application {
     public:
+        Application(int argc, char **argv);
         ~Application();
         /**
          * Initializes the application.
@@ -31,6 +32,7 @@ namespace iwb {
         int initialize(int argc, char* argv[]);
         int run();
     protected:
+        QApplication *a;
         Handler* hndl;
         Capture* cpt;
         ImageFrame* imageFrame;

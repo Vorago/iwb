@@ -15,17 +15,19 @@
 #include <QtGui/QApplication>
 
 namespace iwb {
-
+    Application::Application(int argc, char **argv){
+        this->a = new QApplication(argc, argv);
+    }
     Application::~Application() {
         // TODO: make sure that order used doesn't lead to memory leaks
         delete(cpt);
         delete(scroller);
         delete(hndl);
         delete(prs);
+        delete (a);
     }
 
     int Application::initialize(int argc, char* argv[]) {
-        QApplication a (argc, argv);
 
         hndl = new Handler();
         cpt = NULL;
@@ -51,7 +53,7 @@ namespace iwb {
     int camHeight = Camera::getInstance()->getHeight();
         IplImage *cf = cvCreateImage(cvSize(camWidth, camHeight), IPL_DEPTH_8U, 3);
         IplImage *diff = cvCreateImage(cvSize(camWidth, camHeight), IPL_DEPTH_8U, 3);
-        IplImage *gs;
+        IplImage *gs = NULL;
         for (i=0; i<100; i++)
             cf = cvQueryFrame(cpt->getCapture());
         cpt->saveFrame("bgcapt.jpg", cf);
@@ -70,8 +72,6 @@ namespace iwb {
             imageFrame->update();
             cf = cvQueryFrame(cpt->getCapture());
             cvShowImage(winFrame, cf);
-
-//            gs = cvCloneImage(analysis->getDiff());
             gs = analysis->getDiff();
             cvCvtColor(gs, diff, CV_GRAY2RGB);
             prs->drawDiff(diff);
@@ -79,6 +79,7 @@ namespace iwb {
 
             // TODO: somehow get this gs from somewhere
             hndl->detectTouchedComponents(gs);
+            cvReleaseImage(&gs);
             cvWaitKey(5);
         }
 

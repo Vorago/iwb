@@ -33,9 +33,12 @@ namespace iwb {
 //        Presentation* prs;
 //        Handler* hndl;
         Touchable *buttons[5];
+        Presentation* prs;
+        Handler* hndl;
+        ImageFrame* imageFrame;
 
-        static Scroller* instance;
-        static char* imageToBeDisplayed;
+//        Scroller* instance;
+        char* imageToBeDisplayed;
 
         /**
          * Frees allocated memory and resets the variables
@@ -46,9 +49,6 @@ namespace iwb {
         void displayImages();
         
     public:
-        Presentation* prs;
-        Handler* hndl;
-        ImageFrame* imageFrame;
         int imgArraySize;
         char **imgArray;
         int currentImg;
@@ -73,16 +73,16 @@ namespace iwb {
 
         void getImagePath(int imagePosition, char* path);
 
-        static void setImageToBeDisplayed(int imagePosition);
+        void setImageToBeDisplayed(int imagePosition);
 
-        static void handleLeftArrowTouch();
-        static void handleLeftImageTouch();
-        static void handleMiddleImageTouch();
-        static void handleRightImageTouch();
-        static void handleRightArrowTouch();
+        void handleLeftArrowTouch();
+        void handleLeftImageTouch();
+        void handleMiddleImageTouch();
+        void handleRightImageTouch();
+        void handleRightArrowTouch();
 
-        static void handleYesButton();
-        static void handleNoButton();
+        void handleYesButton();
+        void handleNoButton();
 
     };
 }

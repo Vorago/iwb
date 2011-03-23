@@ -6,9 +6,9 @@ namespace iwb {
 
     Confirmation* Confirmation::instance = NULL;
 
-    bool Confirmation::create(Presentation* prs, Handler* hndl) {
+    bool Confirmation::create(Presentation* prs, Handler* hndl, boost::function<void (void)> yesCb, boost::function<void (void)> noCb) {
         if (instance == NULL) {
-            instance = new Confirmation(prs, hndl);
+            instance = new Confirmation(prs, hndl, yesCb, noCb);
             return true;
         }
         return false;
@@ -19,11 +19,11 @@ namespace iwb {
         instance = NULL;
     }
     
-    Confirmation::Confirmation(Presentation* prs, Handler* hndl) {
+    Confirmation::Confirmation(Presentation* prs, Handler* hndl, boost::function<void (void)> yesCb, boost::function<void (void)> noCb) {
         this->prs = prs;
         this->hndl = hndl;
 
-        initialize();
+        initialize(yesCb, noCb);
     }
 
     Confirmation::~Confirmation() {
@@ -43,7 +43,7 @@ namespace iwb {
 			printf("TOUCHED!\n");
 		};
 
-    void Confirmation::initialize() {
+    void Confirmation::initialize(boost::function<void (void)> yesCb, boost::function<void (void)> noCb) {
         CvPoint upperLeft = cvPoint(850, 0);
         CvPoint lowerRight = cvPoint(1000, 200);
 
@@ -77,8 +77,8 @@ namespace iwb {
 
         char* paths[2] = {"res/yes.jpg", "res/no.jpg"};
 
-        yesButton = new Touchable(paths[0], this->prs, this->hndl, yesUL, yesBR, &testcb2);
+        yesButton = new Touchable(paths[0], this->prs, this->hndl, yesUL, yesBR, yesCb);
 
-        noButton= new Touchable(paths[1], this->prs, this->hndl, noUL, noBR, &testcb2);
+        noButton= new Touchable(paths[1], this->prs, this->hndl, noUL, noBR, noCb);
     }
 }

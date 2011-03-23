@@ -1,15 +1,14 @@
 #include "include/scroller.hpp"
 #include "include/camera.hpp"
+#include <boost/bind.hpp>
 
 namespace iwb {
-
-    Scroller* Scroller::instance = NULL;
-    char* Scroller::imageToBeDisplayed = NULL;
 
     Scroller::Scroller(Presentation* prs, Handler* hndl, ImageFrame* imageFrame) {
         this->prs = prs;
         this->hndl = hndl;
         this->imageFrame = imageFrame;
+        imageToBeDisplayed = NULL;
         imgArraySize = 0;
         imgArray = NULL;
         currentImg = 0;
@@ -20,7 +19,7 @@ namespace iwb {
         freeFileNameArray();
         freeButtons();
 
-        free(Scroller::imageToBeDisplayed);
+        free(imageToBeDisplayed);
     }
 
     void Scroller::freeFileNameArray(){
@@ -97,7 +96,7 @@ namespace iwb {
 
     void Scroller::initialize() {
 
-        Scroller::instance = this;
+//        Scroller::instance = this;
 
         for (int i = 0; i < 5; i++) {
             buttons[i] = NULL;
@@ -160,9 +159,10 @@ namespace iwb {
 //        paths[LEFT_ARROW] = "res/left.jpg";
 //        paths[LEFT_IMAGE] = "res/right.jpg";
         // TODO: add image paths
-        buttons[LEFT_ARROW] = new Touchable(paths[0], prs, hndl, projectorUL[LEFT_ARROW], projectorBR[LEFT_ARROW], &handleLeftArrowTouch);
+        
+        buttons[LEFT_ARROW] = new Touchable(paths[0], prs, hndl, projectorUL[LEFT_ARROW], projectorBR[LEFT_ARROW], boost::bind(&iwb::Scroller::shiftLeft, this));
 
-        buttons[RIGHT_ARROW] = new Touchable(paths[1], prs, hndl, projectorUL[RIGHT_ARROW], projectorBR[RIGHT_ARROW], &handleRightArrowTouch);
+        buttons[RIGHT_ARROW] = new Touchable(paths[1], prs, hndl, projectorUL[RIGHT_ARROW], projectorBR[RIGHT_ARROW], boost::bind(&iwb::Scroller::shiftRight, this));
 
 //        for (int i = 0; i < 2; i++) {
 //            printf("%s\n", paths[i]);
@@ -175,21 +175,16 @@ namespace iwb {
         // FIXME: this code will crash if there are less than three images in the folder
         char filepath[80];
         snprintf(filepath, sizeof(filepath), "tmp/1/%s", imgArray[0]);
-        buttons[LEFT_IMAGE] = new Touchable(filepath, prs, hndl, projectorUL[LEFT_IMAGE], projectorBR[LEFT_IMAGE], &handleLeftImageTouch);
+        buttons[LEFT_IMAGE] = new Touchable(filepath, prs, hndl, projectorUL[LEFT_IMAGE], projectorBR[LEFT_IMAGE], boost::bind(&iwb::Scroller::handleLeftImageTouch, this));
 
         snprintf(filepath, sizeof(filepath), "tmp/1/%s", imgArray[1]);
-        buttons[MIDDLE_IMAGE] = new Touchable(filepath, prs, hndl, projectorUL[MIDDLE_IMAGE], projectorBR[MIDDLE_IMAGE], &handleMiddleImageTouch);
+        buttons[MIDDLE_IMAGE] = new Touchable(filepath, prs, hndl, projectorUL[MIDDLE_IMAGE], projectorBR[MIDDLE_IMAGE], boost::bind(&iwb::Scroller::handleMiddleImageTouch, this));
 
         snprintf(filepath, sizeof(filepath), "tmp/1/%s", imgArray[2]);
-        buttons[RIGHT_IMAGE] = new Touchable(filepath, prs, hndl, projectorUL[RIGHT_IMAGE], projectorBR[RIGHT_IMAGE], &handleRightImageTouch);
+        buttons[RIGHT_IMAGE] = new Touchable(filepath, prs, hndl, projectorUL[RIGHT_IMAGE], projectorBR[RIGHT_IMAGE], boost::bind(&iwb::Scroller::handleRightImageTouch, this));
 
         displayImages();
         
-    }
-
-    void Scroller::handleLeftArrowTouch() {
-//        Scroller::instance->shiftLeft();
-        printf("<<< LEFT ARROW\n");
     }
 
     void Scroller::handleLeftImageTouch() {
@@ -213,13 +208,8 @@ namespace iwb {
 //        printf(">>>>>>>.........DISPLAYING RIGHT.........<<<<<< %s \n", imageToBeDisplayed);
     }
 
-    void Scroller::handleRightArrowTouch() {
-//        Scroller::instance->shiftRight();
-        printf(">>> RIGHT ARROW\n");
-    }
-
     void Scroller::setImageToBeDisplayed(int imagePosition) {
-        if (!Confirmation::create(instance->prs, instance->hndl)) {
+        if (!Confirmation::create(prs, hndl, boost::bind(&iwb::Scroller::handleYesButton, this), boost::bind(&iwb::Scroller::handleNoButton, this))) {
             return;
         }
         if (imageToBeDisplayed != NULL) {
@@ -228,15 +218,15 @@ namespace iwb {
 
         imageToBeDisplayed = (char*)malloc(80 * sizeof(char*));
 
-        instance->getImagePath(imagePosition, imageToBeDisplayed);
+        getImagePath(imagePosition, imageToBeDisplayed);
     }
 
     void Scroller::handleYesButton() {
-
+        printf("YEEEEEEEEEEEEEEEEEEEEEEEEES \n");
     }
 
     void Scroller::handleNoButton() {
-        
+        printf("NOOOOOOOOOOOOOOOOOOOOOOOOOO \n");
     }
 
     void Scroller::getImagePath(int imagePosition, char* path) {
@@ -273,6 +263,7 @@ namespace iwb {
     }
 
     void Scroller::shiftRight() {
+        printf("GOT HERE\n");
         currentImg++;
         if (currentImg > imgArraySize - 1) {
             currentImg = 0;
@@ -282,7 +273,7 @@ namespace iwb {
     }
 
     void Scroller::displayConfirmation() {
-        if (Confirmation::create(prs, hndl)) {
+        if (Confirmation::create(prs, hndl, NULL, NULL)) {
             printf("DEBUG: confirmation dialog created!\n");
         }
     }

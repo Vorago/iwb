@@ -50,6 +50,8 @@ namespace iwb {
         this->projectorHeight = this->height;
         this->projectorOrigin = cvPoint(0,0);
 
+//        cvReleaseImage (&cf);
+
         return;
 #endif
 
@@ -82,11 +84,13 @@ namespace iwb {
 //            prs->applyBuffer();
             cvWaitKey(5);
         }
+        this->width = frame->width;
+        this->height = frame->height;
         printf("\n");
         //float x = 2*corners[0].x-corners[1].x,
         //      y = 2*corners[0].y-corners[7].y;
         float x = corners[0].x-1.5*(corners[1].x-corners[0].x),
-              y = corners[0].y-1.5*(corners[7].y-corners[0].y);
+              y = corners[0].y-1.5*(corners[6].y-corners[0].y);
 
         this->projectorOrigin = cvPoint((int)x, (int)y);
 

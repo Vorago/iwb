@@ -3,7 +3,7 @@
 #include <opencv/cv.h>
 
 namespace iwb {
-    Touchable::Touchable(char* imagePath, Presentation *prs, Handler *hndl, CvPoint projectorUL, CvPoint projectorBR, void (*action)(void), int threshold) : Drawable(imagePath, prs, projectorUL, projectorBR) {
+    Touchable::Touchable(char* imagePath, Presentation *prs, Handler *hndl, CvPoint projectorUL, CvPoint projectorBR, boost::function<void ()> action, int threshold) : Drawable(imagePath, prs, projectorUL, projectorBR) {
         this->cameraUL = this->cfppoint(projectorUL);
         this->cameraBR = this->cfppoint(projectorBR);
         this->threshold = threshold;
@@ -51,6 +51,7 @@ namespace iwb {
                         this->interaction += 2;
                     }
                     if (this->interaction > INTERACTION_TRIGGER) {
+                        printf("DETECTED TOUCH!\n");
                         if (this->action != NULL)
                             this->action();
                         this->interaction = 0;

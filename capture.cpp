@@ -23,6 +23,7 @@ namespace iwb {
     }
 
     void Capture::setPreviousFrame(IplImage* image) {
+        if (previousFrame != NULL) cvReleaseImage(&previousFrame);
         previousFrame = image;
     }
 
