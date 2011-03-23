@@ -46,8 +46,8 @@ namespace iwb {
 
         this->width = cf->width;
         this->height = cf->height;
-        this->projectorWidth = prs->getScreenWidth();
-        this->projectorHeight = prs->getScreenHeight();
+        this->projectorWidth = this->width;
+        this->projectorHeight = this->height;
         this->projectorOrigin = cvPoint(0,0);
 
         return;

@@ -31,6 +31,7 @@ namespace iwb {
         int interaction;
         int threshold;
         Handler *hndl;
+        int id;
     public:
         Touchable(char* imagePath, Presentation *prs, Handler *hndl, CvPoint projectorUL, CvPoint projectorBR, void (*action)(void), int threshold=STD_THRESHOLD);
         ~Touchable();

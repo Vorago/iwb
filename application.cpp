@@ -39,7 +39,7 @@ namespace iwb {
 //        imageFrame->setImagePath("res/no.jpg");
         imageFrame->saveFrame();
         prs->addComponent(imageFrame);
-        scroller = new Scroller(prs, hndl);
+        scroller = new Scroller(prs, hndl, imageFrame);
 //        Confirmation::create(prs, hndl);
 
         return 0;
@@ -47,8 +47,10 @@ namespace iwb {
 
     int Application::run() {
     int i;
-        IplImage *cf = cvCreateImage(cvSize(320, 240), IPL_DEPTH_8U, 3);
-        IplImage *diff = cvCreateImage(cvSize(640, 480), IPL_DEPTH_8U, 3);
+    int camWidth = Camera::getInstance()->getWidth();
+    int camHeight = Camera::getInstance()->getHeight();
+        IplImage *cf = cvCreateImage(cvSize(camWidth, camHeight), IPL_DEPTH_8U, 3);
+        IplImage *diff = cvCreateImage(cvSize(camWidth, camHeight), IPL_DEPTH_8U, 3);
         IplImage *gs;
         for (i=0; i<100; i++)
             cf = cvQueryFrame(cpt->getCapture());
@@ -69,7 +71,8 @@ namespace iwb {
             cf = cvQueryFrame(cpt->getCapture());
             cvShowImage(winFrame, cf);
 
-            gs = cvCloneImage(analysis->getDiff());
+//            gs = cvCloneImage(analysis->getDiff());
+            gs = analysis->getDiff();
             cvCvtColor(gs, diff, CV_GRAY2RGB);
             prs->drawDiff(diff);
             prs->drawComponents();

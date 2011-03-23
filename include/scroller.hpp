@@ -23,15 +23,19 @@
 #include "touchable.hpp"
 #include "handler.hpp"
 #include "confirmation.hpp"
+#include "imageFrame.hpp"
 
 
 
 namespace iwb {
     class Scroller {
     private:
-        Presentation* prs;
-        Handler* hndl;
+//        Presentation* prs;
+//        Handler* hndl;
         Touchable *buttons[5];
+
+        static Scroller* instance;
+        static char* imageToBeDisplayed;
 
         /**
          * Frees allocated memory and resets the variables
@@ -42,13 +46,16 @@ namespace iwb {
         void displayImages();
         
     public:
+        Presentation* prs;
+        Handler* hndl;
+        ImageFrame* imageFrame;
         int imgArraySize;
         char **imgArray;
         int currentImg;
         /**
          * Constructor initislizes variables
          */
-        Scroller(Presentation* prs, Handler* hndl);
+        Scroller(Presentation* prs, Handler* hndl, ImageFrame* imageFrame);
 
         virtual ~Scroller();
         /**
@@ -63,6 +70,19 @@ namespace iwb {
         virtual void initialize();
 
         void displayConfirmation();
+
+        void getImagePath(int imagePosition, char* path);
+
+        static void setImageToBeDisplayed(int imagePosition);
+
+        static void handleLeftArrowTouch();
+        static void handleLeftImageTouch();
+        static void handleMiddleImageTouch();
+        static void handleRightImageTouch();
+        static void handleRightArrowTouch();
+
+        static void handleYesButton();
+        static void handleNoButton();
 
     };
 }
