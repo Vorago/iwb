@@ -1,5 +1,6 @@
 #include "include/scroller.hpp"
 #include "include/camera.hpp"
+#include <boost/bind.hpp>
 
 namespace iwb {
 
@@ -152,9 +153,9 @@ namespace iwb {
 //        paths[LEFT_ARROW] = "res/left.jpg";
 //        paths[LEFT_IMAGE] = "res/right.jpg";
         // TODO: add image paths
-        buttons[LEFT_ARROW] = new Touchable(paths[0], prs, hndl, projectorUL[LEFT_ARROW], projectorBR[LEFT_ARROW], &touchme);
+        buttons[LEFT_ARROW] = new Touchable(paths[0], prs, hndl, projectorUL[LEFT_ARROW], projectorBR[LEFT_ARROW], NULL);
 
-        buttons[RIGHT_ARROW] = new Touchable(paths[1], prs, hndl, projectorUL[RIGHT_ARROW], projectorBR[RIGHT_ARROW], &testcb);
+        buttons[RIGHT_ARROW] = new Touchable(paths[1], prs, hndl, projectorUL[RIGHT_ARROW], projectorBR[RIGHT_ARROW], boost::bind(&iwb::Scroller::shiftRight, this));
 
 //        for (int i = 0; i < 2; i++) {
 //            printf("%s\n", paths[i]);
@@ -167,13 +168,13 @@ namespace iwb {
         // FIXME: this code will crash if there are less than three images in the folder
         char filepath[80];
         snprintf(filepath, sizeof(filepath), "tmp/1/%s", imgArray[0]);
-        buttons[LEFT_IMAGE] = new Touchable(filepath, prs, hndl, projectorUL[LEFT_IMAGE], projectorBR[LEFT_IMAGE], &testcb);
+        buttons[LEFT_IMAGE] = new Touchable(filepath, prs, hndl, projectorUL[LEFT_IMAGE], projectorBR[LEFT_IMAGE], NULL);
 
         snprintf(filepath, sizeof(filepath), "tmp/1/%s", imgArray[1]);
-        buttons[MIDDLE_IMAGE] = new Touchable(filepath, prs, hndl, projectorUL[MIDDLE_IMAGE], projectorBR[MIDDLE_IMAGE], &testcb);
+        buttons[MIDDLE_IMAGE] = new Touchable(filepath, prs, hndl, projectorUL[MIDDLE_IMAGE], projectorBR[MIDDLE_IMAGE], NULL);
 
         snprintf(filepath, sizeof(filepath), "tmp/1/%s", imgArray[2]);
-        buttons[RIGHT_IMAGE] = new Touchable(filepath, prs, hndl, projectorUL[RIGHT_IMAGE], projectorBR[RIGHT_IMAGE], &testcb);
+        buttons[RIGHT_IMAGE] = new Touchable(filepath, prs, hndl, projectorUL[RIGHT_IMAGE], projectorBR[RIGHT_IMAGE], NULL);
 
         displayImages();
         
