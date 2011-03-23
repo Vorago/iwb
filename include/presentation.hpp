@@ -27,6 +27,7 @@ namespace iwb {
         IplImage* buffer;
         MainWindow *window;
         std::list<Drawable*> components;
+        uchar* qImageBuffer;
 
     public:
         int screenWidth;

@@ -25,6 +25,7 @@ namespace iwb {
 
         buffer = cvCreateImage(cvSize(screenWidth, screenHeight), IPL_DEPTH_8U, 3);
         slide = cvCreateImage(cvSize(screenWidth, screenHeight), IPL_DEPTH_8U, 3);
+        qImageBuffer = (uchar *) malloc (screenWidth *screenHeight* 5 * sizeof (uchar));
 
 //        this->leftOffset = 10;
 //        this->rightOffset = 10;
@@ -36,6 +37,7 @@ namespace iwb {
     Presentation::~Presentation() {
         cvReleaseImage(&buffer);
         cvReleaseImage(&slide);
+        free(qImageBuffer);
         delete (this->window);
 
     }
@@ -106,7 +108,6 @@ namespace iwb {
          * If not: look for a good way to calculate here:
          * http://www.qtcentre.org/threads/11655-OpenCV-integration
          */
-        uchar* qImageBuffer = (uchar *) malloc (slide->width * slide->height * 4 * sizeof (uchar));
         uchar *QImagePtr = qImageBuffer;
         const uchar *iplImagePtr = (const uchar *)this->slide->imageData;
  
@@ -125,11 +126,11 @@ namespace iwb {
         }
 
         QImage *qImage = new QImage (qImageBuffer, slide->width, slide->height, QImage::Format_RGB32);
+        //free(qImageBuffer);
+        delete (this->window->qimage);
         this->window->qimage = qImage;
         this->window->update();
         // free(qImageBuffer);
-
-        //        cvShowImage(winPresentFrame, slide);
       }
 
      int Presentation::getScreenWidth(){
@@ -204,7 +205,7 @@ namespace iwb {
             o.y = 0;
             p.x = screenWidth;
             p.y = screenHeight;
-            putImage(o,p, 0, 0,diff);
+            putImage(o,p, 0, 0, diff);
             applyBuffer();
     }
 }

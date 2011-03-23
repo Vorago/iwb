@@ -67,6 +67,8 @@ namespace iwb {
                             cvSetImageROI(currentFrame, cvRect(cameraUL.x, cameraUL.y, width, height));
                             IplImage* Ci = cvCreateImage(cvGetSize(currentFrame), currentFrame->depth, currentFrame->nChannels);
 
+                            if (currentFrame != NULL)
+                                cvReleaseImage(&currentFrame);
                             cvCopyImage(currentFrame, Ci);
                             capturedFrame = cvCloneImage(Ci);
 
@@ -108,16 +110,17 @@ namespace iwb {
         if (captureState == IDLE) {
             return;
         }
+
         IplImage* currentFrame = cvQueryFrame(cpt->getCapture());
         if (cpt->getPreviousFrame() == NULL) {
             cpt->setPreviousFrame(cvCloneImage(currentFrame));
             return;
         }
+        
         IplImage* previousFrame = cpt->getPreviousFrame();
 
         IplImage* diff = analysis->getCornerDiff(previousFrame, currentFrame);
-
-        cvReleaseImage(&previousFrame);
+        
         cpt->setPreviousFrame(cvCloneImage(currentFrame));
 
 //        int startTime = -1;
@@ -150,6 +153,8 @@ namespace iwb {
         } else {
             startTime = -1;
         }
+
+        cvReleaseImage(&diff);
     }
 
     void ImageFrame::update() {
@@ -181,6 +186,7 @@ namespace iwb {
 
         if (captureState == CAPTURED) {
             startTime = -1;
+            cvReleaseImage(&capturedFrame);
             capturedFrame = NULL;
         }
     }
@@ -189,6 +195,7 @@ namespace iwb {
         if (currentProcess == DRAWING || currentProcess == SAVING_IMAGE) {
 //            prs->putImage(projectorUL, projectorBR, image);
             prs->putImage(cameraUL, cameraBR, NULL, NULL, image);
+            prs->applyBuffer();
         }
     }
 }
