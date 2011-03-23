@@ -25,6 +25,8 @@ namespace iwb {
         cvAbsDiff(image1, image2, diff);
         cvThreshold(diff, diff, constants::threshold, 255, CV_THRESH_BINARY);
 //        cvSmooth(diff, image2, CV_AA, 1);
+        cvReleaseImage(&image1);
+        cvReleaseImage(&image2);
         
         return diff;
     }
@@ -142,6 +144,10 @@ namespace iwb {
             cvThreshold(gs,bw,128,255,CV_THRESH_TRUNC/*|CV_THRESH_OTSU*/);
             cvThreshold(bw,gs,12,255,CV_THRESH_BINARY/*|CV_THRESH_OTSU*/);
 //            cvCvtColor(gs,dst_img,CV_GRAY2RGB);
+
+            cvReleaseImage(&dst_img);
+            cvReleaseImage(&bw);
+            cvReleaseImage(&blur);
 
             return gs;
     }

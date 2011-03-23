@@ -3,7 +3,7 @@
 using namespace iwb;
 
 int main(int argc, char *argv[]) {
-    Application* app = new Application();
+    Application* app = new Application(argc,argv);
 
     int result = 0;
     result = app->initialize(argc, argv);

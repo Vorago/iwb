@@ -50,6 +50,8 @@ namespace iwb {
         this->projectorHeight = prs->getScreenHeight();
         this->projectorOrigin = cvPoint(0,0);
 
+//        cvReleaseImage (&cf);
+
         return;
 #endif
 
