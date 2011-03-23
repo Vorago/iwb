@@ -77,8 +77,8 @@ namespace iwb {
 
         char* paths[2] = {(char*) "res/yes.jpg", (char*)"res/no.jpg"};
 
-        yesButton = new Touchable(paths[0], this->prs, this->hndl, yesUL, yesBR, &testcb2);
+        yesButton = new Touchable(paths[0], this->prs, this->hndl, yesUL, yesBR, NULL);
 
-        noButton= new Touchable(paths[1], this->prs, this->hndl, noUL, noBR, &testcb2);
+        noButton= new Touchable(paths[1], this->prs, this->hndl, noUL, noBR, NULL);
     }
 }

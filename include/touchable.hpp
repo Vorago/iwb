@@ -12,6 +12,7 @@
 namespace iwb {class Touchable;}
 #include "handler.hpp"
 #include <opencv/cv.h>
+#include <boost/function.hpp>
 
 // These values need tweaking
 #define STD_THRESHOLD 200
@@ -27,12 +28,12 @@ namespace iwb {
         CvPoint cameraBR;
         int getCameraWidth();
         int getCameraHeight();
-        void (*action)(void);
+        boost::function<void (void)> action;
         int interaction;
         int threshold;
         Handler *hndl;
     public:
-        Touchable(char* imagePath, Presentation *prs, Handler *hndl, CvPoint projectorUL, CvPoint projectorBR, void (*action)(void), int threshold=STD_THRESHOLD);
+        Touchable(char* imagePath, Presentation *prs, Handler *hndl, CvPoint projectorUL, CvPoint projectorBR, boost::function<void (void)> action , int threshold=STD_THRESHOLD);
         ~Touchable();
         void detectTouch(IplImage* mask);
         CvPoint cfppoint(CvPoint p);

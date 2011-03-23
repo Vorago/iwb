@@ -50,7 +50,7 @@ namespace iwb {
     int Application::run() {
     int i;
         IplImage *cf = cvCreateImage(cvSize(320, 240), IPL_DEPTH_8U, 3);
-        IplImage *diff = cvCreateImage(cvSize(640, 480), IPL_DEPTH_8U, 3);
+        IplImage *diff = cvCreateImage(cvSize(320, 240), IPL_DEPTH_8U, 3);
         IplImage *gs = NULL;
         for (i=0; i<100; i++)
             cf = cvQueryFrame(cpt->getCapture());
