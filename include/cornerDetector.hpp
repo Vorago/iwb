@@ -25,7 +25,13 @@ namespace iwb {
             return *(unsigned char*) (src->imageDataOrigin + y * src->widthStep + x);
         }
 
-        bool detect(IplImage* src, CvPoint* outLU, CvPoint* outRB) {
+        void drawSquare(IplImage* src, CvPoint ul, CvPoint br){
+            forpixc(x,y,src,ul,br){
+                Pixels(src,x,y) = BLACK;
+            }
+        }
+
+        bool detect(IplImage* src, CvPoint* out1, CvPoint* out2,  CvPoint* out3, CvPoint* out4) {
             fakePixel = BLACK;
             fragmentCount = 0;
 
@@ -45,23 +51,27 @@ namespace iwb {
                     fragmentCount++;
                     if(fragmentCount >2 ) return false;
                     if(fragmentCount == 1){
-                        if(!isACorner(fragment, lu, br, true)) return false;
-                        outLU->x = lu.x;
-                        outLU->y = lu.y;
+                        if(!isACorner(fragment, lu, br)) return false;
+                        out1->x = lu.x;
+                        out1->y = lu.y;
+                        out2->x = br.x;
+                        out2->y = br.y;
                     }
                     if(fragmentCount == 2){
-                        if(!isACorner(fragment, lu, br, false)) return false;
-                        outRB->x = br.x;
-                        outRB->y = br.y;
+                        if(!isACorner(fragment, lu, br)) return false;
+                        out3->x = lu.x;
+                        out3->y = lu.y;
+                        out4->x = br.x;
+                        out4->y = br.y;
                     }
                     
 //                    dump(fragment, lu, br);
 //                    Rectangle(fragment, lu, br, 25);
 //                    cvWaitKey(100);
-//                    cin.get();
+                    cin.get();
                 }
             }
-            if(fragmentCount != 2) return false;
+//            if(fragmentCount != 2) return false;
             return true;
         }
 
@@ -90,16 +100,13 @@ namespace iwb {
             return true;
         }
 
-        bool isACorner(IplImage* src, CvPoint ul, CvPoint br, bool isUpperLeft){
+        bool isACorner(IplImage* src, CvPoint ul, CvPoint br){
 
+//            dump(src, ul, br);
             int x1=ul.x+1;
             int x2=br.x-1;
             int y1=ul.y+1;
             int y2=br.y-1;
-
-            int i;
-            int x;
-            bool areTheSame;
 
             //------------------------------------------------------------------------------------
 
@@ -110,10 +117,10 @@ namespace iwb {
             x1--; x2++; y1--; y2++;
             //------------------------------------------------------------------------------------
 
-//            cout << "-- RESULT" << endl;
-//            cout << x1  << " : " << y1 << endl;
-//            cout << x2  << " : " << y2 << endl;
-//            dump(src, cvPoint(x1,y1), cvPoint(x2,y2));
+            cout << "-- RESULT" << endl;
+            cout << x1  << " : " << y1 << endl;
+            cout << x2  << " : " << y2 << endl;
+            dump(src, cvPoint(x1,y1), cvPoint(x2,y2));
             
 //            if(isUpperLeft){
 //                //check for UL corner
@@ -184,7 +191,8 @@ namespace iwb {
 
         void fix(IplImage* src, CvPoint ul, CvPoint br) {
             IplImage* buffer = cvCloneImage(src);
-
+            cout << "FIXING NOW " << endl;
+            dump(src, ul, br);
             bool repeat;
             do {
 
@@ -204,14 +212,16 @@ namespace iwb {
                             
                         }
                     }
-                    if (sum == 12 || sum == 22 || sum == 33) {
+                    if (sum == 12 || sum == 22 || sum == 33 || sum == 23 || sum == 43) {
                         Pixels(buffer, x, y) = WHITE;
                         repeat = true;
                     }
                 }
                 cvCopyImage(buffer, src);
             } while (repeat);
-            
+            cout << "FIXED --- DUMPING" << endl;
+            dump(buffer, ul, br);
+            cout << "DUMPED" << endl;
             cvReleaseImage(&buffer);
         }
 
